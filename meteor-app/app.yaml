@@ -1,0 +1,19 @@
+runtime: custom
+env: flex
+
+# This sample incurs costs to run on the App Engine flexible environment.
+# The settings below are to reduce costs during testing and are not appropriate
+# for production use. For more information, see:
+# https://cloud.google.com/appengine/docs/flexible/nodejs/configuring-your-app-with-app-yaml
+manual_scaling:
+  instances: 1
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10
+
+env_variables:
+  ROOT_URL: https://zinc-arc-238404.appspot-preview.com
+  MONGO_URL: mongodb+srv://admin:admin@cluster-0-gnbio.gcp.mongodb.net/test?retryWrites=true
+  DISABLE_WEBSOCKETS: "1"
+
