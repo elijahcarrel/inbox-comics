@@ -6,6 +6,7 @@ module.exports = withTypescript(
     cssLoaderOptions: {
       importLoaders: 1,
       localIdentName: "[local]___[hash:base64:5]",
-    }
+    },
+    target: 'serverless',
   })
 );
