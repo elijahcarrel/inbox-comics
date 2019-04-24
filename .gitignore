@@ -1,6 +1,7 @@
-node_modules/
-.meteor/
-bundle/
+node_modules
+.meteor
+bundle
 .DS_STORE
 .idea/
-.now/
+.now
+.next
