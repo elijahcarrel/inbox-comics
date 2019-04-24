@@ -2,6 +2,7 @@ node_modules
 .meteor
 bundle
 .DS_STORE
-.idea/
+.idea
 .now
 .next
+
