@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["static/development/pages/about.js"],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["static/development/pages/index.js"],{
 
 /***/ "./common-components/CommonLink/CommonLink.tsx":
 /*!*****************************************************!*\
@@ -6386,21 +6386,21 @@ exports.formatWithValidation = formatWithValidation;
 
 /***/ }),
 
-/***/ "./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2Fabout&absolutePagePath=%2FUsers%2Fecarrel%2FDocuments%2Finbox-comics%2Fpages%2Fabout.tsx!./":
-/*!***********************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2Fabout&absolutePagePath=%2FUsers%2Fecarrel%2FDocuments%2Finbox-comics%2Fpages%2Fabout.tsx ***!
-  \***********************************************************************************************************************************************************************************/
+/***/ "./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F&absolutePagePath=%2FUsers%2Fecarrel%2FDocuments%2Finbox-comics%2Fpages%2Findex.tsx!./":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F&absolutePagePath=%2FUsers%2Fecarrel%2FDocuments%2Finbox-comics%2Fpages%2Findex.tsx ***!
+  \******************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-    (window.__NEXT_P=window.__NEXT_P||[]).push(["/about", function() {
-      var page = __webpack_require__(/*! ./pages/about.tsx */ "./pages/about.tsx")
+    (window.__NEXT_P=window.__NEXT_P||[]).push(["/", function() {
+      var page = __webpack_require__(/*! ./pages/index.tsx */ "./pages/index.tsx")
       if(true) {
-        module.hot.accept(/*! ./pages/about.tsx */ "./pages/about.tsx", function() {
-          if(!next.router.components["/about"]) return
-          var updatedPage = __webpack_require__(/*! ./pages/about.tsx */ "./pages/about.tsx")
-          next.router.update("/about", updatedPage.default || updatedPage)
+        module.hot.accept(/*! ./pages/index.tsx */ "./pages/index.tsx", function() {
+          if(!next.router.components["/"]) return
+          var updatedPage = __webpack_require__(/*! ./pages/index.tsx */ "./pages/index.tsx")
+          next.router.update("/", updatedPage.default || updatedPage)
         })
       }
       return { page: page.default || page }
@@ -10665,9 +10665,9 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./pages/about.tsx":
+/***/ "./pages/index.tsx":
 /*!*************************!*\
-  !*** ./pages/about.tsx ***!
+  !*** ./pages/index.tsx ***!
   \*************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -10676,77 +10676,40 @@ module.exports = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! next/link */ "./node_modules/next/link.js");
-/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _common_components_Layout_Layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../common-components/Layout/Layout */ "./common-components/Layout/Layout.tsx");
-/* harmony import */ var _common_components_CommonLink_CommonLink__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../common-components/CommonLink/CommonLink */ "./common-components/CommonLink/CommonLink.tsx");
-var _jsxFileName = "/Users/ecarrel/Documents/inbox-comics/pages/about.tsx";
+/* harmony import */ var _common_components_Layout_Layout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../common-components/Layout/Layout */ "./common-components/Layout/Layout.tsx");
+var _jsxFileName = "/Users/ecarrel/Documents/inbox-comics/pages/index.tsx";
 
 
 
-
-
-var AboutPage = function AboutPage() {
-  return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_common_components_Layout_Layout__WEBPACK_IMPORTED_MODULE_2__["default"], {
-    title: "About | Next.js + TypeScript Example",
+var IndexPage = function IndexPage() {
+  return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_common_components_Layout_Layout__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    title: "Home",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 7
+      lineNumber: 6
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 8
+      lineNumber: 7
     },
     __self: this
-  }, "About"), react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 9
-    },
-    __self: this
-  }, "This is Inbox Comics v2 prototype. Go to ", react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_common_components_CommonLink_CommonLink__WEBPACK_IMPORTED_MODULE_3__["CommonLink"], {
-    href: "http://www.inboxcomics.com/",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 9
-    },
-    __self: this
-  }, "real site")), react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 10
-    },
-    __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_0__["createElement"](next_link__WEBPACK_IMPORTED_MODULE_1___default.a, {
-    href: "/",
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 10
-    },
-    __self: this
-  }, react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("a", {
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 10
-    },
-    __self: this
-  }, "Go home"))));
+  }, "Welcome to Inbox Comics!"));
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (AboutPage);
+/* harmony default export */ __webpack_exports__["default"] = (IndexPage);
 
 /***/ }),
 
-/***/ 0:
-/*!***************************************************************************************************************************************!*\
-  !*** multi next-client-pages-loader?page=%2Fabout&absolutePagePath=%2FUsers%2Fecarrel%2FDocuments%2Finbox-comics%2Fpages%2Fabout.tsx ***!
-  \***************************************************************************************************************************************/
+/***/ 3:
+/*!**********************************************************************************************************************************!*\
+  !*** multi next-client-pages-loader?page=%2F&absolutePagePath=%2FUsers%2Fecarrel%2FDocuments%2Finbox-comics%2Fpages%2Findex.tsx ***!
+  \**********************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! next-client-pages-loader?page=%2Fabout&absolutePagePath=%2FUsers%2Fecarrel%2FDocuments%2Finbox-comics%2Fpages%2Fabout.tsx! */"./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2Fabout&absolutePagePath=%2FUsers%2Fecarrel%2FDocuments%2Finbox-comics%2Fpages%2Fabout.tsx!./");
+module.exports = __webpack_require__(/*! next-client-pages-loader?page=%2F&absolutePagePath=%2FUsers%2Fecarrel%2FDocuments%2Finbox-comics%2Fpages%2Findex.tsx! */"./node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?page=%2F&absolutePagePath=%2FUsers%2Fecarrel%2FDocuments%2Finbox-comics%2Fpages%2Findex.tsx!./");
 
 
 /***/ }),
@@ -10762,5 +10725,5 @@ module.exports = dll_6dc2816e14fab51b8269;
 
 /***/ })
 
-},[[0,"static/runtime/webpack.js","styles"]]]);
-//# sourceMappingURL=about.js.map
+},[[3,"static/runtime/webpack.js","styles"]]]);
+//# sourceMappingURL=index.js.map
