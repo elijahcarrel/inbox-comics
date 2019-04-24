@@ -5,18 +5,14 @@
     "start": "meteor run",
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
-    "visualize": "meteor --production --extra-packages bundle-visualizer",
-    "cleanup": "rm -rf ../bundle/",
-    "dist": "npm run cleanup && meteor build ../ --directory --architecture os.linux.x86_64 --server-only",
-    "predeploy": "npm run dist && cp app.yaml ../bundle/ && cp Dockerfile ../bundle/",
-    "deploy": "npm run predeploy && (cd ../bundle && gcloud app deploy -q)"
+    "visualize": "meteor --production --extra-packages bundle-visualizer"
   },
   "dependencies": {
     "@babel/runtime": "^7.1.5",
     "babel-runtime": "^6.26.0",
     "meteor-node-stubs": "^0.4.1",
-    "react": "^16.5.0",
-    "react-dom": "^16.5.0"
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
   },
   "meteor": {
     "mainModule": {
