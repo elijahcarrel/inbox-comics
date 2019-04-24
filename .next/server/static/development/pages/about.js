@@ -122,7 +122,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _CommonLink_module_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CommonLink.module.scss */ "./common-components/CommonLink/CommonLink.module.scss");
 /* harmony import */ var _CommonLink_module_scss__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_CommonLink_module_scss__WEBPACK_IMPORTED_MODULE_2__);
-var _jsxFileName = "/Users/ecarrel/Documents/inbox-comics/with-typescript/common-components/CommonLink/CommonLink.tsx";
+var _jsxFileName = "/Users/ecarrel/Documents/inbox-comics/common-components/CommonLink/CommonLink.tsx";
 
 
 
@@ -176,7 +176,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CommonLink_CommonLink__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../CommonLink/CommonLink */ "./common-components/CommonLink/CommonLink.tsx");
 /* harmony import */ var _Footer_module_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Footer.module.scss */ "./common-components/Layout/Footer.module.scss");
 /* harmony import */ var _Footer_module_scss__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_Footer_module_scss__WEBPACK_IMPORTED_MODULE_2__);
-var _jsxFileName = "/Users/ecarrel/Documents/inbox-comics/with-typescript/common-components/Layout/Footer.tsx";
+var _jsxFileName = "/Users/ecarrel/Documents/inbox-comics/common-components/Layout/Footer.tsx";
 
 
 
@@ -242,7 +242,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Footer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Footer */ "./common-components/Layout/Footer.tsx");
 /* harmony import */ var next_head__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! next/head */ "next/head");
 /* harmony import */ var next_head__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(next_head__WEBPACK_IMPORTED_MODULE_3__);
-var _jsxFileName = "/Users/ecarrel/Documents/inbox-comics/with-typescript/common-components/Layout/Layout.tsx";
+var _jsxFileName = "/Users/ecarrel/Documents/inbox-comics/common-components/Layout/Layout.tsx";
 
 
 
@@ -905,7 +905,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! next/link */ "./node_modules/next/link.js");
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _common_components_Layout_Layout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../common-components/Layout/Layout */ "./common-components/Layout/Layout.tsx");
-var _jsxFileName = "/Users/ecarrel/Documents/inbox-comics/with-typescript/pages/about.tsx";
+/* harmony import */ var _common_components_CommonLink_CommonLink__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../common-components/CommonLink/CommonLink */ "./common-components/CommonLink/CommonLink.tsx");
+var _jsxFileName = "/Users/ecarrel/Documents/inbox-comics/pages/about.tsx";
+
 
 
 
@@ -915,38 +917,45 @@ var AboutPage = function AboutPage() {
     title: "About | Next.js + TypeScript Example",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 6
+      lineNumber: 7
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 7
+      lineNumber: 8
     },
     __self: this
   }, "About"), react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 8
+      lineNumber: 9
     },
     __self: this
-  }, "This is the about page"), react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", {
+  }, "This is Inbox Comics v2 prototype. Go to ", react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_common_components_CommonLink_CommonLink__WEBPACK_IMPORTED_MODULE_3__["CommonLink"], {
+    href: "http://www.inboxcomics.com/",
     __source: {
       fileName: _jsxFileName,
       lineNumber: 9
+    },
+    __self: this
+  }, "real site")), react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 10
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_0__["createElement"](next_link__WEBPACK_IMPORTED_MODULE_1___default.a, {
     href: "/",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 9
+      lineNumber: 10
     },
     __self: this
   }, react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("a", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 9
+      lineNumber: 10
     },
     __self: this
   }, "Go home"))));
@@ -963,7 +972,7 @@ var AboutPage = function AboutPage() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/ecarrel/Documents/inbox-comics/with-typescript/pages/about.tsx */"./pages/about.tsx");
+module.exports = __webpack_require__(/*! /Users/ecarrel/Documents/inbox-comics/pages/about.tsx */"./pages/about.tsx");
 
 
 /***/ }),
