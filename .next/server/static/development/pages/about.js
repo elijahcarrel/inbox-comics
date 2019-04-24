@@ -932,14 +932,14 @@ var AboutPage = function AboutPage() {
       lineNumber: 9
     },
     __self: this
-  }, "This is Inbox Comics v2 prototype. Go to ", react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_common_components_CommonLink_CommonLink__WEBPACK_IMPORTED_MODULE_3__["CommonLink"], {
+  }, "This is Inbox Comics v2 prototype. Go to the ", react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_common_components_CommonLink_CommonLink__WEBPACK_IMPORTED_MODULE_3__["CommonLink"], {
     href: "http://www.inboxcomics.com/",
     __source: {
       fileName: _jsxFileName,
       lineNumber: 9
     },
     __self: this
-  }, "real site")), react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", {
+  }, "real site"), "."), react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", {
     __source: {
       fileName: _jsxFileName,
       lineNumber: 10
