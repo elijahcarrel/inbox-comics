@@ -122,7 +122,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _CommonLink_module_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./CommonLink.module.scss */ "./common-components/CommonLink/CommonLink.module.scss");
 /* harmony import */ var _CommonLink_module_scss__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_CommonLink_module_scss__WEBPACK_IMPORTED_MODULE_2__);
-var _jsxFileName = "/Users/ecarrel/Documents/inbox-comics/with-typescript/common-components/CommonLink/CommonLink.tsx";
+var _jsxFileName = "/Users/ecarrel/Documents/inbox-comics/common-components/CommonLink/CommonLink.tsx";
 
 
 
@@ -176,7 +176,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CommonLink_CommonLink__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../CommonLink/CommonLink */ "./common-components/CommonLink/CommonLink.tsx");
 /* harmony import */ var _Footer_module_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Footer.module.scss */ "./common-components/Layout/Footer.module.scss");
 /* harmony import */ var _Footer_module_scss__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_Footer_module_scss__WEBPACK_IMPORTED_MODULE_2__);
-var _jsxFileName = "/Users/ecarrel/Documents/inbox-comics/with-typescript/common-components/Layout/Footer.tsx";
+var _jsxFileName = "/Users/ecarrel/Documents/inbox-comics/common-components/Layout/Footer.tsx";
 
 
 
@@ -242,7 +242,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Footer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Footer */ "./common-components/Layout/Footer.tsx");
 /* harmony import */ var next_head__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! next/head */ "next/head");
 /* harmony import */ var next_head__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(next_head__WEBPACK_IMPORTED_MODULE_3__);
-var _jsxFileName = "/Users/ecarrel/Documents/inbox-comics/with-typescript/common-components/Layout/Layout.tsx";
+var _jsxFileName = "/Users/ecarrel/Documents/inbox-comics/common-components/Layout/Layout.tsx";
 
 
 
@@ -903,7 +903,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _common_components_Layout_Layout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../common-components/Layout/Layout */ "./common-components/Layout/Layout.tsx");
-var _jsxFileName = "/Users/ecarrel/Documents/inbox-comics/with-typescript/pages/index.tsx";
+var _jsxFileName = "/Users/ecarrel/Documents/inbox-comics/pages/index.tsx";
 
 
 
@@ -921,7 +921,7 @@ var IndexPage = function IndexPage() {
       lineNumber: 7
     },
     __self: this
-  }, "Welcome to Inbox Comics."));
+  }, "Welcome to Inbox Comics!"));
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (IndexPage);
@@ -935,7 +935,7 @@ var IndexPage = function IndexPage() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/ecarrel/Documents/inbox-comics/with-typescript/pages/index.tsx */"./pages/index.tsx");
+module.exports = __webpack_require__(/*! /Users/ecarrel/Documents/inbox-comics/pages/index.tsx */"./pages/index.tsx");
 
 
 /***/ }),
