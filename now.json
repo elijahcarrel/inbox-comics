@@ -2,8 +2,12 @@
   "version": 2,
   "name": "app",
   "alias": ["app.inboxcomics.now.sh"],
-  "builds": [{ "src": "next.config.js", "use": "@now/next" }],
+  "builds": [
+    { "src": "client/next.config.js", "use": "@now/next" },
+    { "src": "server/**/*.ts", "use": "@now/node" }
+  ],
   "routes": [
+    { "src": "/api/.*", "dest":  "server/index.js" },
     { "src": "/_next/static/(?:[^/]+/pages|chunks|runtime)/.+", "headers": { "cache-control": "immutable" } }
   ]
 }
