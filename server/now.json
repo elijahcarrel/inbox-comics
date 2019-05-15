@@ -3,9 +3,9 @@
   "name": "api",
   "alias": ["api.inboxcomics.now.sh"],
   "builds": [
-    { "src": "**/*.ts", "use": "@now/node" }
+    { "src": "src/index.ts", "use": "@now/node@canary" }
   ],
   "routes": [
-    { "src": "/.*", "dest":  "index.js" }
+    { "src": "/(.*)", "dest": "/src/index.ts" }
   ]
 }
