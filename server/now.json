@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "name": "api",
+  "alias": ["api.inboxcomics.now.sh"],
+  "builds": [
+    { "src": "**/*.ts", "use": "@now/node" }
+  ],
+  "routes": [
+    { "src": "/.*", "dest":  "index.js" }
+  ]
+}
