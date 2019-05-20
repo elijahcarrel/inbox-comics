@@ -3,7 +3,13 @@
   "name": "api",
   "alias": ["api.inboxcomics.now.sh"],
   "builds": [
-    { "src": "src/index.ts", "use": "@now/node@canary" }
+    {
+      "src": "src/index.ts",
+      "use": "@now/node@canary",
+      "env": {
+        "mongodb_url": "@mongodb_url"
+      }
+    }
   ],
   "routes": [
     { "src": "/(.*)", "dest": "/src/index.ts" }
