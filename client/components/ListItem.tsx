@@ -1,10 +1,10 @@
-import * as React from 'react'
-import Link from 'next/link';
+import Link from "next/link";
+import * as React from "react";
 
-import IDataObject from '../interfaces'
+import IDataObject from "../interfaces";
 
-type Props = {
-  data: IDataObject,
+interface Props {
+  data: IDataObject;
 }
 
 const ListItem: React.FunctionComponent<Props> = ({ data }) => (
@@ -13,4 +13,4 @@ const ListItem: React.FunctionComponent<Props> = ({ data }) => (
   </Link>
 );
 
-export default ListItem
+export default ListItem;

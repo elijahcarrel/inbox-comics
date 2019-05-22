@@ -5,6 +5,6 @@
 // import IDataObject from 'path/to/interfaces';
 
 export default interface IDataObject {
-  id: number
-  name: string
+  id: number;
+  name: string;
 }
