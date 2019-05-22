@@ -6,7 +6,7 @@ const userSchema = new Schema({
   confirmed: Boolean,
 });
 
-export const User = model('user', userSchema);
+export const User = model("user", userSchema);
 
 export const typeDefs = gql`
   type User {
@@ -25,16 +25,16 @@ export const typeDefs = gql`
 export const resolvers = {
   Query: {
     getUsers: async () => {
-      return await User.find({}).exec()
-    }
+      return await User.find({}).exec();
+    },
   },
   Mutation: {
     addUser: async (_: any, args: any) => {
       try {
         return await User.create(args);
-      } catch(e) {
+      } catch (e) {
         return e.message;
       }
-    }
-  }
+    },
+  },
 };

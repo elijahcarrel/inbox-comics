@@ -1,10 +1,10 @@
-import merge from "lodash/merge";
 import { gql } from "apollo-server-micro";
+import merge from "lodash/merge";
 import { resolvers as userResolvers, typeDefs as userTypeDefs } from "./user";
 
 const rootTypeDefs = gql`
   type Query {
-    # Dummy value so this can be extended.   
+    # Dummy value so this can be extended.
     _root: String
   }
   type Mutation {

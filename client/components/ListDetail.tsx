@@ -1,8 +1,8 @@
-import * as React from 'react'
+import * as React from "react";
 
-import IDataObject from '../interfaces';
+import IDataObject from "../interfaces";
 
-type ListDetailProps = {
+interface ListDetailProps {
   item: IDataObject;
 }
 
@@ -11,6 +11,6 @@ const ListDetail: React.FC<ListDetailProps> = ({ item: user }) => (
     <h1>Detail for {user.name}</h1>
     <p>ID: {user.id}</p>
   </div>
-)
+);
 
 export default ListDetail;

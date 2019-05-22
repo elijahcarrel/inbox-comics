@@ -1,38 +1,38 @@
-import * as React from 'react'
-import { NextContext } from 'next'
-import Link from 'next/link';
+import { NextContext } from "next";
+import Link from "next/link";
+import * as React from "react";
 
-import Layout from '../common-components/Layout/Layout'
-import List from '../components/List'
-import IDataObject from '../interfaces'
-import { findAll } from '../utils/sample-api';
+import Layout from "../common-components/Layout/Layout";
+import List from "../components/List";
+import IDataObject from "../interfaces";
+import { findAll } from "../utils/sample-api";
 
-type Props = {
-  items: IDataObject[],
-  pathname: string,
+interface Props {
+  items: IDataObject[];
+  pathname: string;
 }
 
 class ListClass extends React.Component<Props> {
-  static async getInitialProps({ pathname }: NextContext) {
+  public static async getInitialProps({ pathname }: NextContext) {
     // Example for including initial props in a Next.js page.
     // Don't forget to include the respective types for any
     // props passed into the component
-    const items: IDataObject[] = await findAll()
+    const items: IDataObject[] = await findAll();
 
-    return { items, pathname }
+    return { items, pathname };
   }
 
-  render() {
-    const { items, pathname } = this.props
+  public render() {
+    const { items, pathname } = this.props;
     return (
       <Layout title="List Example | Next.js + TypeScript Example">
         <h1>List Example</h1>
         <p>You are currently on: {pathname}</p>
         <List items={items} />
-        <p><Link href='/'><a>Go home</a></Link></p>
+        <p><Link href="/"><a>Go home</a></Link></p>
       </Layout>
-    )
+    );
   }
 }
 
-export default ListClass
+export default ListClass;

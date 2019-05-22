@@ -1,11 +1,11 @@
+import Link from "next/link";
 import * as React from "react";
-import Link from 'next/link'
-import styles from './CommonLink.module.scss';
+import styles from "./CommonLink.module.scss";
 
-type Props = {
-  href: string,
-  children: React.ReactNode,
-};
+interface Props {
+  href: string;
+  children: React.ReactNode;
+}
 
 export const CommonLink: React.FunctionComponent<Props> = ({ href, children }) => (
   <Link

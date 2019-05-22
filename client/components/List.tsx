@@ -1,9 +1,9 @@
-import * as React from "react"
-import ListItem from './ListItem'
-import IDataObject from '../interfaces'
+import * as React from "react";
+import IDataObject from "../interfaces";
+import ListItem from "./ListItem";
 
-type Props = {
-  items: IDataObject[],
+interface Props {
+  items: IDataObject[];
 }
 
 const List: React.FunctionComponent<Props> = ({ items }) => (
@@ -14,6 +14,6 @@ const List: React.FunctionComponent<Props> = ({ items }) => (
       </li>
     ))}
   </ul>
-)
+);
 
-export default List
+export default List;
