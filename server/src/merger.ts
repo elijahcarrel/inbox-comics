@@ -1,5 +1,6 @@
 import { gql } from "apollo-server-micro";
 import merge from "lodash/merge";
+import { resolvers as comicResolvers, typeDefs as comicTypeDefs } from "./comic";
 import { resolvers as userResolvers, typeDefs as userTypeDefs } from "./user";
 
 const rootTypeDefs = gql`
@@ -13,5 +14,5 @@ const rootTypeDefs = gql`
   }
 `;
 
-export const resolvers = merge(userResolvers);
-export const typeDefs = [rootTypeDefs, userTypeDefs];
+export const resolvers = merge(userResolvers, comicResolvers);
+export const typeDefs = [rootTypeDefs, userTypeDefs, comicTypeDefs];
