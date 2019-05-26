@@ -8,5 +8,6 @@ module.exports = withTypescript(
       localIdentName: "[local]___[hash:base64:5]",
     },
     target: 'serverless',
+    crossOrigin: 'anonymous',
   })
 );

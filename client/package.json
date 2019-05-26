@@ -2,12 +2,11 @@
   "name": "inbox-comics",
   "version": "0.1.0",
   "scripts": {
-    "dev": "next",
+    "start": "next",
     "build": "next build",
-    "start": "next start",
     "type-check": "tsc",
-    "now-build": "next build",
-    "lint": "tslint --project ."
+    "lint": "tslint --project .",
+    "deploy": "now"
   },
   "dependencies": {
     "@zeit/next-sass": "^1.0.1",
