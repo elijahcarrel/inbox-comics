@@ -1,4 +1,7 @@
 import { ApolloServer } from "apollo-server-micro";
+import gql from "graphql-tag";
+import { IncomingMessage, ServerResponse } from "http";
+import microCors from "micro-cors";
 import mongoose from "mongoose";
 import { resolvers, typeDefs } from "./merger";
 
@@ -9,15 +12,17 @@ if (url == null) {
   throw new Error("mongodb_url secret is not defined.");
 }
 mongoose.set("bufferCommands", false);
-mongoose.set("debug", true);
+mongoose.set("debug", (collectionName: any, method: any, query: any, doc: any) => {
+  console.log(`${collectionName}.${method}`, JSON.stringify(query), doc);
+});
 mongoose.connect(url, { useNewUrlParser: true });
 // tslint:disable-next-line no-console
 mongoose.connection.once("open", () => console.log(`Connected to mongo at ${url}`));
 
-const defaultQuery = `query getUsers {
-  getUsers{
+const defaultQuery = gql`query getComics {
+  getComics{
     id
-    email
+    title
   }
 }`;
 
@@ -38,4 +43,18 @@ const apolloServer = new ApolloServer({
   resolvers,
 });
 
-export default apolloServer.createHandler();
+const cors = microCors();
+
+const handleOptions = (handler: any) => (req: IncomingMessage, res: ServerResponse, ...args: any) => {
+  if (req.method === "OPTIONS") {
+  // add required headers here
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With");
+    res.end();
+  } else {
+    return handler(req, res, ...args);
+  }
+};
+
+// @ts-ignore
+export default cors(handleOptions(apolloServer.createHandler()));

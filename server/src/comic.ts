@@ -2,8 +2,7 @@ import { gql } from "apollo-server-micro";
 import { model, Schema } from "mongoose";
 
 const comicSchema = new Schema({
-  email: String,
-  confirmed: Boolean,
+  title: String,
 });
 
 export const Comic = model("comic", comicSchema);
@@ -24,6 +23,7 @@ export const typeDefs = gql`
 export const resolvers = {
   Query: {
     getComics: async () => {
+      console.log("getting comics");
       return await Comic.find({}).exec();
     },
   },
