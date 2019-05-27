@@ -13,7 +13,7 @@ export const typeDefs = gql`
     title: String
   }
   extend type Query {
-    getComics: [Comic]
+    comics: [Comic]
   }
   extend type Mutation {
     addComic(email: String!): Comic
@@ -22,7 +22,7 @@ export const typeDefs = gql`
 
 export const resolvers = {
   Query: {
-    getComics: async () => {
+    comics: async () => {
       console.log("getting comics");
       return await Comic.find({}).exec();
     },

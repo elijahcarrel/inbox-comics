@@ -36,7 +36,7 @@ export default (App) => {
           // Prevent Apollo Client GraphQL errors from crashing SSR.
           // Handle them in components via the data.error prop:
           // https://www.apollographql.com/docs/react/api/react-apollo.html#graphql-query-data-error
-          // @ts-ignore
+          // tslint:disable-next-line no-console
           console.error("Error while running `getDataFromTree`", error);
         }
 

@@ -4,6 +4,7 @@ import fetch from "isomorphic-unfetch";
 // @ts-ignore
 let apolloClient = null;
 
+// TODO(ecarrel): put these in env variables rather than hardcoding.
 const graphQLEndpoint = process.env.NODE_ENV === "production" ?
   "https://api.inboxcomics.now.sh/graphql" :
   "http://localhost:3000/graphql";
@@ -35,6 +36,7 @@ function create(initialState: any) {
       fetch: !process.browser && fetch,
     }),
     cache: new InMemoryCache().restore(initialState || {}),
+    // @ts-ignore
     defaultOptions,
   });
 }
