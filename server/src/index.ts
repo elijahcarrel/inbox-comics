@@ -12,9 +12,7 @@ if (url == null) {
   throw new Error("mongodb_url secret is not defined.");
 }
 mongoose.set("bufferCommands", false);
-mongoose.set("debug", (collectionName: any, method: any, query: any, doc: any) => {
-  console.log(`${collectionName}.${method}`, JSON.stringify(query), doc);
-});
+mongoose.set("debug", true);
 mongoose.connect(url, { useNewUrlParser: true });
 // tslint:disable-next-line no-console
 mongoose.connection.once("open", () => console.log(`Connected to mongo at ${url}`));

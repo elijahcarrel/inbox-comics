@@ -23,7 +23,6 @@ export const typeDefs = gql`
 export const resolvers = {
   Query: {
     comics: async () => {
-      console.log("getting comics");
       return await Comic.find({}).exec();
     },
   },
