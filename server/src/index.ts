@@ -19,8 +19,8 @@ mongoose.connect(url, { useNewUrlParser: true });
 // tslint:disable-next-line no-console
 mongoose.connection.once("open", () => console.log(`Connected to mongo at ${url}`));
 
-const defaultQuery = gql`query getComics {
-  getComics{
+const defaultQuery = gql`query comics {
+  comics{
     id
     title
   }

@@ -2,39 +2,37 @@ import gql from "graphql-tag";
 import React from "react";
 import { Query } from "react-apollo";
 
-// export const getComicsQueryVars = {
-//   skip: 0,
-//   first: 10,
-// };
-
-const getComicsEasyQuery = gql`
-  query getComics {
-    getComics {
+const comicsEasyQuery = gql`
+  query comics {
+    comics {
       title
     }
   }
 `;
 
+interface Data {
+  comics: Array<{ title: string }>;
+}
+
 // @ts-ignore
 export const ComicsList = () => {
   return (
     // @ts-ignore
-    <Query query={getComicsEasyQuery}>
+    <Query<Data> query={comicsEasyQuery}>
       {({ loading, error, data }) => {
         if (error) {
-          console.error("Error loading posts: ", error);
+          throw new Error("Error loading posts: " + error.message);
         }
         if (loading) {
           return <div>Loading</div>;
         }
         // @ts-ignore
-        if (!data || !data.getComics) {
+        if (!data || !data.comics) {
           return <div>Failed to load</div>;
         }
-        console.log("data:", data);
         return (
           <div>
-            {data.getComics.map(({ title }) => (<span>{ title }</span>))}
+            {data.comics.map(({ title }) => (<span>{ title }</span>))}
           </div>
         );
       }}
@@ -42,9 +40,9 @@ export const ComicsList = () => {
   );
 };
 //
-// const getComicsQuery = gql`
-//   query getComics($first: Int!, $skip: Int!) {
-//     getComics(first: $first, skip: $skip) {
+// const comicsQuery = gql`
+//   query comics($first: Int!, $skip: Int!) {
+//     comics(first: $first, skip: $skip) {
 //       title
 //     }
 //   }
