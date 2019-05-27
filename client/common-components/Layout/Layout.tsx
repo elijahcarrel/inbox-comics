@@ -2,23 +2,22 @@ import Head from "next/head";
 import * as React from "react";
 import { CommonLink } from "../CommonLink/CommonLink";
 import { Footer } from "./Footer";
+import styles from "./Layout.module.scss";
 
 interface Props {
   title?: string;
 }
 
-const Layout: React.FunctionComponent<Props> = ({ children, title = "This is the default title" }) => (
-  <div>
+export const Layout: React.FunctionComponent<Props> = ({ children, title }) => (
+  <div className={styles.body}>
     <Head>
-      <title>Inbox Comics | {title}</title>
+      <title>{title ? `Inbox Comics | ${title}` : "Inbox Comics"}</title>
       <meta charSet="utf-8" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     </Head>
     <header>
       <nav>
         <CommonLink href="/">Home</CommonLink> | {" "}
-        <CommonLink href="/list-class">List Example</CommonLink> | {" "}
-        <CommonLink href="/list-fc">List Example (as Functional Component)</CommonLink> | {" "}
         <CommonLink href="/about">About</CommonLink> | {" "}
       </nav>
     </header>
@@ -26,5 +25,3 @@ const Layout: React.FunctionComponent<Props> = ({ children, title = "This is the
     <Footer />
   </div>
 );
-
-export default Layout;

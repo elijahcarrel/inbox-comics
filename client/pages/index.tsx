@@ -1,5 +1,5 @@
 import * as React from "react";
-import Layout from "../common-components/Layout/Layout";
+import { Layout } from "../common-components/Layout/Layout";
 
 const IndexPage: React.FunctionComponent = () => {
   return (

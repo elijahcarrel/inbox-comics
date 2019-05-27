@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React from "react";
 import { getDataFromTree } from "react-apollo";
-import initApollo from "./init-apollo";
+import { initApollo } from "./init-apollo";
 
 // @ts-ignore
 export default (App) => {
@@ -18,9 +18,7 @@ export default (App) => {
 
       // Run all GraphQL queries in the component tree
       // and extract the resulting data
-      // @ts-ignore
       const apollo = initApollo();
-      // @ts-ignore
       if (!process.browser) {
         try {
           // Run all GraphQL queries

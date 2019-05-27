@@ -7,10 +7,8 @@ interface Props {}
 export const Footer: React.FunctionComponent<Props> = () => (
   <footer className={styles.footer}>
     <nav>
-      <CommonLink href="/faq">FAQ</CommonLink> | {" "}
-      <CommonLink href="/news">News</CommonLink> | {" "}
+      <CommonLink href="/">Home</CommonLink> | {" "}
       <CommonLink href="/about">About</CommonLink> | {" "}
-      <CommonLink href="/contact">Contact</CommonLink> | {" "}
     </nav>
   </footer>
 );

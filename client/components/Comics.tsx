@@ -31,9 +31,9 @@ export const ComicsList = () => {
           return <div>Failed to load</div>;
         }
         return (
-          <div>
-            {data.comics.map(({ title }) => (<span>{ title }</span>))}
-          </div>
+          <ul>
+            {data.comics.map(({ title }) => (<li>{ title }</li>))}
+          </ul>
         );
       }}
     </Query>
