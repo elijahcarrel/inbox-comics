@@ -2,7 +2,7 @@
   "name": "inbox-comics",
   "version": "0.1.0",
   "scripts": {
-    "start": "next -p 3001",
+    "start": "next -p 4000",
     "build": "next build",
     "type-check": "tsc",
     "lint": "tslint --project .",

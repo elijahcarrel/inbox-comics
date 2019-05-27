@@ -50,4 +50,4 @@ export const initApollo = (initialState?: NormalizedCacheObject) => {
   }
 
   return apolloClient;
-}
+};
