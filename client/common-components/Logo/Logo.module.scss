@@ -1,5 +1,5 @@
-@import "../colors.scss";
-@import url('https://fonts.googleapis.com/css?family=EB+Garamond:400,700&display=swap');
+@import "../colors";
+@import "../fonts";
 
 .stroke {
   fill: none;
@@ -23,7 +23,7 @@
   font-variant: normal;
   font-weight: bold;
   font-stretch: normal;
-  font-family: "EB Garamond", serif;
+  font-family: $serif-font;
   writing-mode: lr-tb;
   fill: $red-color;
   fill-opacity: 1;
@@ -47,6 +47,6 @@
   image-rendering: optimizeSpeed;
 }
 
-.semiTransparent {
+.squiggle {
   opacity: 0.3;
 }

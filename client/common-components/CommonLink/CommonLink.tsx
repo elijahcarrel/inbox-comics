@@ -11,6 +11,6 @@ export const CommonLink: React.FunctionComponent<Props> = ({ href, children }) =
   <Link
     href={href}
   >
-    <a className={styles.a}>{children}</a>
+    <a className={styles.link}>{children}</a>
   </Link>
 );
