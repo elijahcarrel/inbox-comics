@@ -3,5 +3,13 @@
 .link {
   color: $red-color;
   font-weight: 700;
-  text-transform: uppercase;
+  cursor: pointer;
+
+  &.uppercase {
+    text-transform: uppercase;
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
 }

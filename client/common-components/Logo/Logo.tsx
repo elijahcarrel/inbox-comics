@@ -2,7 +2,9 @@ import classNames from "classnames";
 import React from "react";
 import styles from "./Logo.module.scss";
 
-export const Logo = () => (
+type Props = React.HTMLAttributes<SVGElement>;
+
+export const Logo = (props: Props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -11,6 +13,7 @@ export const Logo = () => (
     width="765.52936"
     xmlSpace="preserve"
     version="1.1"
+    {...props}
   >
     <g transform="matrix(1.3333333,0,0,-1.3333333,0,112.9796)">
       <g>
