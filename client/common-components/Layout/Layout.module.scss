@@ -1,6 +1,23 @@
 @import "../fonts.scss";
 @import "../colors.scss";
+@import "~normalize-scss/sass/normalize";
 
-.body {
-  font-family: $serif-font;
+.bodyContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+
+  .body {
+    font-family: $serif-font;
+    font-size: 1.2em;
+    width: 960px;
+    flex: 0 1 auto;
+
+    .content {
+      margin-bottom: 25px;
+    }
+  }
 }

@@ -1,0 +1,32 @@
+@import "../colors.scss";
+
+.flexList {
+  position: relative;
+  overflow: hidden;
+
+  ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0;
+    padding-left: 0;
+  }
+
+  li {
+    flex-grow: 1;
+    flex-basis: auto;
+    padding: 0 1em;
+    text-align: center;
+    border-left: 1px solid $grey-color;
+    margin: .25em 0;
+    list-style: none;
+
+    // TODO(ecarrel): make this depend on whether its the first on the line, not the first element at all.
+    &:first-of-type {
+      border-left: none;
+      margin-left: 10px;
+      padding-left: 0px;
+    }
+  }
+}
