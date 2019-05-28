@@ -14,8 +14,16 @@ export const Footer: React.FunctionComponent<Props> = () => (
             content: `© ${moment().year()} Inbox Comics`,
           },
           {
-            href: "/",
-            content: "Home",
+            href: "/faq",
+            content: "FAQ",
+          },
+          {
+            href: "/news",
+            content: "News",
+          },
+          {
+            href: "/contact",
+            content: "Contact",
           },
           {
             href: "/about",

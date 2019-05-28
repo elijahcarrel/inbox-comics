@@ -17,7 +17,7 @@ export const Header = () => (
             elements={[
               {
                 href: "/subscribe",
-                content: "Subscribe",
+                content: "Sign Up",
               },
               {
                 href: "/subscribe?modifySubscriptions",
