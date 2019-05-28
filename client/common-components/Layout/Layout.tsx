@@ -1,7 +1,7 @@
 import Head from "next/head";
 import * as React from "react";
-import { CommonLink } from "../CommonLink/CommonLink";
 import { Footer } from "./Footer";
+import { Header } from "./Header";
 import styles from "./Layout.module.scss";
 
 interface Props {
@@ -17,8 +17,7 @@ export const Layout: React.FunctionComponent<Props> = ({ children, title }) => (
     </Head>
     <header>
       <nav>
-        <CommonLink href="/">Home</CommonLink> | {" "}
-        <CommonLink href="/about">About</CommonLink> | {" "}
+        <Header />
       </nav>
     </header>
     {children}
