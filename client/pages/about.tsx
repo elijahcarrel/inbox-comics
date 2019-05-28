@@ -4,7 +4,7 @@ import { Layout } from "../common-components/Layout/Layout";
 import { ComicsList } from "../components/Comics";
 
 const AboutPage: React.FunctionComponent = () => (
-  <Layout title="About | Next.js + TypeScript Example">
+  <Layout title="About">
     <h1>About</h1>
     <p>
       This is Inbox Comics v2 prototype.

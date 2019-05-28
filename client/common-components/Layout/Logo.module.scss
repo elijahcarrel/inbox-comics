@@ -1,0 +1,52 @@
+@import "../colors.scss";
+@import url('https://fonts.googleapis.com/css?family=EB+Garamond:400,700&display=swap');
+
+.stroke {
+  fill: none;
+  stroke: $red-color;
+  stroke-linecap: round;
+  stroke-linejoin: miter;
+  stroke-miterlimit: 10;
+  stroke-dasharray: none;
+  stroke-opacity: 1;
+
+  &.mediumStroke {
+    stroke-width: 1.5;
+  }
+
+  &.thickStroke {
+    stroke-width: 2;
+  }
+}
+
+.text {
+  font-variant: normal;
+  font-weight: bold;
+  font-stretch: normal;
+  font-family: "EB Garamond", serif;
+  writing-mode: lr-tb;
+  fill: $red-color;
+  fill-opacity: 1;
+  fill-rule: nonzero;
+  stroke: none;
+
+  &.circleText {
+    font-size: 7.15px;
+  }
+
+  &.titleText {
+    font-size: 58px;
+  }
+
+  &.black {
+    fill: $black-color;
+  }
+}
+
+.optimizeSpeed {
+  image-rendering: optimizeSpeed;
+}
+
+.semiTransparent {
+  opacity: 0.3;
+}
