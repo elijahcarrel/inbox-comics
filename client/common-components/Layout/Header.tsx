@@ -1,14 +1,15 @@
 import React from "react";
+import { CommonLink } from "../CommonLink/CommonLink";
+import { Logo } from "../Logo/Logo";
 import styles from "./Header.module.scss";
-import { Logo } from "./Logo";
 
 export const Header = () => (
   <div className="topbar clearfix">
     <a href="/" className={styles.logo}><Logo /></a>
     <div className="menu flex-list">
       <ul>
-        <li><a href="http://www.inboxcomics.com/subscribe.php">Sign Up</a></li>
-        <li><a href="http://www.inboxcomics.com/subscribe.php?modifysettings">My Subscriptions</a></li>
+        <li><CommonLink href="/subscribe">Subscribe</CommonLink></li>
+        <li><CommonLink href="/subscribe?modifySubscriptions">My Subscriptions</CommonLink></li>
       </ul>
     </div>
   </div>

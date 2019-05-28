@@ -1,5 +1,7 @@
-.a {
-  color: #ba0106;
+@import "../colors.scss";
+
+.link {
+  color: $red-color;
   font-weight: 700;
   text-transform: uppercase;
 }
