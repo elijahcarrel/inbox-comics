@@ -4,8 +4,8 @@ import { Title } from "../common-components/Title/Title";
 import { ComicsList } from "../components/Comics";
 
 const SubscribePage: React.FunctionComponent = () => (
-  <Layout title="Subscribe">
-    <Title>Subscribe</Title>
+  <Layout title="Sign Up or Modify Subscriptions">
+    <Title>Sign Up or Modify Subscriptions</Title>
     <p>
       Haven't built this page yet but the connection to the (new) database is up and running, check it out:
     </p>
