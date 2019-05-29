@@ -3,6 +3,7 @@ import { model, Schema } from "mongoose";
 
 const comicSchema = new Schema({
   title: String,
+  identifier: String,
 });
 
 export const Comic = model("comic", comicSchema);
@@ -11,6 +12,7 @@ export const typeDefs = gql`
   type Comic {
     id: ID!
     title: String
+    identifier: String
   }
   extend type Query {
     comics: [Comic]
