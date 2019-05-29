@@ -1,0 +1,37 @@
+@import "../../common-components/colors";
+
+.comicContainer {
+  box-shadow: 3px 3px 10px 0 rgba($black-color, .25);
+  //border: 1px black solid;
+  border-radius: 6px;
+  width: 120px;
+  height: 200px;
+  padding: 10px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-content: flex-start;
+  cursor: pointer;
+
+  .comicLogo {
+    border-radius: 3px;
+    border: black dashed 2px;
+    margin: 10px;
+    flex: 0 1 auto;
+  }
+
+  &.selected {
+    background-color: $red-color;
+    color: white;
+    .comicLogo {
+      border: white dashed 2px;
+    }
+  }
+
+  .comicTitleText {
+    flex: 0 1 auto;
+  }
+}
