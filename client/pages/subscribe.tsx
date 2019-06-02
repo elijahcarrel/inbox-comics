@@ -6,7 +6,7 @@ import { ComicGrid } from "../components/ComicGrid/ComicGrid";
 const SubscribePage: React.FunctionComponent = () => (
   <Layout title="Sign Up or Modify Subscriptions">
     <Title>Sign Up or Modify Subscriptions</Title>
-    <ComicGrid />
+    <ComicGrid  initialSelectedComics={{}} />
   </Layout>
 );
 

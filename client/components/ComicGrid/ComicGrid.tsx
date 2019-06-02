@@ -1,5 +1,5 @@
 import gql from "graphql-tag";
-import React from "react";
+import React, { useState } from "react";
 import { Query } from "react-apollo";
 import { Comic } from "../Comic/Comic";
 import styles from "./ComicGrid.module.scss";
@@ -20,10 +20,16 @@ interface ComicsResponse {
   }>;
 }
 
-// @ts-ignore
-export const ComicGrid = () => {
+interface Props {
+  initialSelectedComics: {
+    [identifier: string]: boolean;
+  };
+}
+
+export const ComicGrid = (props: Props) => {
+  const { initialSelectedComics } = props;
+  const [selectedComics, setSelectedComics] = useState(initialSelectedComics);
   return (
-    // @ts-ignore
     <Query<ComicsResponse> query={comicsEasyQuery}>
       {({ loading, error, data }) => {
         if (error) {
@@ -32,22 +38,31 @@ export const ComicGrid = () => {
         if (loading) {
           return <div>Loading</div>;
         }
-        // @ts-ignore
         if (!data || !data.comics) {
           return <div>Failed to load</div>;
         }
         return (
           <div className={styles.comicGridContainer}>
-            {data.comics.map(({ title, identifier }, i) => (
-              <Comic
-                title={title}
-                identifier={identifier}
-                classes={{
-                  comicContainer: styles.comicContainer,
-                }}
-                isSelected={i % 4 === 0}
-              />
-            ))}
+            {data.comics.map(({ title, identifier }) => {
+              const isSelected = selectedComics[identifier] || false;
+              return (
+                <Comic
+                  title={title}
+                  identifier={identifier}
+                  classes={{
+                    comicContainer: styles.comicContainer,
+                  }}
+                  isSelected={isSelected}
+                  onClick={() => {
+                    const { [identifier]: _, ...otherComics } = selectedComics;
+                    setSelectedComics({
+                      ...otherComics,
+                      ...(isSelected ? {} : { [identifier]: true }),
+                    });
+                  }}
+                />
+              );
+            })}
           </div>
         );
       }}

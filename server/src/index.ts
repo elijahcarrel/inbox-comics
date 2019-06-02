@@ -54,5 +54,4 @@ const handleOptions = (handler: any) => (req: IncomingMessage, res: ServerRespon
   }
 };
 
-// @ts-ignore
 export default cors(handleOptions(apolloServer.createHandler()));

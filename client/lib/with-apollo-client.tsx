@@ -1,19 +1,27 @@
+import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
+import { AppComponentType, AppProps, DefaultAppIProps, NextAppContext } from "next/app";
 import Head from "next/head";
 import React from "react";
 import { getDataFromTree } from "react-apollo";
 import { initApollo } from "./init-apollo";
 
-// @ts-ignore
-export default (App) => {
-  return class Apollo extends React.Component {
+type ApolloAppProps = {
+  apolloState?: NormalizedCacheObject;
+} & AppProps & DefaultAppIProps;
+
+type WithApolloClientProps = AppComponentType<{
+  apolloClient: ApolloClient<NormalizedCacheObject>;
+}>;
+
+export const withApolloClient = (App: WithApolloClientProps) => {
+  return class Apollo extends React.Component<ApolloAppProps> {
     public static displayName = "withApollo(App)";
-    // @ts-ignore
-    public static async getInitialProps(ctx) {
-      const { Component, router } = ctx;
+    public static async getInitialProps(nextContext: NextAppContext): Promise<ApolloAppProps> {
+      const { Component, router } = nextContext;
 
       let appProps = {};
       if (App.getInitialProps) {
-        appProps = await App.getInitialProps(ctx);
+        appProps = await App.getInitialProps(nextContext);
       }
 
       // Run all GraphQL queries in the component tree
@@ -38,29 +46,28 @@ export default (App) => {
           console.error("Error while running `getDataFromTree`", error);
         }
 
-        // getDataFromTree does not call componentWillUnmount
-        // head side effect therefore need to be cleared manually
+        // getDataFromTree does not call componentWillUnmount.
+        // Head side effect therefore needs to be cleared manually.
         Head.rewind();
       }
 
       // Extract query data from the Apollo store
       const apolloState = apollo.cache.extract();
 
+      // @ts-ignore: appProps contains the necessary props but we can't prove this to typescript.
       return {
         ...appProps,
         apolloState,
       };
     }
+    private readonly apolloClient: ApolloClient<NormalizedCacheObject>;
 
-    // @ts-ignore
-    constructor(props) {
+    constructor(props: ApolloAppProps) {
       super(props);
-      // @ts-ignore
       this.apolloClient = initApollo(props.apolloState);
     }
 
     public render() {
-      // @ts-ignore
       return <App {...this.props} apolloClient={this.apolloClient} />;
     }
   };

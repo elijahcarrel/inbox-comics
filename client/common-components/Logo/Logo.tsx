@@ -409,7 +409,7 @@ export const Logo = (props: Props) => (
             className={classNames(styles.text, styles.titleText, styles.black)}
             transform="matrix(1,0,0,-1,84.8608,22.4941)"
           >
-            <tspan y="0" x="0 22.562 70.875999 109.562 157.87601 196.562">
+            <tspan y="0" x="0">
               INBOX
             </tspan>
           </text>
@@ -417,7 +417,7 @@ export const Logo = (props: Props) => (
             className={classNames(styles.text, styles.titleText)}
             transform="matrix(1,0,0,-1,84.8608,22.4941)"
           >
-            <tspan y="0" x="211.062 252.938 301.25201 359.25201 381.814 423.69">
+            <tspan y="0" x="205">
               COMICS
             </tspan>
           </text>
