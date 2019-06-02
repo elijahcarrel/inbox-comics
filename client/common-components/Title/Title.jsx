@@ -7,5 +7,5 @@ export const Title = (props) => {
     <h1 className={styles.title}>
       {children}
     </h1>
-  )
-}
+  );
+};

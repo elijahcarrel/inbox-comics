@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { useState } from "react";
+import React from "react";
 import styles from "./Comic.module.scss";
 
 interface Props {
@@ -9,20 +9,18 @@ interface Props {
     comicContainer?: string;
     comicLogo?: string;
   };
-  // TODO(ecarrel): don't ignore this prop.
   isSelected: boolean;
+  onClick: () => any;
 }
 
 export const Comic = (props: Props) => {
-  const { title, identifier, classes = {} } = props;
-  // TODO(ecarrel): move isSelected handling to parent.
-  const [isSelected, setIsSelected] = useState(false);
+  const { title, identifier, classes = {}, isSelected, onClick } = props;
   return (
     <div
       className={classNames(styles.comicContainer, classes.comicContainer, {
         [styles.selected]: isSelected,
       })}
-      onClick={() => setIsSelected(!isSelected)}
+      onClick={onClick}
     >
       <img
         className={classNames(styles.comicLogo, classes.comicLogo)}

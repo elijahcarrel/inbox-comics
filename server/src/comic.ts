@@ -18,7 +18,7 @@ export const typeDefs = gql`
     comics: [Comic]
   }
   extend type Mutation {
-    addComic(email: String!): Comic
+    addComic(title: String!): Comic
   }
 `;
 

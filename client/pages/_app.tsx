@@ -1,11 +1,15 @@
+import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
 import App, { Container } from "next/app";
 import React from "react";
 import { ApolloProvider } from "react-apollo";
-import withApolloClient from "../lib/with-apollo-client";
+import { withApolloClient } from "../lib/with-apollo-client";
 
-class MyApp extends App {
+interface Props {
+  apolloClient: ApolloClient<NormalizedCacheObject>;
+}
+
+class MyApp extends App<Props> {
   public render() {
-    // @ts-ignore TODO
     const { Component, pageProps, apolloClient } = this.props;
     return (
       <Container>
@@ -17,4 +21,5 @@ class MyApp extends App {
   }
 }
 
+// @ts-ignore TODO(ecarrel): fix weird type error.
 export default withApolloClient(MyApp);
