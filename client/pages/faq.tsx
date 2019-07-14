@@ -4,7 +4,7 @@ import { Title } from "../common-components/Title/Title";
 
 const FAQPage: React.FunctionComponent = () => (
   <Layout title="FAQ">
-    <Title>FAQ</Title>
+    <Title>FAQ Page Haha</Title>
     <p>
       Haven't built this page yet.
     </p>
