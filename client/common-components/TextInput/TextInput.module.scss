@@ -1,5 +1,11 @@
 @import "../colors.scss";
+@import "../fonts.scss";
 
 .textInput {
-  
+  font-size: 1.5em;
+  font-family: $serif-font;
+  outline: none;
+  border-color: lightgray;
+  border-width: 1px;
+  border-style: solid;
 }

@@ -13,16 +13,18 @@ const comicsEasyQuery = gql`
   }
 `;
 
+interface Comic {
+  title: string;
+  identifier: string;
+}
+
 interface ComicsResponse {
-  comics: Array<{
-    title: string;
-    identifier: string;
-  }>;
+  comics: Comic[];
 }
 
 interface Props {
   initialSelectedComics: {
-    [identifier: string]: boolean;
+    [identifier: string]: Comic;
   };
 }
 
@@ -43,8 +45,9 @@ export const ComicGrid = (props: Props) => {
         }
         return (
           <div className={styles.comicGridContainer}>
-            {data.comics.map(({ title, identifier }) => {
-              const isSelected = selectedComics[identifier] || false;
+            {data.comics.map((comic) => {
+              const { title, identifier } = comic;
+              const isSelected = !!selectedComics[identifier];
               return (
                 <Comic
                   title={title}
@@ -57,7 +60,7 @@ export const ComicGrid = (props: Props) => {
                     const { [identifier]: _, ...otherComics } = selectedComics;
                     setSelectedComics({
                       ...otherComics,
-                      ...(isSelected ? {} : { [identifier]: true }),
+                      ...(isSelected ? {} : { [identifier]: comic }),
                     });
                   }}
                 />

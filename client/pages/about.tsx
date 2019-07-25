@@ -1,14 +1,12 @@
 import * as React from "react";
 import { CommonLink } from "../common-components/CommonLink/CommonLink";
 import { Layout } from "../common-components/Layout/Layout";
-import { Title } from "../common-components/Title/Title";
 
 const AboutPage: React.FunctionComponent = () => (
   <Layout title="About">
-    <Title>About</Title>
     <p>
       We are
-      {" "}<CommonLink href="http://www.elijahcarrel.com/" lowercase>Elijah Carrel</CommonLink>{" "}
+      {" "}<CommonLink href="http://www.elijahcarrel.me/" lowercase>Elijah Carrel</CommonLink>{" "}
       and
       {" "}<CommonLink href="http://www.gabereiss.com/" lowercase>Gabe Reiss</CommonLink>.
       We created Inbox Comics for fun in our spare time in the summer of 2014
