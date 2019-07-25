@@ -9,6 +9,10 @@
     text-transform: uppercase;
   }
 
+  &.noUnderline {
+    text-decoration: none;
+  }
+
   &:hover {
     text-decoration: none;
   }
