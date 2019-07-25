@@ -1,5 +1,3 @@
-NOTE: We intentionally use apollo-boost 0.3.x and not 0.4.x because of https://github.com/apollographql/apollo-client/issues/4843.
-
 TODO(ecarrel):
 - Fix the fact that I need to move my server-side environment variables inside the "build" object to run it locally but move it outside of the "build" object in order to deploy it.
 - Make some sort of CommonQuery wrapper so that I don't write the same loading-handling and error-handling in every query wrapper.
