@@ -5,7 +5,7 @@
   "builds": [
     {
       "src": "src/index.ts",
-      "use": "@now/node@canary",
+      "use": "@now/node",
       "env": {
         "mongodb_url": "@mongodb_url"
       }

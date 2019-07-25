@@ -12,21 +12,26 @@ export const Footer: React.FunctionComponent<Props> = () => (
         elements={[
           {
             content: `© ${moment().year()} Inbox Comics`,
+            key: "copyright",
           },
           {
             href: "/faq",
+            key: "faq",
             content: "FAQ",
           },
           {
             href: "/news",
+            key: "news",
             content: "News",
           },
           {
             href: "/contact",
+            key: "contact",
             content: "Contact",
           },
           {
             href: "/about",
+            key: "about",
             content: "About",
           },
         ]}

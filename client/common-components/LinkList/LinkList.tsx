@@ -10,6 +10,7 @@ interface Props {
     element?: string;
   };
   elements: Array<{
+    key: string,
     href?: string;
     content: string;
     className?: string;
@@ -21,8 +22,11 @@ export const LinkList = (props: Props) => {
   return (
     <div className={classNames(styles.flexList, classes.container)}>
       <ul className={classes.list || ""}>
-        {elements.map(({ href, content, className }) => (
-            <li className={classNames(className, classes.element)}>
+        {elements.map(({ href, content, className, key }) => (
+            <li
+              className={classNames(className, classes.element)}
+              key={key}
+            >
               {href ? (
                   <CommonLink href={href}>{content}</CommonLink>
                 ) : (

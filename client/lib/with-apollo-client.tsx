@@ -1,4 +1,5 @@
 import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
+// @ts-ignore TODO(ecarrel): not sure why no types for these
 import { AppComponentType, AppProps, DefaultAppIProps, NextAppContext } from "next/app";
 import Head from "next/head";
 import React from "react";
