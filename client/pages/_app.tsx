@@ -1,19 +1,9 @@
 import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
 import App, { Container } from "next/app";
-import Router from "next/router";
 import React from "react";
 import { ApolloProvider } from "react-apollo";
 import { withApolloClient } from "../lib/with-apollo-client";
-
-// Workaround to fix https://github.com/zeit/next-plugins/issues/282.
-Router.events.on("routeChangeComplete", () => {
-  if (process.env.NODE_ENV !== "production") {
-    const els = document.querySelectorAll('link[href*="/_next/static/css/styles.chunk.css"]');
-    const timestamp = new Date().valueOf();
-    // @ts-ignore href does not exist on element.
-    els[0].href = "/_next/static/css/styles.chunk.css?v=" + timestamp;
-  }
-});
+import styles from "./app.module.scss";
 
 interface Props {
   apolloClient: ApolloClient<NormalizedCacheObject>;
@@ -25,7 +15,8 @@ class MyApp extends App<Props> {
     return (
       <Container>
         <ApolloProvider client={apolloClient}>
-          <Component {...pageProps} />
+          {/* We need to reference styles.nothing somewhere to fix https://github.com/zeit/next-plugins/issues/282. */}
+          <Component fakeProp={styles.nothing} {...pageProps} />
         </ApolloProvider>
       </Container>
     );
