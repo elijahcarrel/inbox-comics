@@ -13,7 +13,7 @@ interface Props {
   onClick: () => any;
 }
 
-export const Comic = (props: Props) => {
+export const ComicCard = (props: Props) => {
   const { title, identifier, classes = {}, isSelected, onClick } = props;
   return (
     <div

@@ -8,6 +8,8 @@ interface Props {
   onChange: (value: string) => any;
   className?: string;
   multiline?: boolean;
+  placeholder?: string;
+  type?: string;
 }
 
 export const TextInput: React.FunctionComponent<Props> = (props: Props) => {

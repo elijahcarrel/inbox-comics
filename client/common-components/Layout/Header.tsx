@@ -17,10 +17,12 @@ export const Header = () => (
             elements={[
               {
                 href: "/enter-email",
+                key: "sign-up",
                 content: "Sign Up",
               },
               {
                 href: "/enter-email",
+                key: "my-subscriptions",
                 content: "My Subscriptions",
               },
             ]}

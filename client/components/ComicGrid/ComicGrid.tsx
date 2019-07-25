@@ -1,7 +1,7 @@
 import gql from "graphql-tag";
 import React, { useState } from "react";
 import { Query } from "react-apollo";
-import { Comic } from "../Comic/Comic";
+import { ComicCard } from "../Comic/ComicCard";
 import styles from "./ComicGrid.module.scss";
 
 const comicsEasyQuery = gql`
@@ -49,7 +49,7 @@ export const ComicGrid = (props: Props) => {
               const { title, identifier } = comic;
               const isSelected = !!selectedComics[identifier];
               return (
-                <Comic
+                <ComicCard
                   title={title}
                   identifier={identifier}
                   classes={{
@@ -63,6 +63,7 @@ export const ComicGrid = (props: Props) => {
                       ...(isSelected ? {} : { [identifier]: comic }),
                     });
                   }}
+                  key={identifier}
                 />
               );
             })}
