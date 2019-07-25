@@ -12,17 +12,22 @@ interface User {
   verified: boolean;
 }
 
-interface ComicsResponse {
-  users: User[];
+interface UserResponse {
+  userByEmail: User;
 }
 
 const UserPage: React.FunctionComponent = () => {
   const router = useRouter();
-  const { query: { email } } = router;
+  const { query: { email: emailFromQuery } } = router;
+
+  if (!emailFromQuery) {
+    return <div>No email provided.</div>;
+  }
+  const email = emailFromQuery.toString();
 
   const userQuery = gql`
-    query users {
-      getUser(email: "${email}") {
+    query userByEmail {
+      userByEmail(email: "${email}") {
         email
         verified
       }
@@ -31,7 +36,7 @@ const UserPage: React.FunctionComponent = () => {
 
   return (
     <Layout title={`User ${email}`}>
-      <Query<ComicsResponse> query={userQuery}>
+      <Query<UserResponse> query={userQuery}>
         {({ loading, error, data }) => {
           if (error) {
             throw new Error("Error loading comics: " + error.message);
@@ -39,12 +44,10 @@ const UserPage: React.FunctionComponent = () => {
           if (loading) {
             return <div>Loading</div>;
           }
-          if (!data || !data.users || data.users.length === 0) {
-            return <div>No users with email {email}.</div>;
-          } else if (data.users.length > 1) {
-            return <div>Multiple users with email {email}.</div>;
+          if (!data || !data.userByEmail) {
+            return <div>No user with email {email}.</div>;
           }
-          const { verified } = data.users[0];
+          const { verified } = data.userByEmail;
           return (
             <ul>
               <li>
@@ -56,7 +59,7 @@ const UserPage: React.FunctionComponent = () => {
                 )}
               </li>
               <li>
-                <CommonLink href="./comics">
+                <CommonLink href={`./user/comics?email=${encodeURI(email)}`}>
                   Edit subscriptions.
                 </CommonLink>
               </li>

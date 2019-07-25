@@ -39,6 +39,16 @@ const apolloServer = new ApolloServer({
   },
   typeDefs,
   resolvers,
+  formatError: (error: any) => {
+    // tslint:disable-next-line no-console
+    console.error(error);
+    return error;
+  },
+  formatResponse: (response: any) => {
+    // tslint:disable-next-line no-console
+    console.log(response);
+    return response;
+  },
 });
 
 const cors = microCors();

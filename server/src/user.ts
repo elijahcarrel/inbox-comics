@@ -15,8 +15,8 @@ export const typeDefs = gql`
     verified: Boolean
   }
   extend type Query {
-    getUsers: [User]
-    getUser: User
+#    getUsers: [User]
+    userByEmail(email: String): User
   }
   extend type Mutation {
     addUser(email: String!): User
@@ -25,10 +25,11 @@ export const typeDefs = gql`
 
 export const resolvers = {
   Query: {
-    getUsers: async () => {
-      return await User.find({}).exec();
-    },
-    getUser: async (email: string) => {
+    // getUsers: async () => {
+    //   return await User.find({}).exec();
+    // },
+    userByEmail: async (_: any, args: { email: string }) => {
+      const { email } = args;
       return await User.findOne({ email }).exec();
     },
   },
