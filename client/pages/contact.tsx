@@ -1,24 +1,61 @@
-import * as React from "react";
-import { Layout } from "../common-components/Layout/Layout";
+import React, { useState } from "react";
+import { Button } from "../common-components/Button/Button";
 import { CommonLink } from "../common-components/CommonLink/CommonLink";
-import { Title } from "../common-components/Title/Title";
+import { Layout } from "../common-components/Layout/Layout";
 import { TextInput } from "../common-components/TextInput/TextInput";
 import styles from "./contact.module.scss";
 
-
-const ContactPage: React.FunctionComponent = () => (
-  <Layout title="Contact">
-    <Title>Contact</Title>
-    <div className={styles.contactForm}>
-      <p class="contacttext">We'd love to hear from you!</p>
-      <p class="contacttext">You can also reach us by replying to any of your daily comic emails, or by emailing us at  <CommonLink lowercase href="mailto:hello@inboxcomics.com">hello@inboxcomics.com</CommonLink>.</p>
-      <TextInput name="Name"/> < br/>
-      <TextInput name="Email Address"/> < br/>
-      <TextInput name="Subject"/> < br/>
-      <TextInput name="Message"/> < br/> 
-      <input type="submit" />         
-    </div>
-  </Layout>
-);
+const ContactPage: React.FunctionComponent = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+  return (
+    <Layout title="Contact">
+      <p>We'd love to hear from you!</p>
+      <p>You can also reach us by replying to any of your daily comic emails, or by emailing us at{" "}
+        <CommonLink lowercase href="mailto:hello@inboxcomics.com">hello@inboxcomics.com</CommonLink>.
+      </p>
+      <div className={styles.contactForm}>
+        <TextInput
+          name="Name"
+          placeholder="Name"
+          value={name}
+          onChange={setName}
+          className={styles.textInput}
+        />
+        <br />
+        <TextInput
+          name="Email Address"
+          placeholder="Email Address"
+          value={email}
+          onChange={setEmail}
+          className={styles.textInput}
+        />
+        <br />
+        <TextInput
+          name="Subject"
+          placeholder="Subject"
+          value={subject}
+          onChange={setSubject}
+          className={styles.textInput}
+        />
+        <br />
+        <TextInput
+          name="Message"
+          placeholder="Message"
+          value={message}
+          onChange={setMessage}
+          className={styles.textInput}
+          multiline
+        />
+        <br />
+        <Button>
+          Go
+        </Button>
+      </div>
+    </Layout>
+  );
+};
 
 export default ContactPage;

@@ -1,14 +1,16 @@
 import Head from "next/head";
 import React, { Fragment } from "react";
+import { Title } from "../Title/Title";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import styles from "./Layout.module.scss";
 
 interface Props {
   title?: string;
+  showTitle?: boolean;
 }
 
-export const Layout: React.FunctionComponent<Props> = ({ children, title }) => (
+export const Layout: React.FunctionComponent<Props> = ({ children, title, showTitle = true }) => (
   <Fragment>
     <Head>
       <title>{title ? `Inbox Comics | ${title}` : "Inbox Comics"}</title>
@@ -19,6 +21,9 @@ export const Layout: React.FunctionComponent<Props> = ({ children, title }) => (
       <div className={styles.body}>
         <Header />
         <div className={styles.content}>
+          {showTitle && (
+            <Title>{title}</Title>
+          )}
           {children}
         </div>
         <Footer />

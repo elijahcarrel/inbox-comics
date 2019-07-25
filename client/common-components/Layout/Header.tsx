@@ -16,11 +16,11 @@ export const Header = () => (
           <LinkList
             elements={[
               {
-                href: "/subscribe",
+                href: "/enter-email",
                 content: "Sign Up",
               },
               {
-                href: "/subscribe?modifySubscriptions",
+                href: "/enter-email",
                 content: "My Subscriptions",
               },
             ]}
