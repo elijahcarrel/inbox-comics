@@ -15,6 +15,7 @@ const EnterEmailPage: React.FunctionComponent = () => {
           value={email}
           onChange={setEmail}
           type="email"
+          placeholder="Email"
           className={styles.textInput}
         />
         <br />

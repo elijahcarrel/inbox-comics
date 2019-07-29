@@ -13,7 +13,8 @@
   .body {
     font-family: $serif-font;
     font-size: 1.2em;
-    width: 960px;
+    width: 100%;
+    max-width: 960px;
     flex: 0 1 auto;
 
     .content {
