@@ -18,7 +18,7 @@ const ContactPage: React.FunctionComponent = () => {
       </p>
       <div className={styles.contactForm}>
         <TextInput
-          name="Name"
+          name="name"
           placeholder="Name"
           value={name}
           onChange={setName}
@@ -26,15 +26,15 @@ const ContactPage: React.FunctionComponent = () => {
         />
         <br />
         <TextInput
-          name="Email Address"
-          placeholder="Email Address"
+          name="email"
+          placeholder="Email"
           value={email}
           onChange={setEmail}
           className={styles.textInput}
         />
         <br />
         <TextInput
-          name="Subject"
+          name="subject"
           placeholder="Subject"
           value={subject}
           onChange={setSubject}
@@ -42,7 +42,7 @@ const ContactPage: React.FunctionComponent = () => {
         />
         <br />
         <TextInput
-          name="Message"
+          name="message"
           placeholder="Message"
           value={message}
           onChange={setMessage}

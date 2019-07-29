@@ -8,9 +8,9 @@ export const Logo = (props: Props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
-    viewBox="0 0 765.52936 112.9796"
-    height="112.9796"
-    width="765.52936"
+    viewBox="0 0 700 120"
+    height="120"
+    width="700"
     xmlSpace="preserve"
     version="1.1"
     {...props}
