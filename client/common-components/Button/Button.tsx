@@ -9,15 +9,24 @@ interface Props {
   lowercase?: boolean;
   onClick?: () => any;
   className?: string;
+  disabled?: boolean;
 }
 
 export const Button: React.FunctionComponent<Props> = (props: Props) => {
-  const { href, onClick, children, className, lowercase = false } = props;
+  const {
+    href,
+    onClick,
+    children,
+    className,
+    lowercase = false,
+    disabled = false,
+  } = props;
   const innerButton = (
     <button
       type="button"
       className={classNames(className, styles.button, {[styles.uppercase]: !lowercase})}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </button>

@@ -22,8 +22,8 @@ const FAQPage: React.FunctionComponent = () => (
       none of your syndications are updated, we won't bother you an
       empty email.</p>
     <p className={styles.question}>Which syndications do you offer?</p>
-    <p className={styles.answer}>Head over to the <CommonLink lowercase href="./enter-email"
-    >signup page</CommonLink> to see for yourself, and <CommonLink lowercase href="./contact"
+    <p className={styles.answer}>Head over to the <CommonLink lowercase href="/user/new"
+    >sign-up page</CommonLink> to see for yourself, and <CommonLink lowercase href="/contact"
     >tell us</CommonLink> if we're missing one of your
       favorites!</p>
     <p className={styles.question}>Are all of the comics new?</p>
@@ -47,7 +47,7 @@ const FAQPage: React.FunctionComponent = () => (
       support the artists themselves by other means!</p>
     <p className={styles.question}>I have another{styles.questionnot} listed here, or I
       have feedback I'd like to share.</p>
-    <p className={styles.answer}>Please <CommonLink lowercase href="./contact" >
+    <p className={styles.answer}>Please <CommonLink lowercase href="/contact" >
       get in touch</CommonLink> with us!</p>
   </Layout>
 );

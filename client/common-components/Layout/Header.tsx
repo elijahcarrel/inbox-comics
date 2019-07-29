@@ -16,14 +16,14 @@ export const Header = () => (
           <LinkList
             elements={[
               {
-                href: "/enter-email",
+                href: "/user/new",
                 key: "sign-up",
                 content: "Sign Up",
               },
               {
-                href: "/enter-email",
-                key: "my-subscriptions",
-                content: "My Subscriptions",
+                href: "/user/edit",
+                key: "edit-subscriptions",
+                content: "Edit Subscriptions",
               },
             ]}
             classes={{

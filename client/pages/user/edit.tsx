@@ -1,14 +1,14 @@
 import Router from "next/router";
 import React, { useState } from "react";
-import { Button } from "../common-components/Button/Button";
-import { Layout } from "../common-components/Layout/Layout";
-import { TextInput } from "../common-components/TextInput/TextInput";
-import styles from "./enter-email.module.scss";
+import { Button } from "../../common-components/Button/Button";
+import { Layout } from "../../common-components/Layout/Layout";
+import { TextInput } from "../../common-components/TextInput/TextInput";
+import styles from "./edit.module.scss";
 
-const EnterEmailPage: React.FunctionComponent = () => {
+const EditUserPage: React.FunctionComponent = () => {
   const [email, setEmail] = useState("");
   return (
-    <Layout title="Enter Email">
+    <Layout title="Edit Subscriptions">
       <div className={styles.container}>
         <TextInput
           name="email"
@@ -35,4 +35,4 @@ const EnterEmailPage: React.FunctionComponent = () => {
   );
 };
 
-export default EnterEmailPage;
+export default EditUserPage;
