@@ -1,6 +1,5 @@
-// @ts-ignore TODO(ecarrel): figure out why typescript doesn't know about this.
 import gql from "graphql-tag";
-// @ts-ignore
+// @ts-ignore: TODO(ecarrel): figure out why typescript doesn't know about this.
 import { useRouter } from "next/router";
 import * as React from "react";
 import { Query } from "react-apollo";

@@ -2,6 +2,7 @@ import { ApolloClient, NormalizedCacheObject } from "apollo-boost";
 import App, { Container } from "next/app";
 import React from "react";
 import { ApolloProvider } from "react-apollo";
+import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
 import { withApolloClient } from "../lib/with-apollo-client";
 import styles from "./app.module.scss";
 
@@ -15,8 +16,11 @@ class MyApp extends App<Props> {
     return (
       <Container>
         <ApolloProvider client={apolloClient}>
-          {/* We need to reference styles.nothing somewhere to fix https://github.com/zeit/next-plugins/issues/282. */}
-          <Component fakeProp={styles.nothing} {...pageProps} />
+          <ApolloHooksProvider client={apolloClient}>
+            {/* We need to reference styles.nothing somewhere to fix
+             https://github.com/zeit/next-plugins/issues/282. */}
+            <Component fakeProp={styles.nothing} {...pageProps} />
+          </ApolloHooksProvider>
         </ApolloProvider>
       </Container>
     );
