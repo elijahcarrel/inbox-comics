@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { Layout } from "../../common-components/Layout/Layout";
+import { LoadingOverlay } from "../../common-components/LoadingOverlay/LoadingOverlay";
 
 interface User {
   email: string;
@@ -35,36 +36,36 @@ const UserPage: React.FunctionComponent = () => {
   const userQueryResponse = useQuery<UserResponse>(userQuery, { skip });
   const { data, error, loading } = userQueryResponse;
   if (error) {
-    throw new Error("Error loading comics: " + error.message);
+    throw new Error("Error loading user: " + error.message);
   }
   if (loading) {
-    return <div>Loading</div>;
-  }
-  if (email === "") {
-    return <div>No email specified.</div>;
+    return <Layout title={`User ${email}`} isLoading />;
   }
   if (!data || !data.userByEmail) {
-    return <div>No user with email "{email}".</div>;
+    throw new Error(`No user with email ${email}.`);
   }
   const { verified } = data.userByEmail;
 
   return (
     <Layout title={`User ${email}`}>
-      <ul>
-        <li>
-          {verified && (
-            <span>You are verified.</span>
-          )}
-          {!verified && (
-            <span>You are not verified.</span>
-          )}
-        </li>
-        <li>
-          <CommonLink href={`./user/comics?email=${encodeURI(email)}`}>
-            Edit subscriptions.
-          </CommonLink>
-        </li>
-      </ul>
+      {loading && (<LoadingOverlay />)}
+      {!loading && (
+        <ul>
+          <li>
+            {verified && (
+              <span>You are verified.</span>
+            )}
+            {!verified && (
+              <span>You are not verified.</span>
+            )}
+          </li>
+          <li>
+            <CommonLink href={`./user/comics?email=${encodeURI(email)}`}>
+              Edit subscriptions.
+            </CommonLink>
+          </li>
+        </ul>
+      )}
     </Layout>
   );
 };

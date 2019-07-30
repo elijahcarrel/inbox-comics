@@ -50,7 +50,15 @@ export const resolvers = {
   Mutation: {
     createUser: async (_: any, args: { email: string }) => {
       const { email } = args;
-      return await User.create({ email, verified: false, comics: [] });
+      try {
+        return await User.create({ email, verified: false, comics: [] });
+      } catch (err) {
+        if (err.name === "MongoError" && err.code === 11000) {
+          // TODO(ecarrel): return error to client appropriately.
+          console.error(`User with email ${email} already exists.`);
+          return null;
+        }
+      }
     },
     setSubscriptions: async (_: any, args: { email: string, comics: string[] }) => {
       const { email, comics } = args;

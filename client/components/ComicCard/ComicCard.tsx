@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import React from "react";
-import styles from "./Comic.module.scss";
+import styles from "./ComicCard.module.scss";
 
 interface Props {
   title: string;

@@ -1,6 +1,8 @@
 @import "../fonts.scss";
 @import "../colors.scss";
 @import "~normalize-scss/sass/normalize";
+@import "~react-s-alert/dist/s-alert-default.css";
+@import "~react-s-alert/dist/s-alert-css-effects/slide.css";
 
 .bodyContainer {
   display: flex;
@@ -17,6 +19,10 @@
     max-width: 960px;
     flex: 0 1 auto;
 
+    .loadingOverlay {
+      margin-left: auto;
+      margin-right: auto;
+    }
     .content {
       margin-bottom: 25px;
     }

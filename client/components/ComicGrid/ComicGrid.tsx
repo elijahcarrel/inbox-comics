@@ -1,8 +1,9 @@
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import React from "react";
-import { ComicCard } from "../Comic/ComicCard";
+import { ComicCard } from "../ComicCard/ComicCard";
 import styles from "./ComicGrid.module.scss";
+import {LoadingOverlay} from "../../common-components/LoadingOverlay/LoadingOverlay";
 
 const comicsQuery = gql`
   query comics {
@@ -34,7 +35,7 @@ export const ComicGrid = (props: Props) => {
     throw new Error("Error loading comics: " + error.message);
   }
   if (loading) {
-    return <div>Loading</div>;
+    return <LoadingOverlay />;
   }
   if (!data || !data.comics) {
     return <div>Failed to load</div>;
