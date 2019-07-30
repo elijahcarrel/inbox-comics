@@ -14,5 +14,5 @@ const rootTypeDefs = gql`
   }
 `;
 
-export const resolvers = merge(userResolvers, comicResolvers);
-export const typeDefs = [rootTypeDefs, userTypeDefs, comicTypeDefs];
+export const resolvers = merge(comicResolvers, userResolvers);
+export const typeDefs = [rootTypeDefs, comicTypeDefs, userTypeDefs];

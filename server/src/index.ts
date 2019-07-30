@@ -18,8 +18,7 @@ mongoose.connect(url, { useNewUrlParser: true });
 mongoose.connection.once("open", () => console.log(`Connected to mongo at ${url}`));
 
 const defaultQuery = gql`query comics {
-  comics{
-    id
+  comics {
     title
   }
 }`;

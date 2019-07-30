@@ -1,14 +1,16 @@
 {
     "defaultSeverity": "error",
     "extends": [
-        "tslint:recommended"
+        "tslint:recommended",
+        "tslint-react-hooks"
     ],
     "jsRules": {},
     "rules": {
         "interface-name": false,
         "object-literal-sort-keys": false,
         "no-empty-interface": false,
-        "whitespace": [true, "check-module"]
+        "whitespace": [true, "check-module"],
+        "react-hooks-nesting": "error"
     },
     "rulesDirectory": [],
     "linterOptions": {
