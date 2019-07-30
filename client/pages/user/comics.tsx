@@ -1,15 +1,20 @@
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
+import Alert from "react-s-alert";
 import { Layout } from "../../common-components/Layout/Layout";
 import { ComicGrid } from "../../components/ComicGrid/ComicGrid";
 
 const UserPage = () => {
   const router = useRouter();
-  // TODO(ecarrel): handle empty email.
-  const { query: { email } } = router;
-  // const [selectedComics, setSelectedComics] = useState(new Set<string>());
+  const [skip, setSkip] = useState(false);
+  const { query: { email: emailFromQuery } } = router;
+  if (!emailFromQuery && !skip) {
+    setSkip(true);
+  }
+  const email = (emailFromQuery || "").toString();
+// const [selectedComics, setSelectedComics] = useState(new Set<string>());
 
   const mutation = gql`
     mutation setSubscriptions($email: String!, $comics: [String]!) {
@@ -20,8 +25,15 @@ const UserPage = () => {
       }
     }
   `;
-  const [setSubscriptionsMutation, { loading: setSubscriptionsMutationIsLoading }] = useMutation(mutation);
-  console.log("setSubscriptionsMutationIsLoading is ", setSubscriptionsMutationIsLoading);
+  const [setSubscriptionsMutation] = useMutation(mutation);
+
+  interface UserQueryResponse {
+    userByEmail: {
+      comics: Array<{
+        identifier: string;
+      }>;
+    };
+  }
 
   const userQuery = gql`
     query userByEmail {
@@ -33,19 +45,18 @@ const UserPage = () => {
     }
   `;
 
-  const { data, error, loading } = useQuery(userQuery);
+  const { data, error, loading } = useQuery<UserQueryResponse>(userQuery, { skip });
   if (error) {
     throw new Error("Error loading user: " + error.message);
   }
   if (loading) {
-    return <div>Loading</div>;
+    return <Layout title={`Comics for ${email}`} isLoading />;
   }
   if (!data || !data.userByEmail) {
-    return <div>No user with email {email}.</div>;
+    throw new Error(`No user with email ${email}.`);
   }
 
-  const { comics } = data.userByEmail;
-  // @ts-ignore TODO(ecarrel): this is going to come up a lot...
+  const { userByEmail: { comics = [] } } = data;
   const selectedComics = new Set(comics.map(({ identifier }) => identifier));
 
   return (
@@ -57,9 +68,14 @@ const UserPage = () => {
           // Optimistically update UI.
           // setSelectedComics(newSelectedComics);
           // @ts-ignore
-          const { data: { comics: updatedComics } } = await setSubscriptionsMutation({ variables: { email, comics: [...newSelectedComics] }});
+          const {data: {comics: updatedComics}} = await setSubscriptionsMutation({
+            variables: {
+              email,
+              comics: [...newSelectedComics],
+            },
+          });
           if (updatedComics != null) {
-            console.log("Updated: ", updatedComics);
+            Alert.success("New settings saved.");
           }
         }}
       />

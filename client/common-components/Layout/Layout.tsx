@@ -1,16 +1,19 @@
 import Head from "next/head";
 import React, { Fragment } from "react";
+import { LoadingOverlay } from "../LoadingOverlay/LoadingOverlay";
 import { Title } from "../Title/Title";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import styles from "./Layout.module.scss";
+import { ToastAlerts } from "./ToastAlerts";
 
 interface Props {
   title?: string;
   showTitle?: boolean;
+  isLoading?: boolean;
 }
 
-export const Layout: React.FunctionComponent<Props> = ({ children, title, showTitle = true }) => (
+export const Layout: React.FunctionComponent<Props> = ({ children, title, showTitle = true, isLoading = false }) => (
   <Fragment>
     <Head>
       <title>{title ? `Inbox Comics | ${title}` : "Inbox Comics"}</title>
@@ -24,9 +27,11 @@ export const Layout: React.FunctionComponent<Props> = ({ children, title, showTi
           {showTitle && (
             <Title>{title}</Title>
           )}
-          {children}
+          {isLoading && <LoadingOverlay className={styles.loadingOverlay} />}
+          {!isLoading && children}
         </div>
         <Footer />
+        <ToastAlerts />
       </div>
     </div>
   </Fragment>
