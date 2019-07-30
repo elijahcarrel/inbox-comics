@@ -1,10 +1,10 @@
+import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import React, { useState } from "react";
-import { Query } from "react-apollo";
+import React from "react";
 import { ComicCard } from "../Comic/ComicCard";
 import styles from "./ComicGrid.module.scss";
 
-const comicsEasyQuery = gql`
+const comicsQuery = gql`
   query comics {
     comics {
       title
@@ -23,54 +23,48 @@ interface ComicsResponse {
 }
 
 interface Props {
-  initialSelectedComics: {
-    [identifier: string]: Comic;
-  };
+  selectedComics: Set<string>;
+  onChange: (selectedComics: Set<string>) => any;
 }
 
 export const ComicGrid = (props: Props) => {
-  const { initialSelectedComics } = props;
-  const [selectedComics, setSelectedComics] = useState(initialSelectedComics);
+  const { selectedComics, onChange } = props;
+  const { data, error, loading } = useQuery<ComicsResponse>(comicsQuery);
+  if (error) {
+    throw new Error("Error loading comics: " + error.message);
+  }
+  if (loading) {
+    return <div>Loading</div>;
+  }
+  if (!data || !data.comics) {
+    return <div>Failed to load</div>;
+  }
   return (
-    <Query<ComicsResponse> query={comicsEasyQuery}>
-      {({ loading, error, data }) => {
-        if (error) {
-          throw new Error("Error loading comics: " + error.message);
-        }
-        if (loading) {
-          return <div>Loading</div>;
-        }
-        if (!data || !data.comics) {
-          return <div>Failed to load</div>;
-        }
+    <div className={styles.comicGridContainer}>
+      {data.comics.map((comic) => {
+        const { title, identifier } = comic;
+        const isSelected = selectedComics.has(identifier);
         return (
-          <div className={styles.comicGridContainer}>
-            {data.comics.map((comic) => {
-              const { title, identifier } = comic;
-              const isSelected = !!selectedComics[identifier];
-              return (
-                <ComicCard
-                  title={title}
-                  identifier={identifier}
-                  classes={{
-                    comicContainer: styles.comicContainer,
-                  }}
-                  isSelected={isSelected}
-                  onClick={() => {
-                    const { [identifier]: _, ...otherComics } = selectedComics;
-                    setSelectedComics({
-                      ...otherComics,
-                      ...(isSelected ? {} : { [identifier]: comic }),
-                    });
-                  }}
-                  key={identifier}
-                />
-              );
-            })}
-          </div>
+          <ComicCard
+            title={title}
+            identifier={identifier}
+            classes={{
+              comicContainer: styles.comicContainer,
+            }}
+            isSelected={isSelected}
+            onClick={() => {
+              if (isSelected) {
+                selectedComics.delete(identifier);
+              } else {
+                selectedComics.add(identifier);
+              }
+              onChange(selectedComics);
+            }}
+            key={identifier}
+          />
         );
-      }}
-    </Query>
+      })}
+    </div>
   );
 };
 //

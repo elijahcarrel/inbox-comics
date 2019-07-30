@@ -1,7 +1,7 @@
+import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import Router from "next/router";
 import React, { useState } from "react";
-import { useMutation } from "react-apollo-hooks";
 import { Button } from "../../common-components/Button/Button";
 import { Layout } from "../../common-components/Layout/Layout";
 import { TextInput } from "../../common-components/TextInput/TextInput";
@@ -18,7 +18,7 @@ const NewUserPage: React.FunctionComponent = ({ mutate }) => {
       }
     }
   `;
-  const [createUserMutation, { loading }] = useMutation(mutation, { variables: { email } });
+  const [createUserMutation, { loading }] = useMutation(mutation);
   return (
     <Layout title="Sign Up">
       <div className={styles.container}>
@@ -33,6 +33,7 @@ const NewUserPage: React.FunctionComponent = ({ mutate }) => {
         <br />
         <Button
           onClick={async () => {
+            // @ts-ignore
             const { data: { createUser: { email: createdEmail } } } = await createUserMutation({ variables: { email }});
             if (createdEmail != null) {
               Router.push({
