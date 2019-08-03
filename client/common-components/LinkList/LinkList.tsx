@@ -21,7 +21,7 @@ interface Props {
 export const LinkList = (props: Props) => {
   const { classes = {}, elements, wrapWidth = "wide" } = props;
   const wrapStyles = {
-    none: "",
+    none: styles.wrapNone,
     medium: styles.wrapMedium,
     wide: styles.wrapWide,
   };
