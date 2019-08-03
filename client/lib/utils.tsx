@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import { useEffect, useState } from "react";
 
-interface GraphQlResult {
+export interface GraphQlResult {
   success: boolean;
   error: ApolloError | null;
   combinedErrorMessage: string | null;

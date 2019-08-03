@@ -3,7 +3,7 @@ import gql from "graphql-tag";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import { Layout } from "../../common-components/Layout/Layout";
-import { handleGraphQlResponse, useUrlQuery } from "../../lib/utils";
+import { GraphQlResult, handleGraphQlResponse, useUrlQuery } from "../../lib/utils";
 
 const EditUserPage: React.FunctionComponent = () => {
   const [urlQuery, urlQueryIsReady] = useUrlQuery();
@@ -27,7 +27,7 @@ const EditUserPage: React.FunctionComponent = () => {
   useEffect(() => {
     if (!isVerifying && urlQueryIsReady) {
       setIsVerifying(true);
-      handleGraphQlResponse(verifyEmailMutation()).then((result: any) => {
+      handleGraphQlResponse(verifyEmailMutation()).then((result: GraphQlResult) => {
         if (result.success) {
           Router.push({
             pathname: "/user",
