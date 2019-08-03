@@ -6,7 +6,7 @@ const IndexPage: React.FunctionComponent = () => {
   return (
     <Layout title="Home">
       <p>
-        This is Inbox Comics v2 prototype.
+        This is the Inbox Comics v2 prototype.
         Go to the <CommonLink href="http://www.inboxcomics.com/" lowercase>current site</CommonLink>.
       </p>
     </Layout>

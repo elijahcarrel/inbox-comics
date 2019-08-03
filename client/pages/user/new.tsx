@@ -31,7 +31,6 @@ const NewUserPage: React.FunctionComponent = () => {
           onChange={setEmail}
           type="email"
           placeholder="Email"
-          className={styles.textInput}
         />
         <br />
         <Button
