@@ -1,12 +1,17 @@
 import { gql } from "apollo-server-micro";
-import { model, Schema } from "mongoose";
+import { Document, model, Schema } from "mongoose";
+
+export interface IComic extends Document {
+  title: string;
+  identifier: string;
+}
 
 const comicSchema = new Schema({
   title: String,
   identifier: String,
 });
 
-export const Comic = model("comic", comicSchema);
+export const Comic = model<IComic>("comic", comicSchema);
 
 export const typeDefs = gql`
   type Comic {

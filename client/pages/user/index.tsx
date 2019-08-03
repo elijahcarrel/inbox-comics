@@ -1,10 +1,10 @@
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React from "react";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { Layout } from "../../common-components/Layout/Layout";
-import { LoadingOverlay } from "../../common-components/LoadingOverlay/LoadingOverlay";
+import { ResendVerificationEmailLink } from "../../components/ResendVerificationEmailLink/ResendVerificationEmailLink";
+import { useUrlQuery } from "../../lib/utils";
 
 interface User {
   email: string;
@@ -16,14 +16,9 @@ interface UserResponse {
 }
 
 const UserPage: React.FunctionComponent = () => {
-  const router = useRouter();
-  const [skip, setSkip] = useState(false);
-  const { query: { email: emailFromQuery } } = router;
-
-  if (!emailFromQuery && !skip) {
-    setSkip(true);
-  }
-  const email = (emailFromQuery || "").toString();
+  const [urlQuery, urlQueryIsReady] = useUrlQuery();
+  const email = `${urlQuery.email}`;
+  const isNewUser = !!urlQuery.new;
 
   const userQuery = gql`
     query userByEmail {
@@ -33,39 +28,42 @@ const UserPage: React.FunctionComponent = () => {
     }
   `;
 
-  const userQueryResponse = useQuery<UserResponse>(userQuery, { skip });
+  const userQueryResponse = useQuery<UserResponse>(userQuery, { skip: !urlQueryIsReady });
   const { data, error, loading } = userQueryResponse;
   if (error) {
     throw new Error("Error loading user: " + error.message);
   }
-  if (loading) {
+  if (loading || !data || !data.userByEmail) {
     return <Layout title={`User ${email}`} isLoading />;
-  }
-  if (!data || !data.userByEmail) {
-    throw new Error(`No user with email ${email}.`);
   }
   const { verified } = data.userByEmail;
 
   return (
     <Layout title={`User ${email}`}>
-      {loading && (<LoadingOverlay />)}
-      {!loading && (
-        <ul>
-          <li>
-            {verified && (
-              <span>You are verified.</span>
-            )}
-            {!verified && (
-              <span>You are not verified.</span>
-            )}
-          </li>
-          <li>
-            <CommonLink href={`./user/comics?email=${encodeURI(email)}`}>
-              Edit subscriptions.
-            </CommonLink>
-          </li>
-        </ul>
-      )}
+      <ul>
+        <li>
+          {verified && (
+            <span>You are verified.</span>
+          )}
+          {!verified && !isNewUser && (
+            <span>
+              You are not verified. Until you verify your email, you will not receive comics.{" "}
+              <ResendVerificationEmailLink email={email} />
+            </span>
+          )}
+          {!verified && isNewUser && (
+            <span>
+              A verification email was just sent to {email}.{" "}
+              <ResendVerificationEmailLink email={email} />
+            </span>
+          )}
+        </li>
+        <li>
+          <CommonLink href={`./user/comics?email=${encodeURIComponent(email)}`}>
+            Edit subscriptions.
+          </CommonLink>
+        </li>
+      </ul>
     </Layout>
   );
 };

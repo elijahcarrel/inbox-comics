@@ -19,9 +19,9 @@
     max-width: 960px;
     flex: 0 1 auto;
 
-    .loadingOverlay {
-      margin-left: auto;
-      margin-right: auto;
+    .error {
+      // TODO(ecarrel): make nice.
+      text-align: center;
     }
     .content {
       margin-bottom: 25px;
