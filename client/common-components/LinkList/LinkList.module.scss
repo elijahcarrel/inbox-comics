@@ -1,32 +1,70 @@
 @import "../colors.scss";
 
+@mixin row-wrap {
+  flex-direction: row;
+}
+
+@mixin li-borders {
+  border-left: 1px solid $grey-color;
+
+  // TODO(ecarrel): make this depend on whether its the first on the line, not the first element at all.
+  &:first-of-type {
+    border-left: none;
+    margin-left: 10px;
+    padding-left: 0;
+  }
+}
+
+@mixin respond-to($width) {
+  @media only screen and (min-width: $width) { @content; }
+}
+
 .flexList {
   position: relative;
   overflow: hidden;
 
   ul {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: space-between;
     margin: 0;
     padding-left: 0;
-  }
 
-  li {
-    flex-grow: 1;
-    flex-basis: auto;
-    padding: 0 1em;
-    text-align: center;
-    border-left: 1px solid $grey-color;
-    margin: .25em 0;
-    list-style: none;
+    @include respond-to(768px) {
+      &.wrapWide {
+        flex-direction: row;
+      }
+    }
 
-    // TODO(ecarrel): make this depend on whether its the first on the line, not the first element at all.
-    &:first-of-type {
-      border-left: none;
-      margin-left: 10px;
-      padding-left: 0;
+    @include respond-to(500px) {
+      &.wrapMedium {
+        flex-direction: row;
+      }
+    }
+
+    li {
+      flex-grow: 1;
+      flex-basis: auto;
+      padding: 0 1em;
+      border: none;
+      text-align: center;
+      margin: .25em 0;
+      list-style: none;
+
+
+      @include respond-to(768px) {
+        &.wrapWide {
+          @include li-borders;
+        }
+      }
+
+
+      @include respond-to(500px) {
+        &.wrapMedium {
+          @include li-borders;
+        }
+      }
     }
   }
 }

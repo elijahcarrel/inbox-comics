@@ -36,6 +36,7 @@ export const Header = () => (
             classes={{
               element: styles.linkListElement,
             }}
+            wrapWidth="medium"
           />
         </nav>
       </header>
