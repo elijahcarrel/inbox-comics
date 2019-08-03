@@ -11,28 +11,48 @@ interface Props {
   title?: string;
   showTitle?: boolean;
   isLoading?: boolean;
+  error?: string;
+  children?: React.ReactNode;
 }
 
-export const Layout: React.FunctionComponent<Props> = ({ children, title, showTitle = true, isLoading = false }) => (
-  <Fragment>
-    <Head>
-      <title>{title ? `Inbox Comics | ${title}` : "Inbox Comics"}</title>
-      <meta charSet="utf-8" />
-      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-    </Head>
-    <div className={styles.bodyContainer}>
-      <div className={styles.body}>
-        <Header />
-        <div className={styles.content}>
-          {showTitle && (
-            <Title>{title}</Title>
-          )}
-          {isLoading && <LoadingOverlay className={styles.loadingOverlay} />}
-          {!isLoading && children}
+export const Layout: React.FunctionComponent<Props> = (props: Props) => {
+  const {
+    children,
+    title,
+    showTitle = true,
+    isLoading = false,
+    error,
+  } = props;
+  return (
+    <Fragment>
+      <Head>
+        <title>{title ? `Inbox Comics | ${title}` : "Inbox Comics"}</title>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
+      <div className={styles.bodyContainer}>
+        <div className={styles.body}>
+          <Header />
+          <div className={styles.content}>
+            {error ? <div className={styles.error}>{error}</div> :
+              <Fragment>
+                {showTitle && (
+                  <Title>{title}</Title>
+                )}
+                {isLoading && <LoadingOverlay />}
+                {!isLoading && (
+                  <Fragment>
+                    <ToastAlerts />
+                    {children}
+                  </Fragment>
+                )}
+              </Fragment>
+            }
+          </div>
+          <Footer />
+          <ToastAlerts />
         </div>
-        <Footer />
-        <ToastAlerts />
       </div>
-    </div>
-  </Fragment>
-);
+    </Fragment>
+  );
+}

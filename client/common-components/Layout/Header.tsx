@@ -7,7 +7,14 @@ import styles from "./Header.module.scss";
 export const Header = () => (
   <div className={styles.topBar}>
     <div className={styles.logoContainer}>
-      <CommonLink href="/" underline={false} lowercase><Logo className={styles.logo} /></CommonLink>
+      <CommonLink
+        href="/"
+        underline={false}
+        lowercase
+        className={styles.logoLink}
+      >
+        <Logo className={styles.logo} />
+      </CommonLink>
     </div>
     <div className={styles.spacerElement}>{}</div>
     <div className={styles.menuContainer}>

@@ -1,19 +1,15 @@
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React from "react";
 import Alert from "react-s-alert";
 import { Layout } from "../../common-components/Layout/Layout";
 import { ComicGrid } from "../../components/ComicGrid/ComicGrid";
+import { useUrlQuery } from "../../lib/utils";
 
 const UserPage = () => {
-  const router = useRouter();
-  const [skip, setSkip] = useState(false);
-  const { query: { email: emailFromQuery } } = router;
-  if (!emailFromQuery && !skip) {
-    setSkip(true);
-  }
-  const email = (emailFromQuery || "").toString();
+  const [urlQuery, urlQueryIsReady] = useUrlQuery();
+  const email = `${urlQuery.email}`;
+
 // const [selectedComics, setSelectedComics] = useState(new Set<string>());
 
   const mutation = gql`
@@ -45,15 +41,12 @@ const UserPage = () => {
     }
   `;
 
-  const { data, error, loading } = useQuery<UserQueryResponse>(userQuery, { skip });
+  const { data, error, loading } = useQuery<UserQueryResponse>(userQuery, { skip: !urlQueryIsReady });
   if (error) {
     throw new Error("Error loading user: " + error.message);
   }
-  if (loading) {
+  if (loading || !data || !data.userByEmail) {
     return <Layout title={`Comics for ${email}`} isLoading />;
-  }
-  if (!data || !data.userByEmail) {
-    throw new Error(`No user with email ${email}.`);
   }
 
   const { userByEmail: { comics = [] } } = data;
@@ -68,7 +61,7 @@ const UserPage = () => {
           // Optimistically update UI.
           // setSelectedComics(newSelectedComics);
           // @ts-ignore
-          const {data: {comics: updatedComics}} = await setSubscriptionsMutation({
+          const { data: { comics: updatedComics } } = await setSubscriptionsMutation({
             variables: {
               email,
               comics: [...newSelectedComics],

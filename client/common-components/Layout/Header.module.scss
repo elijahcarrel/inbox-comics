@@ -16,10 +16,13 @@
     flex: 0 1 auto;
     margin-left: auto;
     margin-right: auto;
-    .logo {
-      width: 100%;
-      max-width: 447px;
-      height: auto;
+    .logoLink {
+      display: block;
+      .logo {
+        width: 100%;
+        max-width: 447px;
+        height: auto;
+      }
     }
   }
 

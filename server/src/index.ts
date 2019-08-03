@@ -7,7 +7,7 @@ import { resolvers, typeDefs } from "./merger";
 
 mongoose.Promise = global.Promise;
 
-const url = process.env.NODE_ENV === "production" ? process.env.mongodb_url : "mongodb://127.0.0.1:27017/ic";
+const url = process.env.mongodb_url;
 if (url == null) {
   throw new Error("mongodb_url secret is not defined.");
 }
@@ -28,10 +28,7 @@ const apolloServer = new ApolloServer({
   playground: {
     tabs: [
       {
-        // TODO(ecarrel): make these environment variables rather than hardcoding.
-        endpoint: process.env.NODE_ENV === "production" ?
-          "https://api.inboxcomics.now.sh/graphql" :
-          "http://localhost:3000/graphql",
+        endpoint: process.env.graphql_http_endpoint,
         query: defaultQuery,
       },
     ],

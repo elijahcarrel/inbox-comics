@@ -5,12 +5,15 @@
   "builds": [
     {
       "src": "src/index.ts",
-      "use": "@now/node",
-      "env": {
-        "mongodb_url": "@mongodb_url"
-      }
+      "use": "@now/node"
     }
   ],
+  "env": {
+    "mongodb_url": "@mongodb_url",
+    "elasticemail_api_key": "@elasticemail_api_key",
+    "domain": "https://app.inboxcomics.now.sh",
+    "graphql_http_endpoint": "https://api.inboxcomics.now.sh/graphql"
+  },
   "routes": [
     { "src": "/(.*)", "dest": "/src/index.ts" }
   ]

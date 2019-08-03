@@ -2,13 +2,13 @@ import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import Router from "next/router";
 import React, { useState } from "react";
+import Alert from "react-s-alert";
 import { Button } from "../../common-components/Button/Button";
 import { Layout } from "../../common-components/Layout/Layout";
 import { TextInput } from "../../common-components/TextInput/TextInput";
 import styles from "./new.module.scss";
 
-// @ts-ignore: property 'mutate' does not exist on type '{ children?: ReactNode; }'
-const NewUserPage: React.FunctionComponent = ({ mutate }) => {
+const NewUserPage: React.FunctionComponent = () => {
   const [email, setEmail] = useState("");
   const mutation = gql`
     mutation createUser($email: String!) {
@@ -34,11 +34,13 @@ const NewUserPage: React.FunctionComponent = ({ mutate }) => {
         <Button
           onClick={async () => {
             // @ts-ignore
-            const { data: { createUser: { email: createdEmail } } } = await createUserMutation({ variables: { email }});
-            if (createdEmail != null) {
+            const { data: { createUser } } = await createUserMutation({ variables: { email }});
+            if (createUser == null) {
+              Alert.error("Email already exists.");
+            } else {
               Router.push({
                 pathname: "/user",
-                query: { email: createdEmail },
+                query: { email: createUser.email, new: true },
               });
             }
           }}
