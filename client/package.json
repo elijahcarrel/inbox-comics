@@ -11,7 +11,7 @@
   "dependencies": {
     "@apollo/react-hooks": "0.1.0-beta.11",
     "@types/lodash": "^4.14.136",
-    "@types/react-s-alert": "^1.3.2",
+    "@zeit/next-css": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
     "@zeit/next-typescript": "^1.1.1",
     "apollo-cache-inmemory": "^1.6.2",
@@ -29,8 +29,8 @@
     "normalize-scss": "^7.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-s-alert": "^1.4.1",
-    "react-spinners": "^0.5.13"
+    "react-spinners": "^0.5.13",
+    "react-toast-notifications": "^2.2.1"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.9",

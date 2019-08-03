@@ -1,3 +1,4 @@
+import { ApolloError } from "apollo-client";
 import isEmpty from "lodash/isEmpty";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
@@ -5,9 +6,14 @@ import { useEffect, useState } from "react";
 
 interface GraphQlResult {
   success: boolean;
-  error: string | null;
+  error: ApolloError | null;
+  combinedErrorMessage: string | null;
   result: any;
 }
+
+export const stringifyGraphQlError = (error: ApolloError) => {
+  return error.graphQLErrors.map(({ message }) => message).join(", ");
+};
 
 export const handleGraphQlResponse = async (requestPromise: Promise<any>): Promise<GraphQlResult> => {
   return requestPromise
@@ -15,13 +21,15 @@ export const handleGraphQlResponse = async (requestPromise: Promise<any>): Promi
     return {
       success: true,
       error: null,
+      combinedErrorMessage: null,
       result,
     };
   })
-  .catch((error) => {
+  .catch((error: ApolloError) => {
     return {
       success: false,
       error,
+      combinedErrorMessage: stringifyGraphQlError(error),
       result: null,
     };
   });
@@ -38,4 +46,28 @@ export const useUrlQuery = (): [ParsedUrlQuery, boolean] => {
     }
   }, [query, queryIsReady]);
   return [query, queryIsReady];
+};
+
+const toastOptions = {
+  autoDismiss: true,
+  pauseOnHover: true,
+};
+
+export const toastType = {
+  error: {
+    appearance: "error",
+    ...toastOptions,
+  },
+  warning: {
+    appearance: "warning",
+    ...toastOptions,
+  },
+  success: {
+    appearance: "success",
+    ...toastOptions,
+  },
+  info: {
+    appearance: "info",
+    ...toastOptions,
+  },
 };

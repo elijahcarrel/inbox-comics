@@ -1,9 +1,9 @@
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import React from "react";
+import { LoadingOverlay } from "../../common-components/LoadingOverlay/LoadingOverlay";
 import { ComicCard } from "../ComicCard/ComicCard";
 import styles from "./ComicGrid.module.scss";
-import { LoadingOverlay } from "../../common-components/LoadingOverlay/LoadingOverlay";
 
 const comicsQuery = gql`
   query comics {

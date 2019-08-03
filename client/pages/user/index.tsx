@@ -4,7 +4,7 @@ import React from "react";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { Layout } from "../../common-components/Layout/Layout";
 import { ResendVerificationEmailLink } from "../../components/ResendVerificationEmailLink/ResendVerificationEmailLink";
-import { useUrlQuery } from "../../lib/utils";
+import { stringifyGraphQlError, useUrlQuery } from "../../lib/utils";
 
 interface User {
   email: string;
@@ -17,7 +17,8 @@ interface UserResponse {
 
 const UserPage: React.FunctionComponent = () => {
   const [urlQuery, urlQueryIsReady] = useUrlQuery();
-  const email = `${urlQuery.email}`;
+  const email = `${urlQuery.email || ""}`;
+  const title = email.length > 0 ? `User ${email}` : "Loading...";
   const isNewUser = !!urlQuery.new;
 
   const userQuery = gql`
@@ -31,15 +32,16 @@ const UserPage: React.FunctionComponent = () => {
   const userQueryResponse = useQuery<UserResponse>(userQuery, { skip: !urlQueryIsReady });
   const { data, error, loading } = userQueryResponse;
   if (error) {
-    throw new Error("Error loading user: " + error.message);
+    return <Layout title={title} error={stringifyGraphQlError(error)} />;
   }
+
   if (loading || !data || !data.userByEmail) {
-    return <Layout title={`User ${email}`} isLoading />;
+    return <Layout title={title} isLoading />;
   }
   const { verified } = data.userByEmail;
 
   return (
-    <Layout title={`User ${email}`}>
+    <Layout title={title}>
       <ul>
         <li>
           {verified && (

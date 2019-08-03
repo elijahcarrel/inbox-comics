@@ -5,7 +5,6 @@ import { Title } from "../Title/Title";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import styles from "./Layout.module.scss";
-import { ToastAlerts } from "./ToastAlerts";
 
 interface Props {
   title?: string;
@@ -42,7 +41,6 @@ export const Layout: React.FunctionComponent<Props> = (props: Props) => {
                 {isLoading && <LoadingOverlay />}
                 {!isLoading && (
                   <Fragment>
-                    <ToastAlerts />
                     {children}
                   </Fragment>
                 )}
@@ -50,7 +48,6 @@ export const Layout: React.FunctionComponent<Props> = (props: Props) => {
             }
           </div>
           <Footer />
-          <ToastAlerts />
         </div>
       </div>
     </Fragment>

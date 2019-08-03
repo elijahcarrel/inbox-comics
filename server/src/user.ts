@@ -42,6 +42,8 @@ export const typeDefs = gql`
   }
 `;
 
+const invalidUserError = (email: string) => new UserInputError(`No user with email "${email}".`);
+
 export const resolvers = {
   Query: {
     // getUsers: async () => {
@@ -51,7 +53,7 @@ export const resolvers = {
       const { email } = args;
       const user = await User.findOne({ email }).exec();
       if (user == null) {
-        throw new UserInputError(`No user with email ${email}`);
+        throw invalidUserError(email);
       }
       // TODO(ecarrel): only populate comics if they're requested?
       return await user.populate("comics").execPopulate();
@@ -62,7 +64,7 @@ export const resolvers = {
       const { email } = args;
       const existingUser = await User.findOne({ email }).exec();
       if (existingUser != null) {
-        throw new UserInputError(`User with email ${email} already exists.`);
+        throw new UserInputError(`User with email "${email}" already exists.`);
       }
       const verificationHash = uuid.v4();
       const user = await User.create({ email, verified: false, comics: [], verificationHash });
@@ -74,7 +76,7 @@ export const resolvers = {
       const comicObjects = await Comic.find({ identifier: comics }).exec();
       const user = await User.findOne({ email }).exec();
       if (user == null) {
-        throw new UserInputError(`No user with email ${email}.`);
+        throw invalidUserError(email);
       }
       user.comics = comicObjects;
       return await user.save();
@@ -83,7 +85,7 @@ export const resolvers = {
       const { email } = args;
       const user = await User.findOne({ email }).exec();
       if (user == null) {
-        throw new UserInputError(`No user with email ${email}`);
+        throw invalidUserError(email);
       }
       // tslint:disable-next-line no-console
       console.log(`Sending verification email to ${email}.`);
@@ -93,19 +95,17 @@ export const resolvers = {
       const { email, verificationHash } = args;
       const user = await User.findOne({ email }).exec();
       if (user == null) {
-        throw new UserInputError(`No user with email ${email}`);
+        throw invalidUserError(email);
       }
-      // @ts-ignore verified does not exist on type "document".
       if (user.verified) {
-        throw new UserInputError(`User ${email} is already verified.`);
+        throw new UserInputError(`User "${email}" is already verified.`);
       }
       if (user.verificationHash === verificationHash) {
-        // @ts-ignore verified does not exist on type "document".
         user.verified = true;
         await user.save();
         return true;
       }
-      throw new UserInputError(`Incorrect verification string.`);
+      throw new UserInputError("Incorrect verification string.");
     },
   },
 };
