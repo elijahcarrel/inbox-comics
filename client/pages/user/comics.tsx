@@ -1,16 +1,17 @@
 import { useMutation, useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import React from "react";
-import Alert from "react-s-alert";
+import React, { useEffect, useState } from "react";
+// @ts-ignore
+import { useToasts } from "react-toast-notifications";
 import { Layout } from "../../common-components/Layout/Layout";
 import { ComicGrid } from "../../components/ComicGrid/ComicGrid";
-import { useUrlQuery } from "../../lib/utils";
+import { handleGraphQlResponse, stringifyGraphQlError, toastType, useUrlQuery } from "../../lib/utils";
 
 const UserPage = () => {
+  const { addToast } = useToasts();
   const [urlQuery, urlQueryIsReady] = useUrlQuery();
-  const email = `${urlQuery.email}`;
-
-// const [selectedComics, setSelectedComics] = useState(new Set<string>());
+  const email = `${urlQuery.email || ""}`;
+  const [selectedComics, setSelectedComics] = useState(new Set<string>());
 
   const mutation = gql`
     mutation setSubscriptions($email: String!, $comics: [String]!) {
@@ -40,35 +41,40 @@ const UserPage = () => {
       }
     }
   `;
+  const title = email.length > 0 ? `Comics for ${email}` : "Comics";
 
   const { data, error, loading } = useQuery<UserQueryResponse>(userQuery, { skip: !urlQueryIsReady });
+  useEffect(() => {
+    if (!loading && data && data.userByEmail) {
+      const {userByEmail: {comics = []}} = data;
+      setSelectedComics(new Set(comics.map(({identifier}) => identifier)));
+    }
+  }, [data, loading]);
   if (error) {
-    throw new Error("Error loading user: " + error.message);
+    return <Layout error={stringifyGraphQlError(error)} />;
   }
   if (loading || !data || !data.userByEmail) {
-    return <Layout title={`Comics for ${email}`} isLoading />;
+    return <Layout title={title} isLoading />;
   }
 
-  const { userByEmail: { comics = [] } } = data;
-  const selectedComics = new Set(comics.map(({ identifier }) => identifier));
-
   return (
-    <Layout title={`Comics for ${email}`}>
+    <Layout title={title}>
       <ComicGrid
         // @ts-ignore
         selectedComics={selectedComics}
         onChange={async (newSelectedComics) => {
           // Optimistically update UI.
-          // setSelectedComics(newSelectedComics);
-          // @ts-ignore
-          const { data: { comics: updatedComics } } = await setSubscriptionsMutation({
+          setSelectedComics(newSelectedComics);
+          const result = await handleGraphQlResponse(setSubscriptionsMutation({
             variables: {
               email,
               comics: [...newSelectedComics],
             },
-          });
-          if (updatedComics != null) {
-            Alert.success("New settings saved.");
+          }));
+          if (result.success) {
+            addToast("Subscriptions updated.", toastType.success);
+          } else {
+            addToast(`Could not update subscriptions: ${result.combinedErrorMessage}`, toastType.error);
           }
         }}
       />

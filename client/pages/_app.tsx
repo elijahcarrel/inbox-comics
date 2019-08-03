@@ -5,6 +5,8 @@ import { HttpLink } from "apollo-link-http";
 import fetch from "isomorphic-unfetch";
 import App, { Container } from "next/app";
 import React from "react";
+// @ts-ignore
+import { ToastProvider } from "react-toast-notifications";
 import styles from "./app.module.scss";
 
 // TODO(ecarrel): put these in env variables rather than hardcoding.
@@ -27,11 +29,13 @@ class MyApp extends App {
 
     return (
       <Container>
-        <ApolloProvider client={client}>
-          {/* We need to reference styles.nothing somewhere to fix
-           https://github.com/zeit/next-plugins/issues/282. */}
-          <Component fakeProp={styles.nothing} {...pageProps} />
-        </ApolloProvider>
+        <ToastProvider>
+          <ApolloProvider client={client}>
+            {/* We need to reference styles.nothing somewhere to fix
+             https://github.com/zeit/next-plugins/issues/282. */}
+            <Component fakeProp={styles.nothing} {...pageProps} />
+          </ApolloProvider>
+        </ToastProvider>
       </Container>
     );
   }

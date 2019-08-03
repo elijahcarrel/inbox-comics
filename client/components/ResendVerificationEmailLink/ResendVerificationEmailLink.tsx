@@ -1,9 +1,10 @@
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import React, { useState } from "react";
-import Alert from "react-s-alert";
+// @ts-ignore
+import { useToasts } from "react-toast-notifications";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
-import { handleGraphQlResponse } from "../../lib/utils";
+import { handleGraphQlResponse, toastType } from "../../lib/utils";
 import styles from "./ResendVerificationEmail.module.scss";
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 
 export const ResendVerificationEmailLink = (props: Props) => {
   const { email } = props;
+  const { addToast } = useToasts();
   const [sentEmail, setSentEmail] = useState(false);
 
   const mutation = gql`
@@ -41,7 +43,7 @@ export const ResendVerificationEmailLink = (props: Props) => {
         if (result.success) {
           setSentEmail(true);
         } else {
-          Alert.error(`Email could not be sent: ${result.error}`);
+          addToast(`Could not send verification email: ${result.combinedErrorMessage}`, toastType.error);
         }
       }}
       lowercase

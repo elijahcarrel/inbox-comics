@@ -2,10 +2,10 @@ import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import Router from "next/router";
 import React, { useState } from "react";
-import Alert from "react-s-alert";
 import { Button } from "../../common-components/Button/Button";
 import { Layout } from "../../common-components/Layout/Layout";
 import { TextInput } from "../../common-components/TextInput/TextInput";
+import { handleGraphQlResponse } from "../../lib/utils";
 import styles from "./new.module.scss";
 
 const NewUserPage: React.FunctionComponent = () => {
@@ -33,14 +33,11 @@ const NewUserPage: React.FunctionComponent = () => {
         <br />
         <Button
           onClick={async () => {
-            // @ts-ignore
-            const { data: { createUser } } = await createUserMutation({ variables: { email }});
-            if (createUser == null) {
-              Alert.error("Email already exists.");
-            } else {
+            const { success } = await handleGraphQlResponse(createUserMutation({ variables: { email }}));
+            if (success) {
               Router.push({
                 pathname: "/user",
-                query: { email: createUser.email, new: true },
+                query: { email, new: true },
               });
             }
           }}
