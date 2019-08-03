@@ -8,16 +8,17 @@ const options = {
 };
 const elasticEmailClient = new Client(options);
 
-export const sendEmail = async (to: string, subject: string, body: string) => {
-  const result = await elasticEmailClient.Email.Send({
-    subject,
-    to,
-    // tslint:disable-next-line object-literal-key-quotes
-    "from": "comics@inboxcomics.com",
-    replyTo: "comics@inboxcomics.com",
-    body,
-    fromName: "Inbox Comics",
-    bodyType: "HTML",
-  });
-  return !!result.messageid;
-};
+export const sendEmail =
+  async (to: string, subject: string, body: string, fromEmail: string = "comics@inboxcomics.com") => {
+    const result = await elasticEmailClient.Email.Send({
+      subject,
+      to,
+      // tslint:disable-next-line object-literal-key-quotes
+      "from": "comics@inboxcomics.com",
+      replyTo: fromEmail,
+      body,
+      fromName: "Inbox Comics",
+      bodyType: "HTML",
+    });
+    return !!result.messageid;
+  };

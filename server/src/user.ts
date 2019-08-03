@@ -3,6 +3,7 @@ import { Document, model, Schema } from "mongoose";
 import uuid from "uuid";
 import { Comic, IComic } from "./comic";
 import { sendVerificationEmail } from "./email/send-verification-email";
+import {sendContactEmail} from "./email/send-contact-email";
 
 interface IUser extends Document {
   email: string;
@@ -39,6 +40,7 @@ export const typeDefs = gql`
     setSubscriptions(email: String!, comics: [String]!): User
     resendVerificationEmail(email: String!): Boolean
     verifyEmail(email: String!, verificationHash: String!): Boolean
+    submitContactForm(email: String!, name: String!, subject: String!, message: String!): Boolean
   }
 `;
 
@@ -106,6 +108,10 @@ export const resolvers = {
         return true;
       }
       throw new UserInputError("Incorrect verification string.");
+    },
+    submitContactForm: async (_: any, args: { email: string, name: string, subject: string, message: string }) => {
+      const { email, name, subject, message } = args;
+      return await sendContactEmail(name, email, subject, message);
     },
   },
 };

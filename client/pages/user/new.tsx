@@ -2,13 +2,16 @@ import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import Router from "next/router";
 import React, { useState } from "react";
+// @ts-ignore
+import { useToasts } from "react-toast-notifications";
 import { Button } from "../../common-components/Button/Button";
 import { Layout } from "../../common-components/Layout/Layout";
 import { TextInput } from "../../common-components/TextInput/TextInput";
-import { handleGraphQlResponse } from "../../lib/utils";
+import { handleGraphQlResponse, toastType } from "../../lib/utils";
 import styles from "./new.module.scss";
 
 const NewUserPage: React.FunctionComponent = () => {
+  const { addToast } = useToasts();
   const [email, setEmail] = useState("");
   const mutation = gql`
     mutation createUser($email: String!) {
@@ -20,7 +23,7 @@ const NewUserPage: React.FunctionComponent = () => {
   `;
   const [createUserMutation, { loading }] = useMutation(mutation);
   return (
-    <Layout title="Sign Up">
+    <Layout title="Sign Up" isLoading={loading} >
       <div className={styles.container}>
         <TextInput
           name="email"
@@ -33,12 +36,15 @@ const NewUserPage: React.FunctionComponent = () => {
         <br />
         <Button
           onClick={async () => {
-            const { success } = await handleGraphQlResponse(createUserMutation({ variables: { email }}));
+            const result = await handleGraphQlResponse(createUserMutation({ variables: { email }}));
+            const { success, combinedErrorMessage } = result;
             if (success) {
               Router.push({
                 pathname: "/user",
                 query: { email, new: true },
               });
+            } else {
+              addToast(combinedErrorMessage, toastType.error);
             }
           }}
           className={styles.button}
