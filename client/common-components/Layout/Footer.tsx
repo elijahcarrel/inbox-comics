@@ -35,6 +35,7 @@ export const Footer: React.FunctionComponent<Props> = () => (
             content: "About",
           },
         ]}
+        wrapWidth="wide"
       />
     </nav>
   </footer>

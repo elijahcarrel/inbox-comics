@@ -18,10 +18,11 @@
     flex: 0 1 auto;
 
     .error {
-      background-color: $dark-red-color;
+      background-color: $red-color;
       color: $white-color;
       text-align: center;
-      width: 500px;
+      width: 100%;
+      max-width: 500px;
       padding-top: 20px;
       padding-bottom: 20px;
       margin-left: auto;
