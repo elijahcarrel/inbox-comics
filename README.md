@@ -1,2 +1,2 @@
-# inbox-syndications
-Your favorite syndications emailed to you each morning.
+# inbox-comics
+Your favorite comics emailed to you each morning.
