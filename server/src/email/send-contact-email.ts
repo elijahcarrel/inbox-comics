@@ -1,5 +1,5 @@
 import moment from "moment";
-import { sendEmail } from "./init";
+import { sendEmail } from "./main";
 
 export const sendContactEmail = async (name: string, fromEmail: string, subject: string, message: string) => {
   const date = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");

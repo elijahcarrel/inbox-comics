@@ -1,23 +1,23 @@
 import { gql, UserInputError } from "apollo-server-micro";
 import { Document, model, Schema } from "mongoose";
 import uuid from "uuid";
-import { Comic, IComic } from "./comic";
+import { sendContactEmail } from "./email/send-contact-email";
 import { sendVerificationEmail } from "./email/send-verification-email";
-import {sendContactEmail} from "./email/send-contact-email";
+import { ISyndication, Syndication } from "./syndication";
 
 interface IUser extends Document {
   email: string;
   verified: boolean;
-  comics: IComic[];
+  syndications: ISyndication[];
   verificationHash: string;
 }
 
 const userSchema = new Schema({
   email: String!,
   verified: Boolean!,
-  comics: [{
+  syndications: [{
     type: Schema.Types.ObjectId,
-    ref: "comic",
+    ref: "syndication",
   }],
   verificationHash: String!,
 }, { timestamps: true });
@@ -29,15 +29,15 @@ export const typeDefs = gql`
     id: ID!
     email: String!
     verified: Boolean!
-    comics: [Comic]!
+    syndications: [Syndication]!
   }
   extend type Query {
-#    getUsers: [User]
+    #    getUsers: [User]
     userByEmail(email: String!): User
   }
   extend type Mutation {
     createUser(email: String!): User
-    setSubscriptions(email: String!, comics: [String]!): User
+    setSubscriptions(email: String!, syndications: [String]!): User
     resendVerificationEmail(email: String!): Boolean
     verifyEmail(email: String!, verificationHash: String!): Boolean
     submitContactForm(email: String!, name: String!, subject: String!, message: String!): Boolean
@@ -57,8 +57,8 @@ export const resolvers = {
       if (user == null) {
         throw invalidUserError(email);
       }
-      // TODO(ecarrel): only populate comics if they're requested?
-      return await user.populate("comics").execPopulate();
+      // TODO(ecarrel): only populate syndications if they're requested?
+      return await user.populate("syndications").execPopulate();
     },
   },
   Mutation: {
@@ -69,18 +69,18 @@ export const resolvers = {
         throw new UserInputError(`User with email "${email}" already exists.`);
       }
       const verificationHash = uuid.v4();
-      const user = await User.create({ email, verified: false, comics: [], verificationHash });
+      const user = await User.create({ email, verified: false, syndications: [], verificationHash });
       await sendVerificationEmail(email, verificationHash);
       return user;
     },
-    setSubscriptions: async (_: any, args: { email: string, comics: string[] }) => {
-      const { email, comics } = args;
-      const comicObjects = await Comic.find({ identifier: comics }).exec();
+    setSubscriptions: async (_: any, args: { email: string, syndications: string[] }) => {
+      const { email, syndications } = args;
+      const syndicationObjects = await Syndication.find({ identifier: syndications }).exec();
       const user = await User.findOne({ email }).exec();
       if (user == null) {
         throw invalidUserError(email);
       }
-      user.comics = comicObjects;
+      user.syndications = syndicationObjects;
       return await user.save();
     },
     resendVerificationEmail: async (_: any, args: { email: string }) => {

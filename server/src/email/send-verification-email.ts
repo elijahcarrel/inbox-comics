@@ -1,4 +1,4 @@
-import { sendEmail } from "./init";
+import { sendEmail } from "./main";
 
 export const sendVerificationEmail = async (email: string, verificationHash: string) => {
 

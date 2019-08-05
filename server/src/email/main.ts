@@ -9,12 +9,12 @@ const options = {
 const elasticEmailClient = new Client(options);
 
 export const sendEmail =
-  async (to: string, subject: string, body: string, fromEmail: string = "comics@inboxcomics.com") => {
+  async (to: string, subject: string, body: string, fromEmail: string = "syndications@inboxcomics.com") => {
     const result = await elasticEmailClient.Email.Send({
       subject,
       to,
       // tslint:disable-next-line object-literal-key-quotes
-      "from": "comics@inboxcomics.com",
+      "from": "syndications@inboxcomics.com",
       replyTo: fromEmail,
       body,
       fromName: "Inbox Comics",

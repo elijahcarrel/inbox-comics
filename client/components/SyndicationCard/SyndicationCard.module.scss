@@ -1,6 +1,6 @@
 @import "../../common-components/colors";
 
-.comicContainer {
+.syndicationContainer {
   box-shadow: 3px 3px 10px 0 rgba($black-color, .25);
   //border: 1px black solid;
   border-radius: 6px;
@@ -16,7 +16,7 @@
   align-content: flex-start;
   cursor: pointer;
 
-  .comicLogo {
+  .syndicationLogo {
     border-radius: 3px;
     border: black dashed 2px;
     margin: 10px;
@@ -26,12 +26,12 @@
   &.selected {
     background-color: $red-color;
     color: white;
-    .comicLogo {
+    .syndicationLogo {
       border: white dashed 2px;
     }
   }
 
-  .comicTitleText {
+  .syndicationTitleText {
     flex: 0 1 auto;
   }
 }
