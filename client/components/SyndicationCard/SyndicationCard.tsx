@@ -1,33 +1,33 @@
 import classNames from "classnames";
 import React from "react";
-import styles from "./ComicCard.module.scss";
+import styles from "./SyndicationCard.module.scss";
 
 interface Props {
   title: string;
   identifier: string;
   classes?: {
-    comicContainer?: string;
-    comicLogo?: string;
+    syndicationContainer?: string;
+    syndicationLogo?: string;
   };
   isSelected: boolean;
   onClick: () => any;
 }
 
-export const ComicCard = (props: Props) => {
+export const SyndicationCard = (props: Props) => {
   const { title, identifier, classes = {}, isSelected, onClick } = props;
   return (
     <div
-      className={classNames(styles.comicContainer, classes.comicContainer, {
+      className={classNames(styles.syndicationContainer, classes.syndicationContainer, {
         [styles.selected]: isSelected,
       })}
       onClick={onClick}
     >
       <img
-        className={classNames(styles.comicLogo, classes.comicLogo)}
+        className={classNames(styles.syndicationLogo, classes.syndicationLogo)}
         src={`/static/images/logos/${identifier}.jpg`}
         alt=""
       />
-      <span className={styles.comicTitleText}>
+      <span className={styles.syndicationTitleText}>
         {title}
       </span>
     </div>

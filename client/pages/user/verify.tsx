@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Layout } from "../../common-components/Layout/Layout";
 import { GraphQlResult, handleGraphQlResponse, useUrlQuery } from "../../lib/utils";
 
-const EditUserPage: React.FunctionComponent = () => {
+const VerifyUserPage: React.FunctionComponent = () => {
   const [urlQuery, urlQueryIsReady] = useUrlQuery();
   const email = `${urlQuery.email}`;
   const verificationHash = `${urlQuery.verificationHash}`;
@@ -49,4 +49,4 @@ const EditUserPage: React.FunctionComponent = () => {
   );
 };
 
-export default EditUserPage;
+export default VerifyUserPage;

@@ -4,19 +4,19 @@ import React, { useEffect, useState } from "react";
 // @ts-ignore
 import { useToasts } from "react-toast-notifications";
 import { Layout } from "../../common-components/Layout/Layout";
-import { ComicGrid } from "../../components/ComicGrid/ComicGrid";
+import { SyndicationGrid } from "../../components/SyndicationGrid/SyndicationGrid";
 import { handleGraphQlResponse, stringifyGraphQlError, toastType, useUrlQuery } from "../../lib/utils";
 
-const UserPage = () => {
+const UserSyndicationsPage = () => {
   const { addToast } = useToasts();
   const [urlQuery, urlQueryIsReady] = useUrlQuery();
   const email = `${urlQuery.email || ""}`;
-  const [selectedComics, setSelectedComics] = useState(new Set<string>());
+  const [selectedSyndications, setSelectedSyndications] = useState(new Set<string>());
 
   const mutation = gql`
-    mutation setSubscriptions($email: String!, $comics: [String]!) {
-      setSubscriptions(email: $email, comics: $comics) {
-        comics {
+    mutation setSubscriptions($email: String!, $syndications: [String]!) {
+      setSubscriptions(email: $email, syndications: $syndications) {
+        syndications {
           identifier
         }
       }
@@ -26,7 +26,7 @@ const UserPage = () => {
 
   interface UserQueryResponse {
     userByEmail: {
-      comics: Array<{
+      syndications: Array<{
         identifier: string;
       }>;
     };
@@ -35,7 +35,7 @@ const UserPage = () => {
   const userQuery = gql`
     query userByEmail {
       userByEmail(email: "${email}") {
-        comics {
+        syndications {
           identifier
         }
       }
@@ -46,8 +46,8 @@ const UserPage = () => {
   const { data, error, loading } = useQuery<UserQueryResponse>(userQuery, { skip: !urlQueryIsReady });
   useEffect(() => {
     if (!loading && data && data.userByEmail) {
-      const {userByEmail: {comics = []}} = data;
-      setSelectedComics(new Set(comics.map(({identifier}) => identifier)));
+      const { userByEmail: { syndications = [] } } = data;
+      setSelectedSyndications(new Set(syndications.map(({identifier}) => identifier)));
     }
   }, [data, loading]);
   if (error) {
@@ -59,16 +59,16 @@ const UserPage = () => {
 
   return (
     <Layout title={title}>
-      <ComicGrid
+      <SyndicationGrid
         // @ts-ignore
-        selectedComics={selectedComics}
-        onChange={async (newSelectedComics) => {
+        selectedSyndications={selectedSyndications}
+        onChange={async (newSelectedSyndications) => {
           // Optimistically update UI.
-          setSelectedComics(newSelectedComics);
+          setSelectedSyndications(newSelectedSyndications);
           const result = await handleGraphQlResponse(setSubscriptionsMutation({
             variables: {
               email,
-              comics: [...newSelectedComics],
+              syndications: [...newSelectedSyndications],
             },
           }));
           if (result.success) {
@@ -82,4 +82,4 @@ const UserPage = () => {
   );
 };
 
-export default UserPage;
+export default UserSyndicationsPage;
