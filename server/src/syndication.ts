@@ -9,6 +9,8 @@ export interface ISyndication extends Document {
   comicskingdomfn: string | null;
   comicskingdomdir: string | null;
   comicskingdomfileprefix: string | null;
+  lastSuccessfulComicScrapeDate: Date | null;
+  lastAttemptedComicScrapeDate: Date | null;
 }
 
 const syndicationSchema = new Schema({
@@ -19,6 +21,8 @@ const syndicationSchema = new Schema({
   comicskingdomfn: String,
   comicskingdomdir: String,
   comicskingdomfileprefix: String,
+  lastSuccessfulComicScrapeDate: Date,
+  lastAttemptedComicScrapeDate: Date,
 });
 
 export const Syndication = model<ISyndication>("syndication", syndicationSchema);
