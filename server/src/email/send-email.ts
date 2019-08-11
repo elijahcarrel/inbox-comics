@@ -24,6 +24,5 @@ export const sendEmail =
       fromName: "Inbox Comics",
       bodyType: "HTML",
     });
-    console.log("elasticEmailClient result", result);
     return !!result.success;
   };

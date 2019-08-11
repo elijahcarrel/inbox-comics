@@ -6,12 +6,13 @@ import { sendVerificationEmail } from "./email/send-verification-email";
 import { ISyndication, Syndication } from "./syndication";
 import { invalidUserError } from "./util/error";
 
-interface IUser extends Document {
+export interface IUser extends Document {
   email: string;
   verified: boolean;
   syndications: ISyndication[];
   verificationHash: string;
   googleAnalyticsHash: string;
+  lastEmailCheck: Date | null;
 }
 
 const userSchema = new Schema({
@@ -23,6 +24,7 @@ const userSchema = new Schema({
   }],
   verificationHash: String!,
   googleAnalyticsHash: String!,
+  lastEmailCheck: Date,
 }, { timestamps: true });
 
 export const User = model<IUser>("user", userSchema);
