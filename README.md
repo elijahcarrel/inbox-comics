@@ -36,5 +36,5 @@ Your favorite comics emailed to you each morning.
 1. Client is now deployed to <https://app.inboxcomics.now.sh>.
 
 ## Opening the database console.
-1. Open the database console with `$ mongo`
-1. In the database console, run `> use ic;`
+1. Open the database console with `$ mongo ic`
+1. In the database console, you can run commands like `> db.users.find({});` or `> db.syndications.findOne({ identifier: "calvinandhobbes" });`
