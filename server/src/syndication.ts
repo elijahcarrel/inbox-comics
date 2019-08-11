@@ -1,5 +1,6 @@
 import { gql } from "apollo-server-micro";
 import { Document, model, Schema } from "mongoose";
+import { IComic } from "./scraper/main";
 
 export interface ISyndication extends Document {
   site_id: number;
@@ -11,6 +12,7 @@ export interface ISyndication extends Document {
   comicskingdomfileprefix: string | null;
   lastSuccessfulComicScrapeDate: Date | null;
   lastAttemptedComicScrapeDate: Date | null;
+  lastSuccessfulComic: IComic;
 }
 
 const syndicationSchema = new Schema({
@@ -23,6 +25,10 @@ const syndicationSchema = new Schema({
   comicskingdomfileprefix: String,
   lastSuccessfulComicScrapeDate: Date,
   lastAttemptedComicScrapeDate: Date,
+  lastSuccessfulComic: {
+    type: Schema.Types.ObjectId,
+    ref: "comic",
+  },
 });
 
 export const Syndication = model<ISyndication>("syndication", syndicationSchema);

@@ -2,7 +2,7 @@ import btoa from "btoa";
 import cheerio from "cheerio";
 import { Moment } from "moment-timezone";
 import { Document, model, Schema } from "mongoose";
-import requestPromise  from "request-promise";
+import requestPromise from "request-promise";
 import { ISyndication, Syndication } from "../syndication";
 
 const sites = {
@@ -105,7 +105,7 @@ export const scrapeComic = async (syndication: ISyndication, date: Moment): Prom
 
 export interface IComic extends Document {
   syndication: ISyndication;
-  date: string;
+  date: Date;
   imageUrl: string;
   success: boolean;
   failureMode: FailureMode | null;
@@ -116,7 +116,7 @@ const comicSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "syndication",
   }!,
-  date: String!,
+  date: Date!,
   imageUrl: String!,
   success: Boolean!,
   failureMode: String,
@@ -126,16 +126,17 @@ export const Comic = model<IComic>("comic", comicSchema);
 
 const createComicDbObject = (syndication: ISyndication, date: Moment, scrapeResult: ScrapeResult) => {
   const { success, imageUrl, failureMode } = scrapeResult;
-  return { syndication, date: date.format("YYYY-MM-DD"), imageUrl, success, failureMode };
+  return { syndication, date: date.toDate(), imageUrl, success, failureMode };
 };
 
 // TODO(ecarrel): dedupe code that exists here and in scrapeAndSaveAllComics.
 export const scrapeAndSaveComic = async (syndication: ISyndication, date: Moment) => {
   const scrapeResult = await scrapeComicAndLog(syndication, date);
-  await Comic.create(createComicDbObject(syndication, date, scrapeResult));
+  const createdComic = await Comic.create(createComicDbObject(syndication, date, scrapeResult));
   syndication.lastAttemptedComicScrapeDate = date.toDate();
   if (scrapeResult.success) {
     syndication.lastSuccessfulComicScrapeDate = date.toDate();
+    syndication.lastSuccessfulComic = createdComic;
   }
   await syndication.save();
 };
@@ -155,14 +156,22 @@ export const scrapeAndSaveAllComics = async (date: Moment, limit: number | null 
   }));
   const comics = augmentedScrapeResults
     .map(({ syndication, scrapeResult }) => createComicDbObject(syndication, date, scrapeResult));
+  let createdComics: IComic[] = [];
   if (comics.length > 0) {
-    await Comic.create(comics);
+    createdComics = await Comic.create(comics);
   }
   const updatedSyndications = augmentedScrapeResults
     .map(({ syndication, scrapeResult }) => {
       syndication.lastAttemptedComicScrapeDate = date.toDate();
       if (scrapeResult.success) {
         syndication.lastSuccessfulComicScrapeDate = date.toDate();
+        // TODO(ecarrel): there's gotta be a better way to do this.
+        const createdComic = createdComics.find(
+          (comic: IComic) => comic.syndication.identifier === syndication.identifier,
+        );
+        if (createdComic != null) {
+          syndication.lastSuccessfulComic = createdComic;
+        }
       }
       return syndication;
     });
