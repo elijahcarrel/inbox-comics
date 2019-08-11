@@ -1,3 +1,4 @@
+import cheerio from "cheerio";
 // @ts-ignore
 import { client as Client } from "elasticemail-webapiclient";
 
@@ -9,16 +10,20 @@ const options = {
 const elasticEmailClient = new Client(options);
 
 export const sendEmail =
-  async (to: string, subject: string, body: string, fromEmail: string = "syndications@inboxcomics.com") => {
+  async (to: string, subject: string, body: string, fromEmail: string = "comics@inboxcomics.com") => {
+    const $ = cheerio.load(body);
+    const updateSubscriptionsUrl = `${process.env.domain}/user?email=${encodeURIComponent(to)}`;
+    $("body").append(`<a href="{unsubscribe:${updateSubscriptionsUrl}}"></a>`);
     const result = await elasticEmailClient.Email.Send({
       subject,
       to,
       // tslint:disable-next-line object-literal-key-quotes
-      "from": "syndications@inboxcomics.com",
+      "from": "comics@inboxcomics.com",
       replyTo: fromEmail,
-      body,
+      body: $.html(),
       fromName: "Inbox Comics",
       bodyType: "HTML",
     });
-    return !!result.messageid;
+    console.log("elasticEmailClient result", result);
+    return !!result.success;
   };

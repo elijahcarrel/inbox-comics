@@ -4,12 +4,14 @@ import uuid from "uuid";
 import { sendContactEmail } from "./email/send-contact-email";
 import { sendVerificationEmail } from "./email/send-verification-email";
 import { ISyndication, Syndication } from "./syndication";
+import { invalidUserError } from "./util/error";
 
 interface IUser extends Document {
   email: string;
   verified: boolean;
   syndications: ISyndication[];
   verificationHash: string;
+  googleAnalyticsHash: string;
 }
 
 const userSchema = new Schema({
@@ -20,6 +22,7 @@ const userSchema = new Schema({
     ref: "syndication",
   }],
   verificationHash: String!,
+  googleAnalyticsHash: String!,
 }, { timestamps: true });
 
 export const User = model<IUser>("user", userSchema);
@@ -44,8 +47,6 @@ export const typeDefs = gql`
   }
 `;
 
-const invalidUserError = (email: string) => new UserInputError(`No user with email "${email}".`);
-
 export const resolvers = {
   Query: {
     // getUsers: async () => {
@@ -69,7 +70,14 @@ export const resolvers = {
         throw new UserInputError(`User with email "${email}" already exists.`);
       }
       const verificationHash = uuid.v4();
-      const user = await User.create({ email, verified: false, syndications: [], verificationHash });
+      const googleAnalyticsHash = uuid.v4();
+      const user = await User.create({
+        email,
+        verified: false,
+        syndications: [],
+        verificationHash,
+        googleAnalyticsHash,
+      });
       await sendVerificationEmail(email, verificationHash);
       return user;
     },

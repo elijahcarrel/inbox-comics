@@ -1,7 +1,8 @@
-import { gql, UserInputError } from "apollo-server-micro";
+import { gql } from "apollo-server-micro";
 import { scrapeAndSaveAllComics, scrapeAndSaveComic, scrapeComic } from "./scraper/main";
 import { Syndication } from "./syndication";
 import { now } from "./util/date";
+import { invalidSyndicationError } from "./util/error";
 
 export const typeDefs = gql`
   extend type Mutation {
@@ -17,7 +18,7 @@ export const resolvers = {
       const { identifier } = args;
       const syndication = await Syndication.findOne({ identifier }).exec();
       if (syndication == null) {
-        throw new UserInputError(`No syndication with identifier "${identifier}".`);
+        throw invalidSyndicationError(identifier);
       }
       const date = now();
       console.log(await scrapeComic(syndication, date));
@@ -27,7 +28,7 @@ export const resolvers = {
       const { identifier } = args;
       const syndication = await Syndication.findOne({ identifier }).exec();
       if (syndication == null) {
-        throw new UserInputError(`No syndication with identifier "${identifier}".`);
+        throw invalidSyndicationError(identifier);
       }
       const date = now();
       console.log(await scrapeAndSaveComic(syndication, date));
