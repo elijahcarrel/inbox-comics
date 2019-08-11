@@ -18,12 +18,12 @@ Your favorite comics emailed to you each morning.
 1. First, start the mongo daeomon with `$ mongod --config /usr/local/etc/mongod.conf` 
 1. `$ cd ./server`
 1. Start the server with `$ npm run start`
-1. Server is now running on `localhost:3000`.
+1. Server is now running on <http://localhost:3000>.
 
 ## Starting the client locally
 1. `$ cd ./client`
 1. Start the client with `$ npm run start`
-1. Client is now running, and visible in a web browser, on `localhost:4000`.
+1. Client is now running, and visible in a web browser, on <http://localhost:4000>.
 
 ## Deploying the server
 1. `$ cd ./server`
