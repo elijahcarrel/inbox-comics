@@ -2,7 +2,7 @@ import btoa from "btoa";
 import cheerio from "cheerio";
 import { Moment } from "moment-timezone";
 import { Document, model, Schema } from "mongoose";
-import requestPromise from "request-promise";
+import requestPromise  from "request-promise";
 import { ISyndication, Syndication } from "../syndication";
 
 const sites = {
@@ -60,7 +60,12 @@ const cheerioRequest = async (uri: string) => {
 
 const scrapeComicAndLog = async (syndication: ISyndication, date: Moment): Promise<ScrapeResult> => {
   const scrapeResult = await scrapeComic(syndication, date);
-  console.log("Scraped ", syndication.identifier, " from site with id ", syndication.site_id, " and got ", scrapeResult);
+  // tslint:disable-next-line no-console
+  console.log(
+    "Scraped ", syndication.identifier,
+    " from site with id ", syndication.site_id,
+    " and got ", scrapeResult,
+  );
   return scrapeResult;
 };
 
@@ -69,7 +74,13 @@ export const scrapeComic = async (syndication: ISyndication, date: Moment): Prom
   switch (siteId) {
     case sites.gocomics.id: {
       const uri = `http://www.gocomics.com/${theirIdentifier}/${date.format("YYYY/MM/DD")}`;
-      const $ = await cheerioRequest(uri);
+      // TODO(ecarrel): this is an ugly code pattern...
+      let $ = null;
+      try {
+        $ = await cheerioRequest(uri);
+      } catch(err) {
+        return standardFailure(failureModes.GOCOMICS_REJECTION);
+      }
       const comicImages = $("picture.item-comic-image img");
       if (comicImages.length !== 1) {
         return standardFailure(failureModes.UNKNOWN);
@@ -118,14 +129,23 @@ const createComicDbObject = (syndication: ISyndication, date: Moment, scrapeResu
   return { syndication, date: date.format("YYYY-MM-DD"), imageUrl, success, failureMode };
 };
 
+// TODO(ecarrel): dedupe code that exists here and in scrapeAndSaveAllComics.
 export const scrapeAndSaveComic = async (syndication: ISyndication, date: Moment) => {
   const scrapeResult = await scrapeComicAndLog(syndication, date);
   await Comic.create(createComicDbObject(syndication, date, scrapeResult));
+  syndication.lastAttemptedComicScrapeDate = date.toDate();
+  if (scrapeResult.success) {
+    syndication.lastSuccessfulComicScrapeDate = date.toDate();
+  }
+  await syndication.save();
 };
 
-export const scrapeAndSaveAllComics = async (date: Moment) => {
-  // TODO(ecarrel): right now this doesn't work.
-  const syndications = await Syndication.find({}).exec();
+export const scrapeAndSaveAllComics = async (date: Moment, limit: number | null = 50) => {
+  let syndicationsRequest = Syndication.find({}).sort({ lastAttemptedComicScrapeDate: 1 });
+  if (limit != null) {
+    syndicationsRequest = syndicationsRequest.limit(limit);
+  }
+  const syndications = await syndicationsRequest.exec();
   const scrapeResults = await Promise.all(
     syndications.map((syndication: ISyndication) => scrapeComicAndLog(syndication, date),
   ));
@@ -137,5 +157,19 @@ export const scrapeAndSaveAllComics = async (date: Moment) => {
     .map(({ syndication, scrapeResult }) => createComicDbObject(syndication, date, scrapeResult));
   if (comics.length > 0) {
     await Comic.create(comics);
+  }
+  const updatedSyndications = augmentedScrapeResults
+    .map(({ syndication, scrapeResult }) => {
+      syndication.lastAttemptedComicScrapeDate = date.toDate();
+      if (scrapeResult.success) {
+        syndication.lastSuccessfulComicScrapeDate = date.toDate();
+      }
+      return syndication;
+    });
+  if (updatedSyndications.length > 0) {
+    // TODO(ecarrel): batch this.
+    await Promise.all(updatedSyndications.map(
+      (updatedSyndication) => updatedSyndication.save(),
+    ));
   }
 };
