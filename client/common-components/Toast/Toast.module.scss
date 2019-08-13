@@ -1,0 +1,10 @@
+@import "../fonts";
+
+.toast {
+  // TODO(ecarrel): once @jossmac pushes a new release of react-toast-notifications
+  //  that includes my P.R., add styling here.
+}
+
+.innerToast {
+  font-family: $serif-font;
+}

@@ -30,7 +30,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-spinners": "^0.5.13",
-    "react-toast-notifications": "^2.2.1"
+    "react-toast-notifications": "^2.2.4"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.9",

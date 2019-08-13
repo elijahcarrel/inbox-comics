@@ -49,7 +49,7 @@ export const useUrlQuery = (): [ParsedUrlQuery, boolean] => {
 };
 
 const toastOptions = {
-  autoDismiss: true,
+  // autoDismiss: true,
   pauseOnHover: true,
 };
 

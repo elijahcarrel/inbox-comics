@@ -7,6 +7,7 @@ import App, { Container } from "next/app";
 import React from "react";
 // @ts-ignore
 import { ToastProvider } from "react-toast-notifications";
+import { Toast } from "../common-components/Toast/Toast";
 import styles from "./app.module.scss";
 
 // TODO(ecarrel): put these in env variables rather than hardcoding.
@@ -29,7 +30,7 @@ class MyApp extends App {
 
     return (
       <Container>
-        <ToastProvider>
+        <ToastProvider components={{ Toast }}>
           <ApolloProvider client={client}>
             {/* We need to reference styles.nothing somewhere to fix
              https://github.com/zeit/next-plugins/issues/282. */}
