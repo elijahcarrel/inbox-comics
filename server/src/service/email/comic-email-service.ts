@@ -6,11 +6,11 @@ import { IUser, User } from "../../models/user";
 import { EmailAllUsersOptions } from "../../router/email";
 import { sendComicEmail } from "./templates/send-comic-email";
 
-export const emailUsers = async (users: IUser[], emailAllUsersOptions: EmailAllUsersOptions, date: Moment) => {
+export const emailUsers = async (users: IUser[], options: EmailAllUsersOptions, date: Moment) => {
   const {
     sendAllComics = false,
     mentionNotUpdatedComics = true,
-  } = emailAllUsersOptions;
+  } = options;
   const populatedUsers = await User.populate(users, {
     path: "syndications",
     populate: {
@@ -20,10 +20,10 @@ export const emailUsers = async (users: IUser[], emailAllUsersOptions: EmailAllU
   const usersAndTheirComics =
     populatedUsers
     .map((populatedUser: IUser) => {
-      const {email, googleAnalyticsHash, syndications = []} = populatedUser;
+      const { email, googleAnalyticsHash, syndications = [] } = populatedUser;
       const comics = syndications.map((syndication: ISyndication) => {
-        const {title, lastSuccessfulComic} = syndication;
-        const {imageUrl = null} = lastSuccessfulComic || {};
+        const { title, lastSuccessfulComic } = syndication;
+        const { imageUrl = null, imageCaption = null } = lastSuccessfulComic || {};
         const wasUpdated =
           lastSuccessfulComic == null ?
             false :
@@ -32,7 +32,7 @@ export const emailUsers = async (users: IUser[], emailAllUsersOptions: EmailAllU
           syndicationName: title,
           wasUpdated,
           imageUrl,
-          // TODO(ecarrel): add image captions once we have support.
+          imageCaption,
         };
       });
       return {
@@ -42,10 +42,10 @@ export const emailUsers = async (users: IUser[], emailAllUsersOptions: EmailAllU
       };
     });
 
-  const options = {sendAllComics, mentionNotUpdatedComics};
+  const sendComicEmailOptions = { sendAllComics, mentionNotUpdatedComics };
   const emailResults = await Promise.all(usersAndTheirComics.map(
     ({email, googleAnalyticsHash, comics}) =>
-      sendComicEmail(email, comics, options, date, googleAnalyticsHash),
+      sendComicEmail(email, comics, sendComicEmailOptions, date, googleAnalyticsHash),
   ));
   const augmentedEmailResults = emailResults.map((emailResult, i) => ({
     user: populatedUsers[i],
@@ -65,10 +65,11 @@ export const emailUsers = async (users: IUser[], emailAllUsersOptions: EmailAllU
   }
   // TODO(ecarrel): return something?
 };
-export const emailAllUsers = async (date: Moment, emailAllUsersOptions: EmailAllUsersOptions = {}) => {
+export const emailAllUsers = async (date: Moment, options: EmailAllUsersOptions = {}) => {
   const {
     onlyIfWeHaventCheckedToday = true,
-  } = emailAllUsersOptions;
+    limit = 50,
+  } = options;
   let conditions: any = {verified: true};
   if (onlyIfWeHaventCheckedToday) {
     conditions = {
@@ -79,9 +80,13 @@ export const emailAllUsers = async (date: Moment, emailAllUsersOptions: EmailAll
       ],
     };
   }
-  const users = await User.find(conditions).exec();
+  let usersRequest = User.find(conditions);
+  if (limit !== 0) {
+    usersRequest = usersRequest.limit(limit);
+  }
+  const users = await usersRequest.exec();
   if (users == null) {
     throw new ApolloError("Could not find users");
   }
-  return await emailUsers(users, emailAllUsersOptions, date);
+  return await emailUsers(users, options, date);
 };

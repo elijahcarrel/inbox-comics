@@ -20,5 +20,6 @@ const userSchema = new Schema({
   verificationHash: String!,
   googleAnalyticsHash: String!,
   lastEmailCheck: Date,
-}, {timestamps: true});
+}, { timestamps: true });
+
 export const User = model<IUser>("user", userSchema);

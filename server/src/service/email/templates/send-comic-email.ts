@@ -6,7 +6,7 @@ interface ComicForEmail {
   syndicationName: string;
   wasUpdated: boolean;
   imageUrl: string | null;
-  imageCaption?: string;
+  imageCaption: string | null;
 }
 
 interface SendComicEmailOptions {
@@ -18,7 +18,8 @@ interface SendComicEmailOptions {
 
 // TODO(ecarrel): clean this up a ton (or scrap it entirely).
 const generateHtmlForComic = (comic: ComicForEmail, options: SendComicEmailOptions) => {
-  const { imageUrl, syndicationName, wasUpdated, imageCaption = "" } = comic;
+  const { imageUrl, syndicationName, wasUpdated, imageCaption } = comic;
+  const imageCaptionToDisplay = (imageCaption) ? `<br /> ${imageCaption}` : "";
   const { sendAllComics = false, mentionNotUpdatedComics = true } = options;
   if (wasUpdated) {
     return `
@@ -32,7 +33,7 @@ const generateHtmlForComic = (comic: ComicForEmail, options: SendComicEmailOptio
       </h3>
 		  <p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
         <img src="${imageUrl}" style="height:auto; max-width:100%;" />
-        ${imageCaption}
+        ${imageCaptionToDisplay}
 		  </p>
 `;
   } else if (imageUrl == null) {
@@ -59,7 +60,7 @@ const generateHtmlForComic = (comic: ComicForEmail, options: SendComicEmailOptio
 		  <p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
 		    ${syndicationName} wasn't updated today, but here's the most recent comic.
         <img src="${imageUrl}" style="height:auto; max-width:100%;" />
-        ${imageCaption}
+        ${imageCaptionToDisplay}
 		  </p>
 `;
   } else if (mentionNotUpdatedComics) {
