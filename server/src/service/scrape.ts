@@ -1,6 +1,8 @@
 import axios from "axios";
 import cheerio from "cheerio";
 import { Moment } from "moment-timezone";
+// @ts-ignore
+import unescape from "unescape";
 import { Comic, ComicFailureMode, failureModes, IComic } from "../models/comic";
 import { ISyndication, Syndication } from "../models/syndication";
 import { ScrapeAndSaveAllComicsOptions } from "../router/scrape";
@@ -21,21 +23,28 @@ const sites = {
     description: "ArcaMax",
     id: 2,
   },
+  xkcd: {
+    name: "XKCD",
+    description: "xkcd",
+    id: 4,
+  },
 };
 
 interface ScrapeResult {
   success: boolean;
   imageUrl: string | null;
   failureMode: ComicFailureMode | null;
+  imageCaption: string | null;
 }
 
 const scrapeFailure = (failureMode: ComicFailureMode): ScrapeResult => ({
   success: false,
   imageUrl: null,
   failureMode,
+  imageCaption: null,
 });
 
-const scrapeSuccess = (imageUrl: string | null): ScrapeResult => {
+const scrapeSuccess = (imageUrl: string | null, imageCaption?: string | null): ScrapeResult => {
   if (imageUrl == null || imageUrl.length === 0) {
     return scrapeFailure(failureModes.UNKNOWN);
   } else {
@@ -43,6 +52,7 @@ const scrapeSuccess = (imageUrl: string | null): ScrapeResult => {
       success: true,
       imageUrl,
       failureMode: null,
+      imageCaption: imageCaption || null,
     };
   }
 };
@@ -105,6 +115,30 @@ export const scrapeComic = async (syndication: ISyndication, date: Moment): Prom
       const imageUrl = comicImages.attr("src");
       return scrapeSuccess(`https://www.arcamax.com${imageUrl}`);
     }
+    case sites.xkcd.id: {
+      const url = `https://xkcd.com/rss.xml`;
+      let $ = null;
+      try {
+        $ = await cheerioRequest(url);
+      } catch (err) {
+        return scrapeFailure(failureModes.XKCD_RSS_REJECTION);
+      }
+      const items = $("rss channel item");
+      if (items.length === 0) {
+        return scrapeFailure(failureModes.XKCD_PARSE_ERROR);
+      }
+      const firstItemDescriptions = items.first().find("description");
+      if (firstItemDescriptions.length === 0) {
+        return scrapeFailure(failureModes.XKCD_PARSE_ERROR);
+      }
+      const firstItemDescription = unescape(firstItemDescriptions.first().html());
+      const $$ = cheerio.load(firstItemDescription);
+      const comicImages = $$("img");
+      if (comicImages.length !== 1) {
+        return scrapeFailure(failureModes.XKCD_PARSE_ERROR);
+      }
+      return scrapeSuccess(comicImages.attr("src"), comicImages.attr("alt"));
+    }
     default: {
       return scrapeFailure(failureModes.UNKNOWN_SITE);
     }
@@ -112,8 +146,8 @@ export const scrapeComic = async (syndication: ISyndication, date: Moment): Prom
 };
 
 const createComicDbObject = (syndication: ISyndication, date: Moment, scrapeResult: ScrapeResult) => {
-  const { success, imageUrl, failureMode } = scrapeResult;
-  return { syndication, date: date.toDate(), imageUrl, success, failureMode };
+  const { success, imageUrl, failureMode, imageCaption } = scrapeResult;
+  return { syndication, date: date.toDate(), imageUrl, imageCaption, success, failureMode };
 };
 
 // TODO(ecarrel): dedupe code that exists here and in scrapeAndSaveAllComics.

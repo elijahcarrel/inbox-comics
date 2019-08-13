@@ -7,6 +7,8 @@ import { invalidUserError } from "../util/error";
 export interface EmailAllUsersOptions {
   // Send all comics, regardless of if they were updated. Default: false.
   sendAllComics?: boolean;
+  // Limit to a max number of emails. 0 results in no limit. Default: 50.
+  limit?: number;
   // Mention comics that were not updated (as opposed to just omitting them from the email entirely). Default: true.
   mentionNotUpdatedComics?: boolean;
   // Only email each user if we haven't already tried to send them an email today ("tried" means that we
@@ -17,6 +19,7 @@ export interface EmailAllUsersOptions {
 export const typeDefs = gql`
   input EmailAllUsersOptions {
     sendAllComics: Boolean,
+    limit: Int,
     mentionNotUpdatedComics: Boolean,
     onlyIfWeHaventCheckedToday: Boolean,
   }
@@ -29,7 +32,7 @@ export const typeDefs = gql`
 export const resolvers = {
   Mutation: {
     emailUser: async (_: any, args: { email: string } & EmailAllUsersOptions) => {
-      const { email, ...emailAllUsersOptions } = args;
+      const { email, ...options } = args;
       const date = now();
       const user = await User.findOne({ email }).exec();
       if (user == null) {
@@ -38,7 +41,7 @@ export const resolvers = {
       if (!user.verified) {
         throw new UserInputError(`User "${email}" is not verified.`);
       }
-      return await emailUsers([user], emailAllUsersOptions, date);
+      return await emailUsers([user], options, date);
     },
     emailAllUsers: async (_: any, args: { options?: EmailAllUsersOptions }) => {
       const date = now();

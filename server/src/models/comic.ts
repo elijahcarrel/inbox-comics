@@ -10,6 +10,8 @@ export type ComicFailureMode =
   "COMICS_KINGDOM_MISSING_IMAGE_ON_PAGE" |
   "ARCAMAX_REJECTION" |
   "ARCAMAX_MISSING_IMAGE_ON_PAGE" |
+  "XKCD_RSS_REJECTION" |
+  "XKCD_PARSE_ERROR" |
   "MISSING_COMICS_KINGDOM_DATA" |
   "COMICS_KINGDOM_EMPTY_IMAGE";
 
@@ -22,6 +24,8 @@ export const failureModes: { [key: string]: ComicFailureMode } = {
   COMICS_KINGDOM_MISSING_IMAGE_ON_PAGE: "COMICS_KINGDOM_MISSING_IMAGE_ON_PAGE",
   ARCAMAX_REJECTION: "ARCAMAX_REJECTION",
   ARCAMAX_MISSING_IMAGE_ON_PAGE: "ARCAMAX_MISSING_IMAGE_ON_PAGE",
+  XKCD_RSS_REJECTION: "XKCD_RSS_REJECTION",
+  XKCD_PARSE_ERROR: "XKCD_PARSE_ERROR",
   MISSING_COMICS_KINGDOM_DATA: "MISSING_COMICS_KINGDOM_DATA",
   COMICS_KINGDOM_EMPTY_IMAGE: "COMICS_KINGDOM_EMPTY_IMAGE",
 };
@@ -29,7 +33,8 @@ export const failureModes: { [key: string]: ComicFailureMode } = {
 export interface IComic extends Document {
   syndication: ISyndication;
   date: Date;
-  imageUrl: string;
+  imageUrl: string | null;
+  imageCaption: string | null;
   success: boolean;
   failureMode: ComicFailureMode | null;
 }
@@ -40,7 +45,8 @@ const comicSchema = new Schema({
     ref: "syndication",
   }!,
   date: Date!,
-  imageUrl: String!,
+  imageUrl: String,
+  imageCaption: String,
   success: Boolean!,
   failureMode: String,
 }, {timestamps: true});
