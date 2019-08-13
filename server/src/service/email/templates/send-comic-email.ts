@@ -1,6 +1,6 @@
 import { Moment } from "moment-timezone";
 import uuid from "uuid";
-import { sendEmail } from "./send-email";
+import { sendEmail } from "../send-email";
 
 interface ComicForEmail {
   syndicationName: string;

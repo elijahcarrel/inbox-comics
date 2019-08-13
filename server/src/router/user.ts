@@ -1,33 +1,10 @@
 import { gql, UserInputError } from "apollo-server-micro";
-import { Document, model, Schema } from "mongoose";
 import uuid from "uuid";
-import { sendContactEmail } from "./email/send-contact-email";
-import { sendVerificationEmail } from "./email/send-verification-email";
-import { ISyndication, Syndication } from "./syndication";
-import { invalidUserError } from "./util/error";
-
-export interface IUser extends Document {
-  email: string;
-  verified: boolean;
-  syndications: ISyndication[];
-  verificationHash: string;
-  googleAnalyticsHash: string;
-  lastEmailCheck: Date | null;
-}
-
-const userSchema = new Schema({
-  email: String!,
-  verified: Boolean!,
-  syndications: [{
-    type: Schema.Types.ObjectId,
-    ref: "syndication",
-  }],
-  verificationHash: String!,
-  googleAnalyticsHash: String!,
-  lastEmailCheck: Date,
-}, { timestamps: true });
-
-export const User = model<IUser>("user", userSchema);
+import { Syndication } from "../models/syndication";
+import { User } from "../models/user";
+import { sendContactEmail } from "../service/email/templates/send-contact-email";
+import { sendVerificationEmail } from "../service/email/templates/send-verification-email";
+import { invalidUserError } from "../util/error";
 
 export const typeDefs = gql`
   type User {

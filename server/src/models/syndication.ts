@@ -1,6 +1,5 @@
-import { gql } from "apollo-server-micro";
 import { Document, model, Schema } from "mongoose";
-import { IComic } from "./scraper/main";
+import { IComic } from "./comic";
 
 export interface ISyndication extends Document {
   site_id: number;
@@ -32,34 +31,3 @@ const syndicationSchema = new Schema({
 });
 
 export const Syndication = model<ISyndication>("syndication", syndicationSchema);
-
-export const typeDefs = gql`
-  type Syndication {
-    id: ID!
-    title: String
-    identifier: String
-  }
-  extend type Query {
-    syndications: [Syndication]
-  }
-  extend type Mutation {
-    addSyndication(title: String!): Syndication
-  }
-`;
-
-export const resolvers = {
-  Query: {
-    syndications: async () => {
-      return await Syndication.find({}).exec();
-    },
-  },
-  Mutation: {
-    addSyndication: async (_: any, args: any) => {
-      try {
-        return await Syndication.create(args);
-      } catch (e) {
-        return e.message;
-      }
-    },
-  },
-};

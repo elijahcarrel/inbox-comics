@@ -1,4 +1,4 @@
-import { sendEmail } from "./send-email";
+import { sendEmail } from "../send-email";
 
 export const sendVerificationEmail = async (email: string, verificationHash: string) => {
 
