@@ -1,0 +1,42 @@
+@import "../common-components/colors.scss";
+
+.newsItemsContainer {
+  .newsItem {
+    .headline {
+      margin-bottom: 10px;
+    }
+
+    .date {
+      color: $grey-color;
+      font-style: italic;
+      font-weight: normal;
+      padding-bottom: 10px;
+    }
+
+    .content {
+      padding-left: 20px;
+      border-left: 1px;
+      border-left-style: solid;
+      border-left-color: $grey-color;
+
+      // From https://dropshado.ws/post/1015351370/webkit-line-clamp.
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+
+    .readMore {
+      font-style: italic;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+  }
+  > .newsItem:not(.isLastItem) {
+    padding-bottom: 30px;
+    border-bottom: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: $grey-color;
+  }
+}

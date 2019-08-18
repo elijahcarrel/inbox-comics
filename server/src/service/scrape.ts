@@ -169,26 +169,23 @@ export const scrapeAndSaveAllComics = async (date: Moment, options: ScrapeAndSav
     dontRescrapeSyndicationThatSucceededEarlierToday = true,
     dontRetryInLessThanAnHour = true,
   } = options;
-  let conditions: object = {};
+  let syndicationsRequest = Syndication.find();
   if (siteId) {
-    conditions = {
-      ...conditions,
-      site_id: siteId,
-    };
+    syndicationsRequest = syndicationsRequest.where("site_id").equals(siteId);
   }
   if (dontRescrapeSyndicationThatSucceededEarlierToday) {
-    conditions = {
-      ...conditions,
-      lastSuccessfulComicScrapeDate: { $lt: date.startOf("day").toDate() },
-    };
+    syndicationsRequest = syndicationsRequest.or([
+      { lastSuccessfulComicScrapeDate: { $lt: date.startOf("day").toDate() } },
+      { lastSuccessfulComicScrapeDate: { $exists: false } },
+    ]);
   }
   if (dontRetryInLessThanAnHour) {
-    conditions = {
-      ...conditions,
-      lastAttemptedComicScrapeDate: { $lt: date.subtract(1, "hour").toDate() },
-    };
+    syndicationsRequest = syndicationsRequest.or([
+      { lastAttemptedComicScrapeDate: { $lt: date.subtract(1, "hour").toDate() } },
+      { lastAttemptedComicScrapeDate: { $exists: false } },
+    ]);
   }
-  let syndicationsRequest = Syndication.find(conditions).sort({
+  syndicationsRequest = syndicationsRequest.sort({
     // Order by last attempted scrape date in ascending order (that is, we start with the ones
     // that were last attempted the longest ago).
     lastAttemptedComicScrapeDate: 1,
