@@ -20,11 +20,11 @@ const AboutPage: React.FunctionComponent = () => (
     </p>
     <p>
       Check out the
-      {" "}<CommonLink href="/" lowercase>FAQ</CommonLink>{" "}
+      {" "}<CommonLink href="/faq" lowercase>FAQ</CommonLink>{" "}
       or the
       {" "}<CommonLink href="https://www.facebook.com/inboxcomics/" lowercase>Facebook page</CommonLink>{" "}
       for more info, and please
-      {" "}<CommonLink href="/" lowercase>get in touch</CommonLink>{" "}
+      {" "}<CommonLink href="/contact" lowercase>get in touch</CommonLink>{" "}
       if you have any questions about the site or just want to say hi!
     </p>
   </Layout>
