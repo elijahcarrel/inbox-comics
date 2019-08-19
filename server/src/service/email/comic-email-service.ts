@@ -65,6 +65,7 @@ export const emailUsers = async (users: IUser[], options: EmailAllUsersOptions, 
   }
   // TODO(ecarrel): return something?
 };
+
 export const emailAllUsers = async (date: Moment, options: EmailAllUsersOptions = {}) => {
   const {
     onlyIfWeHaventCheckedToday = true,
