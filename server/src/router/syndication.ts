@@ -4,11 +4,11 @@ import { Syndication } from "../models/syndication";
 export const typeDefs = gql`
   type Syndication {
     id: ID!
-    title: String
-    identifier: String
+    title: String!
+    identifier: String!
   }
   extend type Query {
-    syndications: [Syndication]
+    syndications: [Syndication!]
   }
   extend type Mutation {
     addSyndication(title: String!): Syndication
