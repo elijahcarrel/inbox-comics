@@ -23,10 +23,46 @@ const sites = {
     description: "ArcaMax",
     id: 2,
   },
+  tundra: {
+    name: "Tundra",
+    description: "Tundra",
+    id: 3,
+  },
   xkcd: {
     name: "XKCD",
     description: "xkcd",
     id: 4,
+  },
+  phdcomics: {
+    name: "PHDCOMICS",
+    description: "PhD Comics",
+    id: 5,
+  },
+  explosm: {
+    name: "EXPLOSM",
+    description: "Explosm",
+    id: 6,
+  },
+  arcamaxeditorials: {
+    name: "ARCAMAX_EDITORIALS",
+    description: "ArcaMax Editorials",
+    id: 7,
+  },
+  dinosaur: {
+    name: "DINOSAUR",
+    description: "Dinosaur",
+    id: 8,
+  },
+  // TODO(ecarrel): delete SMBC? It's unnecessary since we already get it from gocomics.
+  smbc: {
+    name: "SMBC",
+    description: "Saturday Morning Breakfast Cereal",
+    id: 9,
+  },
+  threewordphrase: {
+    name: "THREE_WORD_PHRASE",
+    description: "Three Word Phrase",
+    id: 10,
   },
 };
 
@@ -58,12 +94,36 @@ const scrapeSuccess = (imageUrl: string | null, imageCaption?: string | null): S
 };
 
 const cheerioRequest = async (url: string) => {
+  try {
+    const response = await axios({
+      method: "GET",
+      url,
+      responseType: "text",
+    });
+    return cheerio.load(response.data);
+  } catch (err) {
+    return null;
+  }
+};
+
+// @ts-ignore (keeping around since might be useful someday).
+const producesNonEmptyResponse = async (url: string) => {
   const response = await axios({
     method: "GET",
     url,
-    responseType: "text",
+    responseType: "stream",
   });
-  return cheerio.load(response.data);
+  const content = response.data.read(1);
+  return (content != null);
+};
+
+const producesSuccessResponse = async (url: string) => {
+  const response = await axios({
+    method: "GET",
+    url,
+    responseType: "stream",
+  });
+  return response.status === 200;
 };
 
 export const scrapeComic = async (syndication: ISyndication, date: Moment): Promise<ScrapeResult> => {
@@ -71,11 +131,8 @@ export const scrapeComic = async (syndication: ISyndication, date: Moment): Prom
   switch (siteId) {
     case sites.gocomics.id: {
       const url = `http://www.gocomics.com/${theirIdentifier}/${date.format("YYYY/MM/DD")}`;
-      // TODO(ecarrel): this is an ugly code pattern...
-      let $ = null;
-      try {
-        $ = await cheerioRequest(url);
-      } catch (err) {
+      const $ = await cheerioRequest(url);
+      if ($ === null) {
         return scrapeFailure(failureModes.GOCOMICS_REJECTION);
       }
       const comicImages = $("picture.item-comic-image img");
@@ -86,11 +143,8 @@ export const scrapeComic = async (syndication: ISyndication, date: Moment): Prom
     }
     case sites.comicskingdom.id: {
       const url = `https://www.comicskingdom.com/${theirIdentifier}/${date.format("YYYY-MM-DD")}`;
-      // TODO(ecarrel): this is an ugly code pattern...
-      let $ = null;
-      try {
-        $ = await cheerioRequest(url);
-      } catch (err) {
+      const $ = await cheerioRequest(url);
+      if ($ === null) {
         return scrapeFailure(failureModes.COMICS_KINGDOM_REJECTION);
       }
       const comicImages = $("meta[property='og:image']");
@@ -99,13 +153,12 @@ export const scrapeComic = async (syndication: ISyndication, date: Moment): Prom
       }
       return scrapeSuccess(comicImages.attr("content"));
     }
-    case sites.arcamax.id: {
-      const url = `https://www.arcamax.com/thefunnies/${theirIdentifier}/`;
-      // TODO(ecarrel): this is an ugly code pattern...
-      let $ = null;
-      try {
-        $ = await cheerioRequest(url);
-      } catch (err) {
+    case sites.arcamax.id:
+    case sites.arcamaxeditorials.id: {
+      const directory = (siteId === sites.arcamax.id) ? "thefunnies" : "politics/editorialcartoons";
+      const url = `https://www.arcamax.com/${directory}/${theirIdentifier}/`;
+      const $ = await cheerioRequest(url);
+      if ($ === null) {
         return scrapeFailure(failureModes.ARCAMAX_REJECTION);
       }
       const comicImages = $("img#comic-zoom");
@@ -115,12 +168,17 @@ export const scrapeComic = async (syndication: ISyndication, date: Moment): Prom
       const imageUrl = comicImages.attr("src");
       return scrapeSuccess(`https://www.arcamax.com${imageUrl}`);
     }
+    case sites.tundra.id: {
+      const url = `http://www.tundracomicsftp.com/comicspub/daily_tundra/daily/${date.format("YYYY-M-D")}.jpg`;
+      if (await producesSuccessResponse(url)) {
+        return scrapeSuccess(url);
+      }
+      return scrapeFailure(failureModes.TUNDRA_IMAGE_404);
+    }
     case sites.xkcd.id: {
       const url = `https://xkcd.com/rss.xml`;
-      let $ = null;
-      try {
-        $ = await cheerioRequest(url);
-      } catch (err) {
+      const $ = await cheerioRequest(url);
+      if ($ === null) {
         return scrapeFailure(failureModes.XKCD_RSS_REJECTION);
       }
       const items = $("rss channel item");
@@ -138,6 +196,92 @@ export const scrapeComic = async (syndication: ISyndication, date: Moment): Prom
         return scrapeFailure(failureModes.XKCD_PARSE_ERROR);
       }
       return scrapeSuccess(comicImages.attr("src"), comicImages.attr("alt"));
+    }
+    // TODO(ecarrel): delete SMBC? It's unnecessary since we already get it from gocomics.
+    case sites.smbc.id: {
+      const url = `https://www.smbc-comics.com/comic/rss`;
+      const $ = await cheerioRequest(url);
+      if ($ === null) {
+        return scrapeFailure(failureModes.SMBC_RSS_REJECTION);
+      }
+      const items = $("rss channel item");
+      if (items.length === 0) {
+        return scrapeFailure(failureModes.SMBC_PARSE_ERROR);
+      }
+      const firstItemDescriptions = items.first().find("description");
+      if (firstItemDescriptions.length === 0) {
+        return scrapeFailure(failureModes.SMBC_PARSE_ERROR);
+      }
+      const firstItemDescription = unescape(firstItemDescriptions.first().html());
+      const $$ = cheerio.load(firstItemDescription);
+      const comicImages = $$("img");
+      if (comicImages.length !== 1) {
+        return scrapeFailure(failureModes.SMBC_PARSE_ERROR);
+      }
+      // TODO(ecarrel): scrape hover text too.
+      return scrapeSuccess(comicImages.attr("src"));
+    }
+    case sites.phdcomics.id: {
+      const url = `http://phdcomics.com/gradfeed.php`;
+      const $ = await cheerioRequest(url);
+      if ($ === null) {
+        return scrapeFailure(failureModes.PHD_COMICS_RSS_REJECTION);
+      }
+      const items = $("rss channel item");
+      if (items.length === 0) {
+        return scrapeFailure(failureModes.PHD_COMICS_PARSE_ERROR);
+      }
+      const firstItemDescriptions = items.first().find("description");
+      if (firstItemDescriptions.length === 0) {
+        return scrapeFailure(failureModes.PHD_COMICS_PARSE_ERROR);
+      }
+      const firstItemDescription = unescape(firstItemDescriptions.first().html());
+      const $$ = cheerio.load(firstItemDescription);
+      const comicImages = $$("img");
+      if (comicImages.length !== 1) {
+        return scrapeFailure(failureModes.PHD_COMICS_PARSE_ERROR);
+      }
+      // TODO(ecarrel): scrape hover text too.
+      return scrapeSuccess(comicImages.attr("src"));
+    }
+    case sites.explosm.id: {
+      const url = "http://explosm.net/comics/latest";
+      const $ = await cheerioRequest(url);
+      if ($ === null) {
+        return scrapeFailure(failureModes.EXPLOSM_REJECTION);
+      }
+      const comicImages = $("img#main-comic");
+      if (comicImages.length !== 1) {
+        return scrapeFailure(failureModes.EXPLOSM_MISSING_IMAGE_ON_PAGE);
+      }
+      const imageUrl = `http:${comicImages.attr("src")}`;
+      return scrapeSuccess(imageUrl);
+    }
+    case sites.dinosaur.id: {
+      const url = "http://www.qwantz.com/";
+      const $ = await cheerioRequest(url);
+      if ($ === null) {
+        return scrapeFailure(failureModes.DINOSAUR_REJECTION);
+      }
+      const comicImages = $("img.comic");
+      if (comicImages.length !== 1) {
+        return scrapeFailure(failureModes.DINOSAUR_MISSING_IMAGE_ON_PAGE);
+      }
+      const imageUrl = `${url}${comicImages.attr("src")}`;
+      return scrapeSuccess(imageUrl);
+    }
+    case sites.threewordphrase.id: {
+      const url = "http://threewordphrase.com/";
+      const $ = await cheerioRequest(url);
+      if ($ === null) {
+        return scrapeFailure(failureModes.THREE_WORD_PHRASE_REJECTION);
+      }
+      const comicImages = $("table tbody tr td center img");
+      if (comicImages.length !== 1) {
+        return scrapeFailure(failureModes.THREE_WORD_PHRASE_MISSING_IMAGE_ON_PAGE);
+      }
+      const imageUrl = `${url}${comicImages.attr("src")}`;
+      return scrapeSuccess(imageUrl);
     }
     default: {
       return scrapeFailure(failureModes.UNKNOWN_SITE);
