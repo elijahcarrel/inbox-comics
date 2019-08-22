@@ -1,6 +1,5 @@
 import { ApolloError } from "apollo-server-errors";
 import { Moment } from "moment";
-import moment from "moment-timezone";
 import { ISyndication } from "../../models/syndication";
 import { IUser, User } from "../../models/user";
 import { EmailAllUsersOptions } from "../../router/email";
@@ -11,23 +10,32 @@ export const emailUsers = async (users: IUser[], options: EmailAllUsersOptions, 
     sendAllComics = false,
     mentionNotUpdatedComics = true,
   } = options;
-  const populatedUsers = await User.populate(users, {
+  const populatedUsers = await User.populate(users, [{
     path: "syndications",
     populate: {
       path: "lastSuccessfulComic",
     },
-  });
+  }, {
+    path: "lastEmailedComics",
+  }]);
   const usersAndTheirComics =
     populatedUsers
     .map((populatedUser: IUser) => {
-      const { email, googleAnalyticsHash, syndications = [] } = populatedUser;
+      const { email, googleAnalyticsHash, syndications = [], lastEmailedComics } = populatedUser;
       const comics = syndications.map((syndication: ISyndication) => {
         const { title, lastSuccessfulComic } = syndication;
         const { imageUrl = null, imageCaption = null } = lastSuccessfulComic || {};
-        const wasUpdated =
-          lastSuccessfulComic == null ?
-            false :
-            moment(lastSuccessfulComic.date).isSame(date, "date");
+        let wasUpdated = false;
+        if (lastSuccessfulComic == null) {
+          wasUpdated = false;
+        } else {
+          const comic = lastEmailedComics.find(
+            ({ syndication: { identifier } }) => identifier === syndication.identifier,
+          );
+          if (comic != null) {
+            wasUpdated = comic.imageUrl !== imageUrl;
+          }
+        }
         return {
           syndicationName: title,
           wasUpdated,
@@ -53,7 +61,8 @@ export const emailUsers = async (users: IUser[], options: EmailAllUsersOptions, 
   }));
   const updatedUsers = augmentedEmailResults
   .filter((result) => result.emailResult === true)
-  .map(({user}) => {
+  .map(({ user }) => {
+    user.lastEmailedComics = user.syndications.map((syndication) => syndication.lastSuccessfulComic);
     user.lastEmailCheck = date.toDate();
     return user;
   });

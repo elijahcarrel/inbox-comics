@@ -1,6 +1,10 @@
 @import "../../common-components/colors";
 
 .newsItemContainer {
+
+  // Add some extra margin because of https://github.com/One-com/react-truncate/issues/16.
+  margin-right: 10px;
+
   .newsItem {
     .headline {
       margin-top: 20px;
