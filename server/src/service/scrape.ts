@@ -100,6 +100,7 @@ const cheerioRequest = async (url: string) => {
       url,
       responseType: "text",
     });
+    // TODO(ecarrel): check if response.request.res.responseUrl !== url to detect redirects.
     return cheerio.load(response.data);
   } catch (err) {
     return null;
@@ -309,7 +310,7 @@ export const scrapeAndSaveComic = async (syndication: ISyndication, date: Moment
 export const scrapeAndSaveAllComics = async (date: Moment, options: ScrapeAndSaveAllComicsOptions = {}) => {
   const {
     siteId,
-    limit = 50,
+    limit = 20,
     dontRescrapeSyndicationThatSucceededEarlierToday = true,
     dontRetryInLessThanAnHour = true,
   } = options;
