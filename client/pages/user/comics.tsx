@@ -42,26 +42,57 @@ const UserSyndicationsPage = () => {
     }
   `;
   const title = email.length > 0 ? `Comics for ${email}` : "Comics";
+  const userQueryResponse = useQuery<UserQueryResponse>(userQuery, { skip: !urlQueryIsReady });
 
-  const { data, error, loading } = useQuery<UserQueryResponse>(userQuery, { skip: !urlQueryIsReady });
-  useEffect(() => {
-    if (!loading && data && data.userByEmail) {
-      const { userByEmail: { syndications = [] } } = data;
-      setSelectedSyndications(new Set(syndications.map(({identifier}) => identifier)));
-    }
-  }, [data, loading]);
-  if (error) {
-    return <Layout error={stringifyGraphQlError(error)} />;
+  const syndicationsQuery = gql`
+      query syndications {
+          syndications {
+              title
+              identifier
+          }
+      }
+  `;
+
+  // TODO(ecarrel): consolidate into common types file (perhaps shared client/server?)
+  interface Syndication {
+    title: string;
+    identifier: string;
   }
-  if (loading || !data || !data.userByEmail) {
+
+  interface SyndicationsResponse {
+    syndications: Syndication[];
+  }
+
+  const syndicationsQueryResponse = useQuery<SyndicationsResponse>(syndicationsQuery);
+
+  useEffect(() => {
+    if (!userQueryResponse.loading && userQueryResponse.data && userQueryResponse.data.userByEmail) {
+      const { userByEmail: { syndications = [] } } = userQueryResponse.data;
+      setSelectedSyndications(new Set(syndications.map(({ identifier }) => identifier)));
+    }
+  }, [userQueryResponse.data, userQueryResponse.loading]);
+  if (syndicationsQueryResponse.error) {
+    return <Layout error={stringifyGraphQlError(syndicationsQueryResponse.error)} />;
+  }
+  if (userQueryResponse.error) {
+    return <Layout error={stringifyGraphQlError(userQueryResponse.error)} />;
+  }
+  if (
+    syndicationsQueryResponse.loading ||
+    !syndicationsQueryResponse.data ||
+    !syndicationsQueryResponse.data.syndications ||
+    userQueryResponse.loading ||
+    !userQueryResponse.data ||
+    !userQueryResponse.data.userByEmail
+  ) {
     return <Layout title={title} isLoading />;
   }
 
   return (
     <Layout title={title}>
       <SyndicationGrid
-        // @ts-ignore
-        selectedSyndications={selectedSyndications}
+        syndications={syndicationsQueryResponse.data.syndications}
+        selectedSyndicationIdentifiers={selectedSyndications}
         onChange={async (newSelectedSyndications) => {
           // Optimistically update UI.
           setSelectedSyndications(newSelectedSyndications);

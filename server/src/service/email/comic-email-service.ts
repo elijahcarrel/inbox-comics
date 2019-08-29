@@ -25,7 +25,7 @@ export const emailUsers = async (users: IUser[], options: EmailAllUsersOptions, 
       const comics = syndications.map((syndication: ISyndication) => {
         const { title, lastSuccessfulComic } = syndication;
         const { imageUrl = null, imageCaption = null } = lastSuccessfulComic || {};
-        let wasUpdated = false;
+        let wasUpdated = true;
         if (lastSuccessfulComic == null) {
           wasUpdated = false;
         } else {
