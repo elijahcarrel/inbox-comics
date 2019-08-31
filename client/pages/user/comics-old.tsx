@@ -1,38 +1,31 @@
 import { useMutation, useQuery } from "@apollo/react-hooks";
-import classNames from "classnames";
 import gql from "graphql-tag";
-import Router from "next/router";
 import React, { useEffect, useState } from "react";
 // @ts-ignore
 import { useToasts } from "react-toast-notifications";
-import { Button } from "../../common-components/Button/Button";
 import { Layout } from "../../common-components/Layout/Layout";
 import { SyndicationGrid } from "../../components/SyndicationGrid/SyndicationGrid";
 import { handleGraphQlResponse, stringifyGraphQlError, toastType, useUrlQuery } from "../../lib/utils";
-import styles from "./comics.module.scss";
 
 const UserSyndicationsPage = () => {
   const { addToast } = useToasts();
   const [urlQuery, urlQueryIsReady] = useUrlQuery();
-  const publicId = `${urlQuery.publicId || ""}`;
-  const isNewUser = !!urlQuery.new;
+  const email = `${urlQuery.email || ""}`;
   const [selectedSyndications, setSelectedSyndications] = useState(new Set<string>());
-  const [email, setEmail] = useState<string | null>(null);
 
   const mutation = gql`
-    mutation putUser($publicId: String!, $user: InputUser!) {
-      putUser(publicId: $publicId, user: $user) {
+    mutation setSubscriptions($email: String!, $syndications: [String]!) {
+      setSubscriptions(email: $email, syndications: $syndications) {
         syndications {
           identifier
         }
       }
     }
   `;
-  const [putUserMutation] = useMutation(mutation);
+  const [setSubscriptionsMutation] = useMutation(mutation);
 
   interface UserQueryResponse {
-    userByPublicId: {
-      email: string;
+    userByEmail: {
       syndications: Array<{
         identifier: string;
       }>;
@@ -40,36 +33,27 @@ const UserSyndicationsPage = () => {
   }
 
   const userQuery = gql`
-    query userByPublicId {
-      userByPublicId(publicId: "${publicId}") {
-        email
+    query userByEmail {
+      userByEmail(email: "${email}") {
         syndications {
           identifier
         }
       }
     }
   `;
-  let title = "Loading...";
-  if (urlQueryIsReady) {
-    title = "Comics";
-    if (isNewUser) {
-      title = "Choose Comics";
-    } else if (email && email.length > 0) {
-      title = `Update Comics for ${email}`;
-    }
-  }
+  const title = email.length > 0 ? `Comics for ${email}` : "Comics";
   const userQueryResponse = useQuery<UserQueryResponse>(userQuery, { skip: !urlQueryIsReady });
 
   const syndicationsQuery = gql`
-    query syndications {
-      syndications {
-        title
-        identifier
+      query syndications {
+          syndications {
+              title
+              identifier
+          }
       }
-    }
   `;
 
-  // TODO(ecarrel): consolidate into common API types file (perhaps shared client/server?)
+  // TODO(ecarrel): consolidate into common types file (perhaps shared client/server?)
   interface Syndication {
     title: string;
     identifier: string;
@@ -82,10 +66,9 @@ const UserSyndicationsPage = () => {
   const syndicationsQueryResponse = useQuery<SyndicationsResponse>(syndicationsQuery);
 
   useEffect(() => {
-    if (!userQueryResponse.loading && userQueryResponse.data && userQueryResponse.data.userByPublicId) {
-      const { userByPublicId: { syndications = [], email: emailFromQuery } } = userQueryResponse.data;
+    if (!userQueryResponse.loading && userQueryResponse.data && userQueryResponse.data.userByEmail) {
+      const { userByEmail: { syndications = [] } } = userQueryResponse.data;
       setSelectedSyndications(new Set(syndications.map(({ identifier }) => identifier)));
-      setEmail(emailFromQuery);
     }
   }, [userQueryResponse.data, userQueryResponse.loading]);
   if (syndicationsQueryResponse.error) {
@@ -100,7 +83,7 @@ const UserSyndicationsPage = () => {
     !syndicationsQueryResponse.data.syndications ||
     userQueryResponse.loading ||
     !userQueryResponse.data ||
-    !userQueryResponse.data.userByPublicId
+    !userQueryResponse.data.userByEmail
   ) {
     return <Layout title={title} isLoading />;
   }
@@ -113,44 +96,19 @@ const UserSyndicationsPage = () => {
         onChange={async (newSelectedSyndications) => {
           // Optimistically update UI.
           setSelectedSyndications(newSelectedSyndications);
-          const result = await handleGraphQlResponse(putUserMutation({
+          const result = await handleGraphQlResponse(setSubscriptionsMutation({
             variables: {
-              publicId,
-              user: {
-                publicId,
-                syndications: [...newSelectedSyndications],
-              },
+              email,
+              syndications: [...newSelectedSyndications],
             },
           }));
           if (result.success) {
-            if (!isNewUser) {
-              addToast("Subscriptions updated.", toastType.success);
-            }
+            addToast("Subscriptions updated.", toastType.success);
           } else {
             addToast(`Could not update subscriptions: ${result.combinedErrorMessage}`, toastType.error);
           }
         }}
       />
-      {isNewUser && (
-        <div className={classNames(styles.outerButtonContainer, {
-          [styles.isSticky]: selectedSyndications.size > 0,
-        })}>
-          <div className={styles.faderElement} />
-          <div className={styles.innerButtonContainer}>
-            <Button
-              onClick={async () => {
-                await Router.push({
-                  pathname: "/user/subscribe",
-                  query: { publicId },
-                });
-              }}
-              className={styles.button}
-            >
-              {selectedSyndications.size > 0 ? "Next →" : "Continue without selecting comics →"}
-            </Button>
-          </div>
-        </div>
-      )}
     </Layout>
   );
 };

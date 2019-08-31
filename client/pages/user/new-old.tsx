@@ -8,7 +8,7 @@ import { Button } from "../../common-components/Button/Button";
 import { Layout } from "../../common-components/Layout/Layout";
 import { TextInput } from "../../common-components/TextInput/TextInput";
 import { handleGraphQlResponse, toastType } from "../../lib/utils";
-import styles from "./new.module.scss";
+import styles from "./new-old.module.scss";
 
 const NewUserPage: React.FunctionComponent = () => {
   const { addToast } = useToasts();
@@ -38,7 +38,7 @@ const NewUserPage: React.FunctionComponent = () => {
             const result = await handleGraphQlResponse(createUserMutation({ variables: { email }}));
             const { success, combinedErrorMessage } = result;
             if (success) {
-              Router.push({
+              await Router.push({
                 pathname: "/user",
                 query: { email, new: true },
               });

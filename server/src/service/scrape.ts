@@ -3,8 +3,8 @@ import cheerio from "cheerio";
 import { Moment } from "moment-timezone";
 // @ts-ignore
 import unescape from "unescape";
-import { Comic, ComicFailureMode, failureModes, IComic } from "../models/comic";
-import { ISyndication, Syndication } from "../models/syndication";
+import { Comic, ComicFailureMode, failureModes, IComic } from "../db-models/comic";
+import { ISyndication, Syndication } from "../db-models/syndication";
 import { ScrapeAndSaveAllComicsOptions } from "../router/scrape";
 
 const sites = {

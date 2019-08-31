@@ -1,5 +1,5 @@
 import { gql, UserInputError } from "apollo-server-micro";
-import { User } from "../models/user";
+import { User } from "../db-models/user";
 import { emailAllUsers, emailUsers } from "../service/email/comic-email-service";
 import { now } from "../util/date";
 import { invalidUserError } from "../util/error";

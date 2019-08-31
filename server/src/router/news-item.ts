@@ -1,5 +1,5 @@
 import { gql } from "apollo-server-micro";
-import { NewsItem } from "../models/news-item";
+import { NewsItem } from "../db-models/news-item";
 import { invalidNewsItemError } from "../util/error";
 
 export const typeDefs = gql`

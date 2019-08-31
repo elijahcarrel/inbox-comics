@@ -8,62 +8,40 @@ import { stringifyGraphQlError, useUrlQuery } from "../../lib/utils";
 
 interface User {
   email: string;
-  publicId: string;
   verified: boolean;
 }
 
-interface UserByPublicIdResponse {
-  userByPublicId: User;
-}
-
-interface UserByEmailResponse {
+interface UserResponse {
   userByEmail: User;
 }
 
 const UserPage: React.FunctionComponent = () => {
   const [urlQuery, urlQueryIsReady] = useUrlQuery();
-  const publicIdFromUrl = `${urlQuery.publicId || ""}`;
-  const emailFromUrl = `${urlQuery.email || ""}`;
+  const email = `${urlQuery.email || ""}`;
+  const title = email.length > 0 ? `User ${email}` : "Loading...";
   const isNewUser = !!urlQuery.new;
 
-  let userQuery;
-  if (publicIdFromUrl.length !== 0) {
-    userQuery = gql`
-      query userByPublicId {
-        userByPublicId(publicId: "${publicIdFromUrl}") {
-          email
-          publicId
-          verified
-        }
+  const userQuery = gql`
+    query userByEmail {
+      userByEmail(email: "${email}") {
+        verified
       }
-    `;
-  } else {
-    userQuery = gql`
-      query userByEmail {
-        userByEmail(email: "${emailFromUrl}") {
-          email
-          publicId
-          verified
-        }
-      }
-    `;
-  }
+    }
+  `;
 
-  const userQueryResponse = useQuery<UserByPublicIdResponse & UserByEmailResponse>(
-    userQuery, { skip: !urlQueryIsReady },
-  );
+  const userQueryResponse = useQuery<UserResponse>(userQuery, { skip: !urlQueryIsReady });
   const { data, error, loading } = userQueryResponse;
   if (error) {
-    return <Layout error={stringifyGraphQlError(error)} />;
+    return <Layout title={title} error={stringifyGraphQlError(error)} />;
   }
 
-  if (loading || !data || (!data.userByPublicId && !data.userByEmail)) {
-    return <Layout title="Loading..." isLoading />;
+  if (loading || !data || !data.userByEmail) {
+    return <Layout title={title} isLoading />;
   }
-  const { verified, email, publicId } = data.userByPublicId || data.userByEmail;
+  const { verified } = data.userByEmail;
 
   return (
-    <Layout title={`User ${email}`}>
+    <Layout title={title}>
       <ul>
         <li>
           {verified && (
@@ -83,7 +61,7 @@ const UserPage: React.FunctionComponent = () => {
           )}
         </li>
         <li>
-          <CommonLink href={`/user/comics?publicId=${publicId}`}>
+          <CommonLink href={`./user/comics?email=${encodeURIComponent(email)}`}>
             Edit subscriptions.
           </CommonLink>
         </li>
