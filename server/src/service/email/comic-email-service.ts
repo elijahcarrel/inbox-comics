@@ -21,7 +21,7 @@ export const emailUsers = async (users: IUser[], options: EmailAllUsersOptions, 
   const usersAndTheirComics =
     populatedUsers
     .map((populatedUser: IUser) => {
-      const { email, googleAnalyticsHash, syndications = [], lastEmailedComics } = populatedUser;
+      const { email, googleAnalyticsHash, syndications = [], lastEmailedComics = [] } = populatedUser;
       const comics = syndications.map((syndication: ISyndication) => {
         const { title, lastSuccessfulComic } = syndication;
         const { imageUrl = null, imageCaption = null } = lastSuccessfulComic || {};

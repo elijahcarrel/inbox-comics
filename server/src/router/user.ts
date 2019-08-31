@@ -96,7 +96,7 @@ export const resolvers = {
         throw invalidUserByPublicIdError(publicId);
       }
       user.syndications = await Syndication.find({ identifier: inputUser.syndications }).exec();
-      const changedEmail = user.email !== inputUser.email;
+      const changedEmail = user.email !== inputUser.email && !(user.email == null && inputUser.email == null);
       if (changedEmail) {
         const existingUserWithThatEmail = await User.findOne({ email: inputUser.email }).exec();
         if (existingUserWithThatEmail != null) {
