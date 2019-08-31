@@ -27,7 +27,6 @@ export const typeDefs = gql`
     createUser(email: String!): User
     createUserWithoutEmail: User
     putUser(publicId: String!, user: InputUser): User
-    setSubscriptions(email: String!, syndications: [String]!): User
     resendVerificationEmail(email: String!): Boolean
     verifyEmail(email: String!, verificationHash: String!): Boolean
     submitContactForm(email: String!, name: String!, subject: String!, message: String!): Boolean
@@ -110,16 +109,6 @@ export const resolvers = {
         await sendVerificationEmail(user.email, user.verificationHash);
       }
       return user;
-    },
-    setSubscriptions: async (_: any, args: { email: string, syndications: string[] }) => {
-      const { email, syndications } = args;
-      const syndicationObjects = await Syndication.find({ identifier: syndications }).exec();
-      const user = await User.findOne({ email }).exec();
-      if (user == null) {
-        throw invalidUserError(email);
-      }
-      user.syndications = syndicationObjects;
-      return await user.save();
     },
     resendVerificationEmail: async (_: any, args: { email: string }) => {
       const { email } = args;

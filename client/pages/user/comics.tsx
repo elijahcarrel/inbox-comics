@@ -117,6 +117,7 @@ const UserSyndicationsPage = () => {
             variables: {
               publicId,
               user: {
+                email,
                 publicId,
                 syndications: [...newSelectedSyndications],
               },
