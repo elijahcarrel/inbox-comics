@@ -8,7 +8,7 @@ import { Button } from "../../common-components/Button/Button";
 import { Layout } from "../../common-components/Layout/Layout";
 import { TextInput } from "../../common-components/TextInput/TextInput";
 import { handleGraphQlResponse, stringifyGraphQlError, toastType, useUrlQuery } from "../../lib/utils";
-import styles from "./new-old.module.scss";
+import styles from "./subscribe.module.scss";
 
 // TODO(ecarrel): share type with server API models.
 interface User {
