@@ -3,6 +3,7 @@ import { IComic } from "./comic";
 import { ISyndication } from "./syndication";
 
 export interface IUser extends Document {
+  publicId: string;
   email: string;
   verified: boolean;
   syndications: ISyndication[];
@@ -13,7 +14,8 @@ export interface IUser extends Document {
 }
 
 const userSchema = new Schema({
-  email: String!,
+  publicId: String!,
+  email: String,
   verified: Boolean!,
   syndications: [{
     type: Schema.Types.ObjectId,

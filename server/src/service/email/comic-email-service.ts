@@ -1,7 +1,7 @@
 import { ApolloError } from "apollo-server-errors";
 import { Moment } from "moment";
-import { ISyndication } from "../../models/syndication";
-import { IUser, User } from "../../models/user";
+import { ISyndication } from "../../db-models/syndication";
+import { IUser, User } from "../../db-models/user";
 import { EmailAllUsersOptions } from "../../router/email";
 import { sendComicEmail } from "./templates/send-comic-email";
 

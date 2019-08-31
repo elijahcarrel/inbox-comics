@@ -14,6 +14,7 @@ interface Props {
     href?: string;
     content: string;
     className?: string;
+    onClick?: () => any;
   }>;
   wrapWidth: "wide" | "medium" | "none";
 }
@@ -32,13 +33,18 @@ export const LinkList = (props: Props) => {
   return (
     <div className={classNames(styles.flexList, classes.container)}>
       <ul className={classNames(classes.list, wrapStyle)}>
-        {elements.map(({ href, content, className, key }) => (
+        {elements.map(({ href, content, className, key, onClick }) => (
           <li
             className={classNames(className, classes.element, wrapStyle)}
             key={key}
           >
-            {href ? (
-                <CommonLink href={href}>{content}</CommonLink>
+            {href || onClick ? (
+                <CommonLink
+                  href={href}
+                  onClick={onClick}
+                >
+                  {content}
+                </CommonLink>
               ) : (
                 <Fragment>
                   {content}

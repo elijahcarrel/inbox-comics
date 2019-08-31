@@ -23,7 +23,9 @@ export const SyndicationGrid = (props: Props) => {
     !selectedSyndicationIdentifiers.has(identifier));
   return (
     <Fragment>
-      <Subtitle className={styles.subtitle}>Selected Comics</Subtitle>
+      {selectedSyndications.length > 0 && (
+        <Subtitle className={styles.subtitle}>Selected Comics</Subtitle>
+      )}
       <div className={styles.syndicationGridContainer}>
         {selectedSyndications.map((syndication) => {
           const { title, identifier } = syndication;

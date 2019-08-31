@@ -19,8 +19,8 @@ const EditUserPage: React.FunctionComponent = () => {
         />
         <br />
         <Button
-          onClick={() => {
-            Router.push({
+          onClick={async () => {
+            await Router.push({
               pathname: "/user",
               query: { email },
             });
