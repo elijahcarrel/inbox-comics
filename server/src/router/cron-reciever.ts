@@ -19,7 +19,7 @@ export const resolvers = {
         // tslint:disable-next-line max-line-length no-console
         // console.log("doWork called at ", date.format("dddd, MMMM Do YYYY, h:mm:ss a"), " and thus is going to scrape comics.");
         await scrapeAndSaveAllComics(date);
-      } else if (date.hour() > 5) {
+      } else if (date.hour() >= 5) {
         // Email users.
         // tslint:disable-next-line max-line-length no-console
         // console.log("doWork called at ", date.format("dddd, MMMM Do YYYY, h:mm:ss a"), " and thus is going to send emails.");

@@ -10,6 +10,7 @@ interface Props {
   lowercase?: boolean;
   underline?: boolean;
   className?: string;
+  isExternal?: boolean;
 }
 
 export const CommonLink = (props: Props) => {
@@ -19,8 +20,17 @@ export const CommonLink = (props: Props) => {
     lowercase = false,
     underline = true,
     className = "",
+    isExternal = false,
     onClick,
   } = props;
+  let aProps = {};
+  if (isExternal) {
+    aProps = {
+      ...aProps,
+      href,
+      target: "_blank",
+    };
+  }
   const innerLink = (
     <a
       className={classNames(styles.link,
@@ -29,18 +39,19 @@ export const CommonLink = (props: Props) => {
         className,
       )}
       onClick={onClick && onClick}
+      {...aProps}
     >
       {children}
     </a>
   );
-  if (href) {
-    return (
-      <Link
-        href={href}
-      >
-        {innerLink}
-      </Link>
-    );
+  if (!href || isExternal) {
+    return innerLink;
   }
-  return innerLink;
+  return (
+    <Link
+      href={href}
+    >
+      {innerLink}
+    </Link>
+  );
 };

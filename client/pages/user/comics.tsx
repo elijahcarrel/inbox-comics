@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/react-hooks";
 import classNames from "classnames";
 import gql from "graphql-tag";
 import Router from "next/router";
@@ -7,48 +7,31 @@ import React, { useEffect, useState } from "react";
 import { useToasts } from "react-toast-notifications";
 import { Button } from "../../common-components/Button/Button";
 import { Layout } from "../../common-components/Layout/Layout";
-import { SyndicationGrid } from "../../components/SyndicationGrid/SyndicationGrid";
-import { handleGraphQlResponse, stringifyGraphQlError, toastType, useUrlQuery } from "../../lib/utils";
+import { SyndicationEditor } from "../../components/SyndicationEditor/SyndicationEditor";
+import { handleGraphQlResponse, toastType, useUrlQuery } from "../../lib/utils";
 import styles from "./comics.module.scss";
 
 const UserSyndicationsPage = () => {
-  const { addToast } = useToasts();
   const [urlQuery, urlQueryIsReady] = useUrlQuery();
   const publicId = `${urlQuery.publicId || ""}`;
   const isNewUser = !!urlQuery.new;
-  const [selectedSyndications, setSelectedSyndications] = useState(new Set<string>());
-  const [email, setEmail] = useState<string | null>(null);
-
+  const [selectedSyndications, setSelectedSyndications] = useState<Set<string> | null>(null);
+  const [email, setEmail] = useState("");
+  const { addToast } = useToasts();
   const mutation = gql`
-    mutation putUser($publicId: String!, $user: InputUser!) {
-      putUser(publicId: $publicId, user: $user) {
-        syndications {
-          identifier
-        }
+    mutation createUserWithoutEmail {
+      createUserWithoutEmail {
+        publicId
       }
     }
   `;
-  const [putUserMutation] = useMutation(mutation);
-
-  interface UserQueryResponse {
-    userByPublicId: {
-      email: string;
-      syndications: Array<{
-        identifier: string;
-      }>;
+  interface CreateUserResponse {
+    createUserWithoutEmail: {
+      publicId: string;
     };
   }
+  const [createUserWithoutEmailMutation] = useMutation<CreateUserResponse>(mutation);
 
-  const userQuery = gql`
-    query userByPublicId {
-      userByPublicId(publicId: "${publicId}") {
-        email
-        syndications {
-          identifier
-        }
-      }
-    }
-  `;
   let title = "Loading...";
   if (urlQueryIsReady) {
     title = "Comics";
@@ -58,81 +41,41 @@ const UserSyndicationsPage = () => {
       title = `Update Comics for ${email}`;
     }
   }
-  const userQueryResponse = useQuery<UserQueryResponse>(userQuery, { skip: !urlQueryIsReady });
-
-  const syndicationsQuery = gql`
-    query syndications {
-      syndications {
-        title
-        identifier
-      }
-    }
-  `;
-
-  // TODO(ecarrel): consolidate into common API types file (perhaps shared client/server?)
-  interface Syndication {
-    title: string;
-    identifier: string;
-  }
-
-  interface SyndicationsResponse {
-    syndications: Syndication[];
-  }
-
-  const syndicationsQueryResponse = useQuery<SyndicationsResponse>(syndicationsQuery);
 
   useEffect(() => {
-    if (!userQueryResponse.loading && userQueryResponse.data && userQueryResponse.data.userByPublicId) {
-      const { userByPublicId: { syndications = [], email: emailFromQuery } } = userQueryResponse.data;
-      setSelectedSyndications(new Set(syndications.map(({ identifier }) => identifier)));
-      setEmail(emailFromQuery);
+    if (urlQueryIsReady && publicId.length === 0) {
+      // No public id supplied. Create a new user.
+      handleGraphQlResponse(createUserWithoutEmailMutation()).then(async (result) => {
+        const { success, combinedErrorMessage } = result;
+        if (success) {
+          const url = {
+            pathname: "/user/comics",
+            query: {
+              publicId: result.result.data.createUserWithoutEmail.publicId,
+              new: true,
+            },
+          };
+          await Router.push(url, url, { shallow: true });
+        } else {
+          addToast(combinedErrorMessage, toastType.error);
+        }
+      });
     }
-  }, [userQueryResponse.data, userQueryResponse.loading]);
-  if (syndicationsQueryResponse.error) {
-    return <Layout error={stringifyGraphQlError(syndicationsQueryResponse.error)} />;
-  }
-  if (userQueryResponse.error) {
-    return <Layout error={stringifyGraphQlError(userQueryResponse.error)} />;
-  }
-  if (
-    syndicationsQueryResponse.loading ||
-    !syndicationsQueryResponse.data ||
-    !syndicationsQueryResponse.data.syndications ||
-    userQueryResponse.loading ||
-    !userQueryResponse.data ||
-    !userQueryResponse.data.userByPublicId
-  ) {
+  }, [urlQueryIsReady, publicId, addToast]);
+
+  if (publicId.length === 0) {
     return <Layout title={title} isLoading />;
   }
 
   return (
     <Layout title={title}>
-      <SyndicationGrid
-        syndications={syndicationsQueryResponse.data.syndications}
-        selectedSyndicationIdentifiers={selectedSyndications}
-        onChange={async (newSelectedSyndications) => {
-          // Optimistically update UI.
-          setSelectedSyndications(newSelectedSyndications);
-          const result = await handleGraphQlResponse(putUserMutation({
-            variables: {
-              publicId,
-              user: {
-                email,
-                publicId,
-                syndications: [...newSelectedSyndications],
-              },
-            },
-          }));
-          if (result.success) {
-            if (!isNewUser) {
-              addToast("Subscriptions updated.", toastType.success);
-            }
-          } else {
-            addToast(`Could not update subscriptions: ${result.combinedErrorMessage}`, toastType.error);
-          }
-        }}
+      <SyndicationEditor
+        publicId={publicId}
+        isNewUser={isNewUser}
+        onChangeSelectedSyndications={setSelectedSyndications}
+        onReceiveEmail={setEmail}
       />
-      {isNewUser && (
+      {isNewUser && selectedSyndications && (
         <div className={classNames(styles.outerButtonContainer, {
           [styles.isSticky]: selectedSyndications.size > 0,
         })}>

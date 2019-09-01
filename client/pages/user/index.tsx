@@ -1,10 +1,11 @@
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import React from "react";
-import { CommonLink } from "../../common-components/CommonLink/CommonLink";
+import React, { useState } from "react";
 import { Layout } from "../../common-components/Layout/Layout";
 import { ResendVerificationEmailLink } from "../../components/ResendVerificationEmailLink/ResendVerificationEmailLink";
-import { stringifyGraphQlError, useUrlQuery } from "../../lib/utils";
+import { SyndicationEditor } from "../../components/SyndicationEditor/SyndicationEditor";
+import { formattedComicDeliveryTime, stringifyGraphQlError, useUrlQuery } from "../../lib/utils";
+import styles from "./index.module.scss";
 
 interface User {
   email: string;
@@ -25,7 +26,10 @@ const UserPage: React.FunctionComponent = () => {
   const publicIdFromUrl = `${urlQuery.publicId || ""}`;
   const emailFromUrl = `${urlQuery.email || ""}`;
   const isNewUser = !!urlQuery.new;
+  const [selectedSyndications, setSelectedSyndications] = useState<Set<string> | null>(null);
+  console.log("selectedSyndications", selectedSyndications);
 
+  // TODO(ecarrel): there's gotta be a better way to do this...
   let userQuery;
   if (publicIdFromUrl.length !== 0) {
     userQuery = gql`
@@ -62,32 +66,57 @@ const UserPage: React.FunctionComponent = () => {
   }
   const { verified, email, publicId } = data.userByPublicId || data.userByEmail;
 
+  let verificationBlock = null;
+  if (verified) {
+    if (selectedSyndications == null) {
+      // selectedSyndications hasn't loaded yet. Display a generic message.
+      verificationBlock = (
+        <span>
+          You are verified.
+        </span>
+      );
+    } else if (selectedSyndications.size === 0) {
+      verificationBlock = (
+        <span>
+          You are verified, but not subscribed to any comics.{" "}
+          Subscribe to some below in order to receive comics every day.
+        </span>
+      );
+    } else {
+      verificationBlock = (
+        <span>
+          You are verified. You will get an email at {formattedComicDeliveryTime()} every day.
+        </span>
+      );
+    }
+  } else {
+    if (isNewUser) {
+      verificationBlock = (
+        <span>
+          <p>A verification email was just sent to {email}.</p>
+          <p><ResendVerificationEmailLink email={email} /></p>
+        </span>
+      );
+    } else {
+      verificationBlock = (
+        <span>
+          <p>You are not verified. Until you verify your email, you will not receive comics.</p>
+          <p><ResendVerificationEmailLink email={email} /></p>
+        </span>
+      );
+    }
+  }
+
   return (
-    <Layout title={`User ${email}`}>
-      <ul>
-        <li>
-          {verified && (
-            <span>You are verified.</span>
-          )}
-          {!verified && !isNewUser && (
-            <span>
-              You are not verified. Until you verify your email, you will not receive comics.{" "}
-              <ResendVerificationEmailLink email={email} />
-            </span>
-          )}
-          {!verified && isNewUser && (
-            <span>
-              A verification email was just sent to {email}.{" "}
-              <ResendVerificationEmailLink email={email} />
-            </span>
-          )}
-        </li>
-        <li>
-          <CommonLink href={`/user/comics?publicId=${publicId}`}>
-            Edit subscriptions.
-          </CommonLink>
-        </li>
-      </ul>
+    <Layout title="Edit Subscriptions">
+      <div className={styles.centerAlign}>
+        {verificationBlock}
+      </div>
+      <SyndicationEditor
+        publicId={publicId}
+        isNewUser={isNewUser}
+        onChangeSelectedSyndications={setSelectedSyndications}
+      />
     </Layout>
   );
 };

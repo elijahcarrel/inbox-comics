@@ -30,10 +30,10 @@ export const ResendVerificationEmailLink = (props: Props) => {
   ] = useMutation<ResendVerificationEmailResponse>(mutation, { variables: { email } });
 
   if (sentEmail) {
-    return <span className={styles.success}>Verification email sent.</span>;
+    return <span className={styles.success}>Verification email re-sent.</span>;
   }
   if (verificationEmailIsSending) {
-    return <span className={styles.warning}>Sending verification email...</span>;
+    return <span className={styles.warning}>Re-sending verification email...</span>;
   }
   return (
     <CommonLink

@@ -38,8 +38,9 @@ export const SyndicationGrid = (props: Props) => {
               }}
               isSelected={true}
               onClick={() => {
-                selectedSyndicationIdentifiers.delete(identifier);
-                onChange(selectedSyndicationIdentifiers);
+                const newSelectedSyndications = new Set(selectedSyndicationIdentifiers);
+                newSelectedSyndications.delete(identifier);
+                onChange(newSelectedSyndications);
               }}
               key={identifier}
             />
@@ -59,8 +60,9 @@ export const SyndicationGrid = (props: Props) => {
               }}
               isSelected={false}
               onClick={() => {
-                selectedSyndicationIdentifiers.add(identifier);
-                onChange(selectedSyndicationIdentifiers);
+                const newSelectedSyndications = new Set(selectedSyndicationIdentifiers);
+                newSelectedSyndications.add(identifier);
+                onChange(newSelectedSyndications);
               }}
               key={identifier}
             />

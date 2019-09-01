@@ -1,28 +1,32 @@
 import * as React from "react";
 import { CommonLink } from "../common-components/CommonLink/CommonLink";
 import { Layout } from "../common-components/Layout/Layout";
+import { formattedComicDeliveryTime } from "../lib/utils";
 import styles from "./faq.module.scss";
 
 const FAQPage: React.FunctionComponent = () => (
   <Layout title="FAQ">
     <p className={styles.question}>Do I get to choose which syndications to get?
     </p>
-    <p className={styles.answer}>Yes-- you can choose to subscribe to whichever
+    <p className={styles.answer}>Yes— you can choose to subscribe to whichever
       ones you like, from just your one favorite strip to every single
-      one you used to read in the papers. We currently offer <b>440</b> syndications, but
+      one you used to read in the papers. We currently offer{" "}
+      <span className={styles.figure}>440</span> syndications, but
       this regularly increases as we build a larger database in
       response to your requests. Regardless of how many comics you
       subscribe to, they'll all come together as one daily email.</p>
     <p className={styles.question}>When do I get my emails?</p>
-    <p className={styles.answer}>Every daily email comes at 5 AM Eastern
-      Time (GMT-4/GMT-5), so that you can enjoy your comics during your
-      morning coffee.</p>
+    <p className={styles.answer}>Every daily email comes at{" "}
+      <span className={styles.figure}>{formattedComicDeliveryTime()}</span>.
+      We decided on that time because most dailies are posted before then, and
+      it's still early enough that even the early risers on the east coast of the U.S.
+      can enjoy the comics over their morning coffee.</p>
     <p className={styles.question}>Why didn't I get an email today?</p>
     <p className={styles.answer}>Not all syndications are updated every day. If
       none of your syndications are updated, we won't bother you an
       empty email.</p>
     <p className={styles.question}>Which syndications do you offer?</p>
-    <p className={styles.answer}>Head over to the <CommonLink lowercase href="/user/new"
+    <p className={styles.answer}>Head over to the <CommonLink lowercase href="/user/comics"
     >sign-up page</CommonLink> to see for yourself, and <CommonLink lowercase href="/contact"
     >tell us</CommonLink> if we're missing one of your
       favorites!</p>

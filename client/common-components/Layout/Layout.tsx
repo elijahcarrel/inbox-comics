@@ -1,5 +1,5 @@
 import Head from "next/head";
-import React, {Fragment, useState} from "react";
+import React, { Fragment } from "react";
 import { LoadingOverlay } from "../LoadingOverlay/LoadingOverlay";
 import { Title } from "../Title/Title";
 import { Footer } from "./Footer";
@@ -22,8 +22,6 @@ export const Layout: React.FunctionComponent<Props> = (props: Props) => {
     isLoading = false,
     error,
   } = props;
-  const [isLoadingSignUpLink, setIsLoadingSignUpLink] = useState(false);
-  const isLoadingAnything = isLoading || isLoadingSignUpLink;
   return (
     <Fragment>
       <Head>
@@ -33,18 +31,15 @@ export const Layout: React.FunctionComponent<Props> = (props: Props) => {
       </Head>
       <div className={styles.bodyContainer}>
         <div className={styles.body}>
-          <Header
-            onClickSignUpLink={() =>setIsLoadingSignUpLink(true)}
-            onFinishLoadingSignUpLink={() =>setIsLoadingSignUpLink(false)}
-          />
+          <Header />
           <div className={styles.content}>
             {error ? <div className={styles.error}>{error}</div> :
               <Fragment>
                 {showTitle && (
-                  <Title>{isLoadingSignUpLink ? "Loading..." : title}</Title>
+                  <Title>{title}</Title>
                 )}
-                {isLoadingAnything && <LoadingOverlay />}
-                {!isLoadingAnything && (
+                {isLoading && <LoadingOverlay />}
+                {!isLoading && (
                   <Fragment>
                     {children}
                   </Fragment>
@@ -57,4 +52,4 @@ export const Layout: React.FunctionComponent<Props> = (props: Props) => {
       </div>
     </Fragment>
   );
-}
+};
