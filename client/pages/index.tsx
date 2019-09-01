@@ -7,7 +7,7 @@ const IndexPage: React.FunctionComponent = () => {
     <Layout title="Home">
       <p>
         This is the Inbox Comics v2 prototype.
-        Go to the <CommonLink href="http://www.inboxcomics.com/" lowercase>current site</CommonLink>.
+        Go to the <CommonLink href="http://www.inboxcomics.com/" lowercase isExternal>current site</CommonLink>.
       </p>
     </Layout>
   );

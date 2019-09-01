@@ -1,5 +1,5 @@
 import { ApolloError } from "apollo-client";
-import isEmpty from "lodash/isEmpty";
+import moment from "moment-timezone";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import { useEffect, useState } from "react";
@@ -41,7 +41,7 @@ export const useUrlQuery = (): [ParsedUrlQuery, boolean] => {
   const { query } = router;
 
   useEffect(() => {
-    if (query && !isEmpty(query) && !queryIsReady) {
+    if (query != null && !queryIsReady) {
       setQueryIsReady(true);
     }
   }, [query, queryIsReady]);
@@ -50,7 +50,6 @@ export const useUrlQuery = (): [ParsedUrlQuery, boolean] => {
 
 const toastOptions = {
   autoDismiss: true,
-  pauseOnHover: true,
 };
 
 export const toastType = {
@@ -70,4 +69,11 @@ export const toastType = {
     appearance: "info",
     ...toastOptions,
   },
+};
+
+export const formattedComicDeliveryTime = () => {
+  return moment().tz("America/New_York")
+    .hour(5).minutes(0)
+    .tz(moment.tz.guess())
+    .format("h:mm a z");
 };
