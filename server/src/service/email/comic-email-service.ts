@@ -60,9 +60,11 @@ export const emailUsers = async (users: IUser[], options: EmailAllUsersOptions, 
     emailResult,
   }));
   const updatedUsers = augmentedEmailResults
-  .filter((result) => result.emailResult === true)
+  .filter((result) => result.emailResult)
   .map(({ user }) => {
-    user.lastEmailedComics = user.syndications.map((syndication) => syndication.lastSuccessfulComic);
+    user.lastEmailedComics = user.syndications
+      .map((syndication) => syndication.lastSuccessfulComic)
+      .filter((comic) => comic != null);
     user.lastEmailCheck = date.toDate();
     return user;
   });
@@ -80,13 +82,13 @@ export const emailAllUsers = async (date: Moment, options: EmailAllUsersOptions 
     onlyIfWeHaventCheckedToday = true,
     limit = 50,
   } = options;
-  let conditions: any = {verified: true};
+  let conditions: any = { verified: true};
   if (onlyIfWeHaventCheckedToday) {
     conditions = {
       ...conditions,
       $or: [
-        {lastEmailCheck: {$lt: date.startOf("day").toDate()}},
-        {lastEmailCheck: null},
+        { lastEmailCheck: { $lt: date.startOf("day").toDate() } },
+        { lastEmailCheck: null},
       ],
     };
   }
