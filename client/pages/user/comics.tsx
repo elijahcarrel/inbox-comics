@@ -14,9 +14,7 @@ import styles from "./comics.module.scss";
 const UserSyndicationsPage = () => {
   const [urlQuery, urlQueryIsReady] = useUrlQuery();
   const publicId = `${urlQuery.publicId || ""}`;
-  const isNewUser = !!urlQuery.new;
   const [selectedSyndications, setSelectedSyndications] = useState<Set<string> | null>(null);
-  const [email, setEmail] = useState("");
   const { addToast } = useToasts();
   const mutation = gql`
     mutation createUserWithoutEmail {
@@ -34,12 +32,7 @@ const UserSyndicationsPage = () => {
 
   let title = "Loading...";
   if (urlQueryIsReady) {
-    title = "Comics";
-    if (isNewUser) {
-      title = "Choose Comics";
-    } else if (email && email.length > 0) {
-      title = `Update Comics for ${email}`;
-    }
+    title = "Choose Comics";
   }
 
   useEffect(() => {
@@ -52,7 +45,6 @@ const UserSyndicationsPage = () => {
             pathname: "/user/comics",
             query: {
               publicId: result.result.data.createUserWithoutEmail.publicId,
-              new: true,
             },
           };
           await Router.push(url, url, { shallow: true });
@@ -61,7 +53,7 @@ const UserSyndicationsPage = () => {
         }
       });
     }
-  }, [urlQueryIsReady, publicId, addToast]);
+  }, [urlQueryIsReady, publicId, addToast, createUserWithoutEmailMutation]);
 
   if (publicId.length === 0) {
     return <Layout title={title} isLoading />;
@@ -71,11 +63,10 @@ const UserSyndicationsPage = () => {
     <Layout title={title}>
       <SyndicationEditor
         publicId={publicId}
-        isNewUser={isNewUser}
         onChangeSelectedSyndications={setSelectedSyndications}
-        onReceiveEmail={setEmail}
+        isNewUser
       />
-      {isNewUser && selectedSyndications && (
+      {selectedSyndications && (
         <div className={classNames(styles.outerButtonContainer, {
           [styles.isSticky]: selectedSyndications.size > 0,
         })}>

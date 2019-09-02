@@ -1,0 +1,28 @@
+@import "../CommonLink/CommonLink.shared.scss";
+
+.paginationContainer {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
+  .paginationElement {
+    flex: 0 1 auto;
+    margin-left: 10px;
+    margin-right: 10px;
+    :focus {
+      outline: none;
+    }
+
+    .paginationLink {
+      &:not(.activeLink) {
+        @include linkStyle;
+      }
+      .activeLink {
+        font-weight: bold;
+      }
+    }
+  }
+}

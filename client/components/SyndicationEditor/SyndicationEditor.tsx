@@ -14,6 +14,7 @@ interface Props {
   // TODO(ecarrel): kinda gross that these two things are handled internally
   //  and externally.
   onChangeSelectedSyndications?: (selectedSyndications: Set<string>) => any;
+  // TODO(ecarrel): delete this since not being used?
   onReceiveEmail?: (email: string) => any;
 }
 
@@ -81,6 +82,7 @@ export const SyndicationEditor = (props: Props) => {
       syndications {
         title
         identifier
+        numSubscribers
       }
     }
   `;
@@ -89,6 +91,7 @@ export const SyndicationEditor = (props: Props) => {
   interface Syndication {
     title: string;
     identifier: string;
+    numSubscribers: number;
   }
 
   interface SyndicationsResponse {

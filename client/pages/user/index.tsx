@@ -27,7 +27,6 @@ const UserPage: React.FunctionComponent = () => {
   const emailFromUrl = `${urlQuery.email || ""}`;
   const isNewUser = !!urlQuery.new;
   const [selectedSyndications, setSelectedSyndications] = useState<Set<string> | null>(null);
-  console.log("selectedSyndications", selectedSyndications);
 
   // TODO(ecarrel): there's gotta be a better way to do this...
   let userQuery;

@@ -5,6 +5,7 @@ import merge from "lodash/merge";
 import { resolvers as cronReceiverResolvers, typeDefs as cronReceiverTypeDefs } from "./cron-reciever";
 import { resolvers as emailResolvers, typeDefs as emailTypeDefs } from "./email";
 import { resolvers as newsItemResolvers, typeDefs as newsItemTypeDefs } from "./news-item";
+import { resolvers as popularityResolvers, typeDefs as popularityTypeDefs } from "./popularity";
 import { resolvers as scrapeResolvers, typeDefs as scrapeTypeDefs } from "./scrape";
 import { resolvers as comicResolvers, typeDefs as comicTypeDefs } from "./syndication";
 import { resolvers as userResolvers, typeDefs as userTypeDefs } from "./user";
@@ -44,6 +45,7 @@ export const resolvers = merge(
   userResolvers,
   scrapeResolvers,
   emailResolvers,
+  popularityResolvers,
   cronReceiverResolvers,
   newsItemResolvers,
   commonResolver,
@@ -54,6 +56,7 @@ export const typeDefs = [
   userTypeDefs,
   scrapeTypeDefs,
   emailTypeDefs,
+  popularityTypeDefs,
   cronReceiverTypeDefs,
   newsItemTypeDefs,
 ];
