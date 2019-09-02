@@ -1,3 +1,5 @@
+@import "../../common-components/colors.scss";
+
 .subtitle {
   margin-top: 20px;
   margin-bottom: 5px;
@@ -13,5 +15,38 @@
 
   .syndicationContainer {
     flex: 0 1 auto;
+  }
+}
+
+.filteringSection {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+
+  .searchFieldContainer {
+    flex: 0 1 auto;
+    margin-left: 20px;
+    margin-top: auto;
+    margin-bottom: auto;
+    .searchField {}
+  }
+
+  .sortButtons {
+    flex: 0 1 auto;
+    .sortButton {
+      display: block;
+      text-align: right;
+      font-weight: bold;
+      .sortButtonIcon {
+        vertical-align: middle;
+        margin-left: 5px;
+        fill: currentColor;
+      }
+    }
   }
 }

@@ -12,6 +12,7 @@ export interface ISyndication extends Document {
   lastSuccessfulComicScrapeDate: Date | null;
   lastAttemptedComicScrapeDate: Date | null;
   lastSuccessfulComic: IComic;
+  numSubscribers: number;
 }
 
 const syndicationSchema = new Schema({
@@ -28,6 +29,7 @@ const syndicationSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "comic",
   },
+  numSubscribers: Number,
 });
 
 export const Syndication = model<ISyndication>("syndication", syndicationSchema);

@@ -1,20 +1,5 @@
-@import "../colors.scss";
+@import "./CommonLink.shared.scss";
 
 .link {
-  color: $red-color;
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: underline;
-
-  &.uppercase {
-    text-transform: uppercase;
-  }
-
-  &.noUnderline {
-    text-decoration: none;
-  }
-
-  &:hover {
-    text-decoration: none;
-  }
+  @include linkStyle;
 }

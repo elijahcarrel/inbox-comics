@@ -11,6 +11,8 @@ interface Props {
   underline?: boolean;
   className?: string;
   isExternal?: boolean;
+  InnerLinkComponent?: React.ComponentType;
+  isLink?: boolean;
 }
 
 export const CommonLink = (props: Props) => {
@@ -21,28 +23,38 @@ export const CommonLink = (props: Props) => {
     underline = true,
     className = "",
     isExternal = false,
+    InnerLinkComponent,
+    isLink = true,
     onClick,
   } = props;
-  let aProps = {};
+  if (!isLink) {
+    return (
+      <span className={className}>{children}</span>
+    );
+  }
+  let innerLinkProps: object = {
+    className: classNames(styles.link,
+      {[styles.uppercase]: !lowercase},
+      {[styles.noUnderline]: !underline},
+      className,
+    ),
+    onClick: onClick && onClick,
+  };
   if (isExternal) {
-    aProps = {
-      ...aProps,
+    innerLinkProps = {
+      ...innerLinkProps,
       href,
       target: "_blank",
     };
   }
-  const innerLink = (
-    <a
-      className={classNames(styles.link,
-        {[styles.uppercase]: !lowercase},
-        {[styles.noUnderline]: !underline},
-        className,
-      )}
-      onClick={onClick && onClick}
-      {...aProps}
-    >
+  const innerLink = InnerLinkComponent == null ? (
+    <a {...innerLinkProps}>
       {children}
     </a>
+  ) : (
+    <InnerLinkComponent {...innerLinkProps}>
+      {children}
+    </InnerLinkComponent>
   );
   if (!href || isExternal) {
     return innerLink;

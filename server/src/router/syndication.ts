@@ -6,6 +6,7 @@ export const typeDefs = gql`
     id: ID!
     title: String!
     identifier: String!
+    numSubscribers: Int
   }
   extend type Query {
     syndications: [Syndication!]
