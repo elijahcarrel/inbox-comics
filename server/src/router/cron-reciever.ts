@@ -1,6 +1,6 @@
 import { gql } from "apollo-server-micro";
 import { emailAllUsers } from "../service/email/comic-email-service";
-import { computePopularity } from "../service/Popularity";
+import { computePopularity } from "../service/popularity";
 import { scrapeAndSaveAllComics } from "../service/scrape";
 import { now } from "../util/date";
 

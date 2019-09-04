@@ -45,6 +45,7 @@ export const CommonLink = (props: Props) => {
       ...innerLinkProps,
       href,
       target: "_blank",
+      rel: "noopener noreferrer",
     };
   }
   const innerLink = InnerLinkComponent == null ? (

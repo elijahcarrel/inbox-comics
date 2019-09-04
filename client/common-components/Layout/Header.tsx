@@ -26,7 +26,7 @@ export const Header = () => {
                 {
                   key: "sign-up",
                   content: "Sign Up",
-                  href: "/user/comics",
+                  href: "/user/new",
                 },
                 {
                   key: "edit-subscriptions",

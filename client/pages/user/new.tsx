@@ -9,7 +9,7 @@ import { Button } from "../../common-components/Button/Button";
 import { Layout } from "../../common-components/Layout/Layout";
 import { SyndicationEditor } from "../../components/SyndicationEditor/SyndicationEditor";
 import { handleGraphQlResponse, toastType, useUrlQuery } from "../../lib/utils";
-import styles from "./comics.module.scss";
+import styles from "./new.module.scss";
 
 const UserSyndicationsPage = () => {
   const [urlQuery, urlQueryIsReady] = useUrlQuery();
@@ -33,6 +33,9 @@ const UserSyndicationsPage = () => {
   let title = "Loading...";
   if (urlQueryIsReady) {
     title = "Choose Comics";
+    if (selectedSyndications && selectedSyndications.size > 0) {
+      title = `Choose Comics (${selectedSyndications.size} selected)`;
+    }
   }
 
   useEffect(() => {
@@ -42,7 +45,7 @@ const UserSyndicationsPage = () => {
         const { success, combinedErrorMessage } = result;
         if (success) {
           const url = {
-            pathname: "/user/comics",
+            pathname: "/user/new",
             query: {
               publicId: result.result.data.createUserWithoutEmail.publicId,
             },

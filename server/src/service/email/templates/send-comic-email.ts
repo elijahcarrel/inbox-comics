@@ -2,14 +2,14 @@ import { Moment } from "moment-timezone";
 import uuid from "uuid";
 import { sendEmail } from "../send-email";
 
-interface ComicForEmail {
+export interface ComicForEmail {
   syndicationName: string;
   wasUpdated: boolean;
   imageUrl: string | null;
   imageCaption: string | null;
 }
 
-interface SendComicEmailOptions {
+export interface SendComicEmailOptions {
   // Send all comics, regardless of if they were updated. Default: false.
   sendAllComics?: boolean;
   // Mention comics that were not updated (as opposed to just omitting them from the email entirely). Default: true.

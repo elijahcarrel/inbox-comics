@@ -3,7 +3,17 @@ import { Moment } from "moment";
 import { ISyndication } from "../../db-models/syndication";
 import { IUser, User } from "../../db-models/user";
 import { EmailAllUsersOptions } from "../../router/email";
-import { sendComicEmail } from "./templates/send-comic-email";
+import { ComicForEmail, sendComicEmail, SendComicEmailOptions } from "./templates/send-comic-email";
+
+const isWorthSendingEmail = (comics: ComicForEmail[], options: SendComicEmailOptions) => {
+  if (comics.length === 0) {
+    return false;
+  }
+  if (options.sendAllComics) {
+    return true;
+  }
+  return comics.some(({ wasUpdated }) => wasUpdated);
+};
 
 export const emailUsers = async (users: IUser[], options: EmailAllUsersOptions, date: Moment) => {
   const {
@@ -30,7 +40,7 @@ export const emailUsers = async (users: IUser[], options: EmailAllUsersOptions, 
           wasUpdated = false;
         } else {
           const comic = lastEmailedComics.find(
-            ({ syndication: { identifier } }) => identifier === syndication.identifier,
+            (lastEmailedComic) => String(lastEmailedComic.syndication) === String(syndication._id),
           );
           if (comic != null) {
             wasUpdated = comic.imageUrl !== imageUrl;
@@ -49,23 +59,29 @@ export const emailUsers = async (users: IUser[], options: EmailAllUsersOptions, 
         comics,
       };
     });
-
   const sendComicEmailOptions = { sendAllComics, mentionNotUpdatedComics };
   const emailResults = await Promise.all(usersAndTheirComics.map(
-    ({email, googleAnalyticsHash, comics}) =>
-      sendComicEmail(email, comics, sendComicEmailOptions, date, googleAnalyticsHash),
-  ));
+    ({email, googleAnalyticsHash, comics}) => {
+      if (!isWorthSendingEmail(comics, sendComicEmailOptions)) {
+        return Promise.resolve(false);
+      }
+      return sendComicEmail(email, comics, sendComicEmailOptions, date, googleAnalyticsHash);
+    }));
   const augmentedEmailResults = emailResults.map((emailResult, i) => ({
     user: populatedUsers[i],
     emailResult,
   }));
+  const dateAsDate = date.toDate();
   const updatedUsers = augmentedEmailResults
   .filter((result) => result.emailResult)
-  .map(({ user }) => {
+  .map(({ user, emailResult }) => {
     user.lastEmailedComics = user.syndications
       .map((syndication) => syndication.lastSuccessfulComic)
       .filter((comic) => comic != null);
-    user.lastEmailCheck = date.toDate();
+    user.lastEmailCheck = dateAsDate;
+    if (emailResult) {
+      user.lastEmailSent = dateAsDate;
+    }
     return user;
   });
   if (updatedUsers.length > 0) {
@@ -82,7 +98,10 @@ export const emailAllUsers = async (date: Moment, options: EmailAllUsersOptions 
     onlyIfWeHaventCheckedToday = true,
     limit = 50,
   } = options;
-  let conditions: any = { verified: true};
+  let conditions: any = {
+    verified: true,
+    email: { $exists: true, $ne: null },
+  };
   if (onlyIfWeHaventCheckedToday) {
     conditions = {
       ...conditions,
