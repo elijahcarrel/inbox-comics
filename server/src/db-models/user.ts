@@ -11,6 +11,7 @@ export interface IUser extends Document {
   verificationHash: string;
   googleAnalyticsHash: string;
   lastEmailCheck: Date | null;
+  lastEmailSent: Date | null;
 }
 
 const userSchema = new Schema({
@@ -28,6 +29,7 @@ const userSchema = new Schema({
   verificationHash: String!,
   googleAnalyticsHash: String!,
   lastEmailCheck: Date,
+  lastEmailSent: Date,
 }, { timestamps: true });
 
 export const User = model<IUser>("user", userSchema);

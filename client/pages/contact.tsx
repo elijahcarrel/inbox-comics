@@ -4,6 +4,7 @@ import Router from "next/router";
 import React, { useState } from "react";
 // @ts-ignore
 import { useToasts } from "react-toast-notifications";
+import Reaptcha from "reaptcha";
 import { Button } from "../common-components/Button/Button";
 import { CommonLink } from "../common-components/CommonLink/CommonLink";
 import { Layout } from "../common-components/Layout/Layout";
@@ -18,6 +19,10 @@ const ContactPage: React.FunctionComponent = () => {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [recaptchaIsVerified, setRecaptchaIsVerified] = useState(false);
+  // TODO(ecarrel): put this in environment variables and secrets. Tried but couldn't get it to work.
+  const recaptchaSiteKey = process.env.NODE_ENV === "production" ?
+    "6Lf-IbYUAAAAACsBvqBlI2EPp3dRfGOtGmki0LVf" : "6LdAIbYUAAAAAJSiFXndt3k3qFw83Jm7w7HnfP3A";
 
   const mutation = gql`
     mutation submitContactForm {
@@ -30,7 +35,7 @@ const ContactPage: React.FunctionComponent = () => {
     <Layout title="Contact" isLoading={isLoading}>
       <p>We'd love to hear from you!</p>
       <p>You can also reach us by replying to any of your daily comic emails, or by emailing us at{" "}
-        <CommonLink lowercase href="mailto:hello@inboxcomics.com">hello@inboxcomics.com</CommonLink>.
+        <CommonLink lowercase href="mailto:hello@inboxcomics.com" isExternal>hello@inboxcomics.com</CommonLink>.
       </p>
       <div className={styles.contactForm}>
         <TextInput
@@ -66,9 +71,19 @@ const ContactPage: React.FunctionComponent = () => {
           multiline
         />
         <br />
+        <Reaptcha
+          sitekey={recaptchaSiteKey}
+          onVerify={() => setRecaptchaIsVerified(true)}
+          className={styles.recaptcha}
+        />
         <Button
           onClick={async () => {
             setIsLoading(true);
+            if (!recaptchaIsVerified) {
+              addToast("Please verify that you're not a robot first.", toastType.error);
+              setIsLoading(false);
+              return;
+            }
             const result = await handleGraphQlResponse(submitContactFormMutation());
             const { success, combinedErrorMessage } = result;
             if (success) {

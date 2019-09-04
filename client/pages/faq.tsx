@@ -26,7 +26,7 @@ const FAQPage: React.FunctionComponent = () => (
       none of your syndications are updated, we won't bother you an
       empty email.</p>
     <p className={styles.question}>Which syndications do you offer?</p>
-    <p className={styles.answer}>Head over to the <CommonLink lowercase href="/user/comics"
+    <p className={styles.answer}>Head over to the <CommonLink lowercase href="/user/new"
     >sign-up page</CommonLink> to see for yourself, and <CommonLink lowercase href="/contact"
     >tell us</CommonLink> if we're missing one of your
       favorites!</p>
