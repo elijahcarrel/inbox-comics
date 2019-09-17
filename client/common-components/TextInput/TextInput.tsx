@@ -5,36 +5,68 @@ import styles from "./TextInput.module.scss";
 interface Props {
   name: string;
   value: string;
-  onChange: (value: string) => any;
+  onChange?: (value: string) => any;
+  onChangeInternal?: (e: React.FormEvent<HTMLInputElement>) => any;
   className?: string;
   multiline?: boolean;
   placeholder?: string;
   type?: string;
+  hasError?: boolean;
+  helperText?: string;
 }
 
 export const TextInput: React.FunctionComponent<Props> = (props: Props) => {
-  const { name, value, onChange, className, multiline = false, ...otherProps } = props;
-  if (multiline) {
-    return (
-      <textarea
-        name={name}
-        value={value}
-        onChange={({ target: { value: newValue }}) => onChange(newValue)}
-        className={classNames(styles.textInput, className)}
-        {...otherProps}
-      >
+  const { name,
+    value,
+    onChange,
+    onChangeInternal,
+    className,
+    multiline = false,
+    helperText,
+    hasError = false,
+    ...otherProps
+  } = props;
+  // tslint:disable-next-line:no-empty
+  let handleChange: (e: React.FormEvent<HTMLInputElement>) => any = () => {};
+  if (onChangeInternal) {
+    handleChange = onChangeInternal;
+  } else if (onChange) {
+    // @ts-ignore
+    handleChange = ({ target: { value: newValue }}) => onChange(newValue);
+  }
+  const innerElement = multiline ? (
+    <textarea
+      name={name}
+      value={value}
+      // @ts-ignore technically not the right type for textarea.
+      onChange={handleChange}
+      className={classNames(styles.textInput, {
+        [styles.hasError]: hasError,
+      })}
+      {...otherProps}
+    >
         {value}
       </textarea>
-    );
-  }
-  return (
+  ) : (
     <input
       type="text"
       name={name}
       value={value}
-      onChange={({ target: { value: newValue }}) => onChange(newValue)}
-      className={classNames(styles.textInput, className)}
+      onChange={handleChange}
+      className={classNames(styles.textInput, {
+        [styles.hasError]: hasError,
+      })}
       {...otherProps}
     />
+  );
+  return (
+    <div className={classNames(styles.textInputContainer, className)}>
+      {innerElement}
+      {helperText && (
+        <div className={classNames(styles.helperText, {
+          [styles.hasError]: hasError,
+        })}>{helperText}</div>
+      )}
+    </div>
   );
 };

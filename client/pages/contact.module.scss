@@ -1,15 +1,25 @@
+@import "../common-components/colors.scss";
+
 .contactForm {
   text-align: center;
+
   .textInput {
     width: 100%;
     max-width: 500px;
-    margin-bottom: 10px;
   }
+
   .recaptcha {
     div {
       margin-left: auto;
       margin-right: auto;
     }
+
+    margin-bottom: 10px;
+  }
+
+  .recaptchaErrorText {
+    font-size: 0.8em;
+    color: $error-color;
     margin-bottom: 10px;
   }
 }

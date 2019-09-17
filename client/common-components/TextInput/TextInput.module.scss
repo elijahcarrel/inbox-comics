@@ -1,18 +1,37 @@
 @import "../colors.scss";
 @import "../fonts.scss";
 
-.textInput {
-  font-size: 1.5em;
-  font-family: $serif-font;
-  outline: none;
-  border-color: lightgray;
-  border-width: 1px;
-  border-style: solid;
+.textInputContainer {
   width: 100%;
   max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
 
-  // iPhones add extra styling. Remove this.
-  padding: 0;
-  -webkit-appearance: none;
-  border-radius: 0;
+  .textInput {
+    width: 100%;
+    font-size: 1.5em;
+    font-family: $serif-font;
+    outline: none;
+    border-color: $grey-color;
+    border-width: 1px;
+    border-style: solid;
+
+    // iPhones add extra styling. Remove this.
+    padding: 0;
+    -webkit-appearance: none;
+    border-radius: 0;
+
+    &.hasError {
+      border-color: $error-color;
+    }
+  }
+
+  .helperText {
+    font-size: 0.8em;
+    color: $dark-grey-color;
+    text-align: left;
+    &.hasError {
+      color: $error-color;
+    }
+  }
 }
