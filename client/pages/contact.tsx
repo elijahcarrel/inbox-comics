@@ -1,10 +1,12 @@
 import { useMutation } from "@apollo/react-hooks";
+import { FormikHelpers, useFormik } from "formik";
 import gql from "graphql-tag";
 import Router from "next/router";
-import React, { useState } from "react";
+import React from "react";
 // @ts-ignore
 import { useToasts } from "react-toast-notifications";
 import Reaptcha from "reaptcha";
+import * as yup from "yup";
 import { Button } from "../common-components/Button/Button";
 import { CommonLink } from "../common-components/CommonLink/CommonLink";
 import { Layout } from "../common-components/Layout/Layout";
@@ -12,27 +14,69 @@ import { TextInput } from "../common-components/TextInput/TextInput";
 import { handleGraphQlResponse, toastType } from "../lib/utils";
 import styles from "./contact.module.scss";
 
+interface ContactFormValues {
+  email: string;
+  name: string;
+  subject: string;
+  message: string;
+  recaptchaIsVerified: boolean;
+}
+
 const ContactPage: React.FunctionComponent = () => {
   const { addToast } = useToasts();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [subject, setSubject] = useState("");
-  const [message, setMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [recaptchaIsVerified, setRecaptchaIsVerified] = useState(false);
   // TODO(ecarrel): put this in environment variables and secrets. Tried but couldn't get it to work.
   const recaptchaSiteKey = process.env.NODE_ENV === "production" ?
     "6Lf-IbYUAAAAACsBvqBlI2EPp3dRfGOtGmki0LVf" : "6LdAIbYUAAAAAJSiFXndt3k3qFw83Jm7w7HnfP3A";
 
   const mutation = gql`
-    mutation submitContactForm {
-      submitContactForm(email: "${email}", name: "${name}", subject: "${subject}", message: "${message}")
+    mutation submitContactForm($email: String!, $name: String!, $subject: String!, $message: String!) {
+      submitContactForm(email: $email, name: $name, subject: $subject, message: $message)
     }
   `;
   const [submitContactFormMutation] = useMutation(mutation);
+  const formikConfig = {
+    initialValues: {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+      recaptchaIsVerified: false,
+    },
+    validationSchema: yup.object().shape({
+      name: yup.string().required("Name is required."),
+      email: yup.string().email("Must provide a valid email.").required("Email is required."),
+      subject: yup.string().required("Subject is required."),
+      message: yup.string().required("Message is required."),
+      recaptchaIsVerified: yup.boolean().oneOf([true], "Please verify that you're not a robot."),
+    }),
+    onSubmit: async (contactFormValues: ContactFormValues, { setSubmitting }: FormikHelpers<ContactFormValues>) => {
+      const { recaptchaIsVerified, ...relevantValues } = contactFormValues;
+      const result = await handleGraphQlResponse(submitContactFormMutation({ variables: relevantValues }));
+      const { success, combinedErrorMessage } = result;
+      if (success) {
+        addToast("Thank you! We'll get back to you in a jiffy.", toastType.success);
+        await Router.push({
+          pathname: "/",
+          query: {},
+        });
+      } else {
+        addToast(combinedErrorMessage, toastType.error);
+      }
+      setSubmitting(false);
+    },
+  };
+  const {
+    handleSubmit,
+    values,
+    touched,
+    errors,
+    isSubmitting,
+    setFieldValue,
+    handleChange,
+  } = useFormik(formikConfig);
 
   return (
-    <Layout title="Contact" isLoading={isLoading}>
+    <Layout title="Contact" isLoading={isSubmitting}>
       <p>We'd love to hear from you!</p>
       <p>You can also reach us by replying to any of your daily comic emails, or by emailing us at{" "}
         <CommonLink lowercase href="mailto:hello@inboxcomics.com" isExternal>hello@inboxcomics.com</CommonLink>.
@@ -41,63 +85,56 @@ const ContactPage: React.FunctionComponent = () => {
         <TextInput
           name="name"
           placeholder="Name"
-          value={name}
-          onChange={setName}
+          value={values.name}
+          hasError={!!(touched.name && errors.name)}
+          helperText={touched.name ? errors.name : undefined}
+          onChangeInternal={handleChange}
           className={styles.textInput}
         />
         <br />
         <TextInput
           name="email"
           placeholder="Email"
-          value={email}
-          onChange={setEmail}
+          value={values.email}
+          hasError={!!(touched.email && errors.email)}
+          helperText={touched.email ? errors.email : undefined}
+          onChangeInternal={handleChange}
           className={styles.textInput}
         />
         <br />
         <TextInput
           name="subject"
           placeholder="Subject"
-          value={subject}
-          onChange={setSubject}
+          value={values.subject}
+          hasError={!!(touched.subject && errors.subject)}
+          helperText={touched.subject ? errors.subject : undefined}
+          onChangeInternal={handleChange}
           className={styles.textInput}
         />
         <br />
         <TextInput
           name="message"
           placeholder="Message"
-          value={message}
-          onChange={setMessage}
+          value={values.message}
+          hasError={!!(touched.message && errors.message)}
+          helperText={touched.message ? errors.message : undefined}
+          onChangeInternal={handleChange}
           className={styles.textInput}
           multiline
         />
         <br />
         <Reaptcha
           sitekey={recaptchaSiteKey}
-          onVerify={() => setRecaptchaIsVerified(true)}
+          onVerify={() => setFieldValue("recaptchaIsVerified", true)}
           className={styles.recaptcha}
         />
+        {touched.recaptchaIsVerified && errors.recaptchaIsVerified && (
+          <div className={styles.recaptchaErrorText}>
+          {errors.recaptchaIsVerified}
+          </div>
+        )}
         <Button
-          onClick={async () => {
-            setIsLoading(true);
-            if (!recaptchaIsVerified) {
-              addToast("Please verify that you're not a robot first.", toastType.error);
-              setIsLoading(false);
-              return;
-            }
-            const result = await handleGraphQlResponse(submitContactFormMutation());
-            const { success, combinedErrorMessage } = result;
-            if (success) {
-              addToast("Thank you! We'll get back to you in a jiffy.", toastType.success);
-              await Router.push({
-                pathname: "/",
-                query: {},
-              });
-              setIsLoading(false);
-            } else {
-              addToast(combinedErrorMessage, toastType.error);
-              setIsLoading(false);
-            }
-          }}
+          onClick={() => handleSubmit()}
         >
           Go
         </Button>
