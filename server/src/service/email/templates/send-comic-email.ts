@@ -116,6 +116,9 @@ export const sendComicEmail = async (
 	            <br>
             </div>
           </a>
+          <p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+            Good morning! Here are today's comics.
+          </p>
           ${comics.map((comic) => generateHtmlForComic(comic, options)).join("")}
           <h3 style="border-bottom: 1px solid #ddd; font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia,
            serif;" class="appleLinksBlack">That's all for today!</h3>

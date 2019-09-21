@@ -3,7 +3,7 @@ import Link from "next/link";
 import * as React from "react";
 import styles from "./Button.module.scss";
 
-interface Props {
+export interface Props {
   href?: string;
   children: React.ReactNode;
   lowercase?: boolean;

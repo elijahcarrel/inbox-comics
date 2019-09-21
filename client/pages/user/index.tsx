@@ -1,6 +1,7 @@
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
+import { DynamicText } from "../../common-components/DynamicText/DynamicText";
 import { Layout } from "../../common-components/Layout/Layout";
 import { ResendVerificationEmailLink } from "../../components/ResendVerificationEmailLink/ResendVerificationEmailLink";
 import { SyndicationEditor } from "../../components/SyndicationEditor/SyndicationEditor";
@@ -70,50 +71,58 @@ const UserPage: React.FunctionComponent = () => {
     if (selectedSyndications == null) {
       // selectedSyndications hasn't loaded yet. Display a generic message.
       verificationBlock = (
-        <span>
-          You are verified.
-        </span>
+        <p>
+          Your email address is <DynamicText>verified</DynamicText>.
+        </p>
       );
     } else if (selectedSyndications.size === 0) {
       verificationBlock = (
-        <span>
-          You are verified, but not subscribed to any comics.{" "}
-          Subscribe to some below in order to receive comics every day.
-        </span>
+        <Fragment>
+          <p>Your email address is <DynamicText>verified</DynamicText>.</p>
+          <p>
+            However, you are not subscribed to any comics, so you will not receive any emails.
+            Subscribe to some below in order to receive comics every day.
+          </p>
+        </Fragment>
       );
     } else {
       verificationBlock = (
-        <span>
-          You are verified. You will get an email at {formattedComicDeliveryTime()} every day.
-        </span>
+        <Fragment>
+          <p>Your email address is <DynamicText>verified</DynamicText>.</p>
+          <p>You will get an email at <DynamicText>{formattedComicDeliveryTime()}</DynamicText> every day.</p>
+        </Fragment>
       );
     }
   } else {
     if (isNewUser) {
       verificationBlock = (
-        <span>
-          <p>A verification email was just sent to {email}.</p>
+        <Fragment>
+          <p>A verification email was just sent to <DynamicText>{email}</DynamicText>.</p>
           <p><ResendVerificationEmailLink email={email} /></p>
-        </span>
+        </Fragment>
       );
     } else {
       verificationBlock = (
-        <span>
-          <p>You are not verified. Until you verify your email, you will not receive comics.</p>
+        <Fragment>
+          <p>Your email address is <DynamicText>not verified</DynamicText>.</p>
+          <p>Until you verify your email, you will not receive comics.</p>
           <p><ResendVerificationEmailLink email={email} /></p>
-        </span>
+        </Fragment>
       );
     }
   }
 
   return (
     <Layout title="Edit Subscriptions">
-      <div className={styles.centerAlign}>
+      <div className={styles.block}>
+        <p>
+          Your email is <DynamicText>{email}</DynamicText>.
+        </p>
         {verificationBlock}
       </div>
       <SyndicationEditor
         publicId={publicId}
-        isNewUser={isNewUser}
+        isNewUser={false}
         onChangeSelectedSyndications={setSelectedSyndications}
       />
     </Layout>
