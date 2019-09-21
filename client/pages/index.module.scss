@@ -1,0 +1,59 @@
+@import "../common-components/fonts";
+
+.container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  align-content: flex-start;
+
+  .explanation {
+    flex: 0 1 auto;
+    max-width: 300px;
+
+    .comicTeaserList {
+      text-align: left;
+      font-size: 0.9em;
+      font-style: italic;
+
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: flex-start;
+      align-content: flex-start;
+
+      .comicTeaserListItem {
+        flex: 0 1 auto;
+        margin: 3px;
+        font-weight: normal;
+      }
+    }
+  }
+  .emailExampleContainer {
+    max-width: 600px;
+    flex: 0 1 auto;
+    .emailExample {
+      width: 100%;
+      max-width: 608px;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+    }
+  }
+}
+
+.explanationText {
+  font-family: $serif-font;
+  font-size: 1.3em;
+  text-align: center;
+
+  &.bold {
+    font-weight: bold;
+  }
+  &.extraMargin {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+}

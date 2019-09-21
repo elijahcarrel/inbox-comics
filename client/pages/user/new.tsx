@@ -1,15 +1,13 @@
 import { useMutation } from "@apollo/react-hooks";
-import classNames from "classnames";
 import gql from "graphql-tag";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
 // @ts-ignore
 import { useToasts } from "react-toast-notifications";
-import { Button } from "../../common-components/Button/Button";
+import { CallToAction } from "../../common-components/CallToAction/CallToAction";
 import { Layout } from "../../common-components/Layout/Layout";
 import { SyndicationEditor } from "../../components/SyndicationEditor/SyndicationEditor";
 import { handleGraphQlResponse, toastType, useUrlQuery } from "../../lib/utils";
-import styles from "./new.module.scss";
 
 const UserSyndicationsPage = () => {
   const [urlQuery, urlQueryIsReady] = useUrlQuery();
@@ -70,24 +68,17 @@ const UserSyndicationsPage = () => {
         isNewUser
       />
       {selectedSyndications && (
-        <div className={classNames(styles.outerButtonContainer, {
-          [styles.isSticky]: selectedSyndications.size > 0,
-        })}>
-          <div className={styles.faderElement} />
-          <div className={styles.innerButtonContainer}>
-            <Button
-              onClick={async () => {
-                await Router.push({
-                  pathname: "/user/subscribe",
-                  query: { publicId },
-                });
-              }}
-              className={styles.button}
-            >
-              {selectedSyndications.size > 0 ? "Next →" : "Continue without selecting comics →"}
-            </Button>
-          </div>
-        </div>
+        <CallToAction
+          isSticky={selectedSyndications.size > 0}
+          onClick={async () => {
+            await Router.push({
+              pathname: "/user/subscribe",
+              query: { publicId },
+            });
+          }}
+          >
+          {selectedSyndications.size > 0 ? "Next →" : "Continue without selecting comics →"}
+        </CallToAction>
       )}
     </Layout>
   );

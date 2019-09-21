@@ -1,5 +1,3 @@
-@import "../common-components/colors.scss";
-
 .question {
   font-weight: bold;
   font-style: italic;
@@ -8,12 +6,4 @@
 
 .question, .answer {
   text-align:left;
-}
-
-.figure {
-  background-color: $light-grey-color;
-  padding-left: 3px;
-  padding-right: 3px;
-  border: 1px solid $grey-color;
-  font-weight: bold;
 }
