@@ -10,13 +10,15 @@ interface Props {
 export const Toast = (props: Props) => {
   const { children, ...otherProps } = props;
   return (
-    <DefaultToast
-      className={styles.toast}
-      {...otherProps}
-    >
-      <span className={styles.innerToast}>
-        {children}
-      </span>
-    </DefaultToast>
+    <div className={styles.toastContainer}>
+      <DefaultToast
+        className={styles.toast}
+        {...otherProps}
+      >
+        <span className={styles.innerToast}>
+          {children}
+        </span>
+      </DefaultToast>
+    </div>
   );
 };

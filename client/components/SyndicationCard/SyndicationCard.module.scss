@@ -34,7 +34,7 @@
   &.selected {
     background-color: $red-color;
     .syndicationTitleText {
-      background-color: lighten($red-color, 40);
+      background-color: lighten($red-color, 55);
     }
   }
 }

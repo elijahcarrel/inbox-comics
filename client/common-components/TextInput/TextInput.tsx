@@ -13,6 +13,7 @@ interface Props {
   type?: string;
   hasError?: boolean;
   helperText?: string;
+  isClearable?: boolean;
 }
 
 export const TextInput: React.FunctionComponent<Props> = (props: Props) => {
@@ -24,6 +25,7 @@ export const TextInput: React.FunctionComponent<Props> = (props: Props) => {
     multiline = false,
     helperText,
     hasError = false,
+    isClearable = false,
     ...otherProps
   } = props;
   // tslint:disable-next-line:no-empty
@@ -62,6 +64,24 @@ export const TextInput: React.FunctionComponent<Props> = (props: Props) => {
   return (
     <div className={classNames(styles.textInputContainer, className)}>
       {innerElement}
+      {isClearable && value.length > 0 && (
+        <span
+          // TODO(ecarrel): make this look good.
+          title="Clear"
+          className={styles.clearButton}
+          onClick={(e) => {
+            e.preventDefault();
+            if (onChangeInternal) {
+              // @ts-ignore technically not the right type for textarea.
+              onChangeInternal({target: { value: "" }});
+            } else if (onChange) {
+              onChange("");
+            }
+          }}
+        >
+          &times;
+        </span>
+      )}
       {helperText && (
         <div className={classNames(styles.helperText, {
           [styles.hasError]: hasError,
