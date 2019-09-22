@@ -103,6 +103,7 @@ export const SyndicationGrid = (props: Props) => {
               setPageNumber(0);
             }}
             className={styles.searchField}
+            type="search"
           />
         </div>
       </div>

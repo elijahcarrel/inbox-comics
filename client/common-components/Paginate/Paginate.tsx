@@ -23,12 +23,12 @@ export const Paginate = (props: Props) => {
       }}
       previousLabel={pageNumber === 0 ? "" : "← Previous"}
       nextLabel={pageNumber === numPages - 1 ? "" : "→ Next"}
-      pageClassName={styles.paginationElement}
-      previousClassName={styles.paginationElement}
-      nextClassName={styles.paginationElement}
-      pageLinkClassName={styles.paginationLink}
-      previousLinkClassName={styles.paginationLink}
-      nextLinkClassName={styles.paginationLink}
+      pageClassName={styles.pageNumberContainer}
+      previousClassName={styles.pageNumberContainer}
+      nextClassName={styles.pageNumberContainer}
+      pageLinkClassName={styles.pageNumberLink}
+      previousLinkClassName={styles.pageNumberLink}
+      nextLinkClassName={styles.pageNumberLink}
       activeLinkClassName={styles.activeLink}
       containerClassName={styles.paginationContainer}
     />
