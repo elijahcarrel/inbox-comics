@@ -13,6 +13,7 @@ import { Layout } from "../common-components/Layout/Layout";
 import { TextInput } from "../common-components/TextInput/TextInput";
 import { handleGraphQlResponse, toastType } from "../lib/utils";
 import styles from "./contact.module.scss";
+import {H3} from "../common-components/H3/H3";
 
 interface ContactFormValues {
   email: string;
@@ -77,10 +78,10 @@ const ContactPage: React.FunctionComponent = () => {
 
   return (
     <Layout title="Contact" isLoading={isSubmitting}>
-      <p>We'd love to hear from you!</p>
-      <p>You can also reach us by replying to any of your daily comic emails, or by emailing us at{" "}
+      <H3>We'd love to hear from you!</H3>
+      <H3>You can also reach us by replying to any of your daily comic emails, or by emailing us at{" "}
         <CommonLink lowercase href="mailto:hello@inboxcomics.com" isExternal>hello@inboxcomics.com</CommonLink>.
-      </p>
+      </H3>
       <div className={styles.contactForm}>
         <TextInput
           name="name"
@@ -91,7 +92,6 @@ const ContactPage: React.FunctionComponent = () => {
           onChangeInternal={handleChange}
           className={styles.textInput}
         />
-        <br />
         <TextInput
           name="email"
           placeholder="Email"
@@ -101,7 +101,6 @@ const ContactPage: React.FunctionComponent = () => {
           onChangeInternal={handleChange}
           className={styles.textInput}
         />
-        <br />
         <TextInput
           name="subject"
           placeholder="Subject"
@@ -111,7 +110,6 @@ const ContactPage: React.FunctionComponent = () => {
           onChangeInternal={handleChange}
           className={styles.textInput}
         />
-        <br />
         <TextInput
           name="message"
           placeholder="Message"
@@ -122,7 +120,6 @@ const ContactPage: React.FunctionComponent = () => {
           className={styles.textInput}
           multiline
         />
-        <br />
         <Reaptcha
           sitekey={recaptchaSiteKey}
           onVerify={() => setFieldValue("recaptchaIsVerified", true)}

@@ -1,21 +1,21 @@
-import classNames from "classnames";
 import * as React from "react";
 import { CallToAction } from "../common-components/CallToAction/CallToAction";
+import { CommonLink } from "../common-components/CommonLink/CommonLink";
 import { DynamicText } from "../common-components/DynamicText/DynamicText";
+import { H3 } from "../common-components/H3/H3";
 import { Layout } from "../common-components/Layout/Layout";
 import styles from "./index.module.scss";
-import {CommonLink} from "../common-components/CommonLink/CommonLink";
 
 const IndexPage: React.FunctionComponent = () => {
   return (
     <Layout>
       <div className={styles.container}>
         <div className={styles.explanation}>
-          <p className={classNames(styles.explanationText, styles.bold)}>Your choice of 400+ comic and webcomic syndications.</p>
-          <p className={styles.explanationText}>Bundled and emailed to you each morning.</p>
-          <p className={styles.explanationText}>With no ads.</p>
-          <p className={styles.explanationText}>And it's completely free.</p>
-          <p className={classNames(styles.explanationText, styles.bold, styles.extraMargin)}>Choose from:</p>
+          <H3 bold>Your choice of 400+ comic and webcomic syndications.</H3>
+          <H3>Bundled and emailed to you each morning.</H3>
+          <H3>With no ads.</H3>
+          <H3>And it's completely free.</H3>
+          <H3 bold className={styles.extraMargin}>Choose from:</H3>
           <div className={styles.comicTeaserList}>
             {[
               "Calvin and Hobbes", "xkcd", "Garfield", "Pearls before Swine", "Pickles",
@@ -29,7 +29,7 @@ const IndexPage: React.FunctionComponent = () => {
             ))}
           </div>
           <div>
-            <p className={styles.explanationText}>... and many more.</p>
+            <p>... and many more.</p>
           </div>
         </div>
         <div className={styles.emailExampleContainer}>
@@ -44,11 +44,11 @@ const IndexPage: React.FunctionComponent = () => {
         isSticky
         href="/user/new"
       >
-        Explore our catalog and sign up. →
+        Explore our catalog and sign up →
       </CallToAction>
-      <p className={classNames(styles.explanationText, styles.extraMargin)}>
+      <H3 className={styles.extraMargin}>
         Or, if you'd prefer, <CommonLink lowercase href="/faq">read the FAQ</CommonLink> before you jump right in.
-      </p>
+      </H3>
     </Layout>
   );
 };

@@ -8,6 +8,7 @@
   margin-right: auto;
 
   .textInput {
+    display: block;
     width: 100%;
     font-size: 1.5em;
     font-family: $serif-font;
@@ -15,11 +16,12 @@
     border-color: $grey-color;
     border-width: 1px;
     border-style: solid;
+    border-radius: 1em;
+    padding: 0.1em 0.5em;
+    margin-bottom: 0;
 
     // iPhones add extra styling. Remove this.
-    padding: 0;
     -webkit-appearance: none;
-    border-radius: 0;
 
     &.hasError {
       border-color: $error-color;
@@ -30,6 +32,8 @@
     font-size: 0.8em;
     color: $dark-grey-color;
     text-align: left;
+    padding-left: 1em;
+    padding-top: 5px;
     &.hasError {
       color: $error-color;
     }

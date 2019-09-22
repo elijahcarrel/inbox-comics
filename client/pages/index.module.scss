@@ -1,4 +1,5 @@
 @import "../common-components/fonts";
+@import "../common-components/utils";
 
 .container {
   display: flex;
@@ -10,7 +11,15 @@
 
   .explanation {
     flex: 0 1 auto;
-    max-width: 300px;
+    max-width: 608px;
+    margin-left: auto;
+    margin-right: auto;
+
+    @include respond-to(915px) {
+      margin-left: unset;
+      margin-right: unset;
+      max-width: 300px;
+    }
 
     .comicTeaserList {
       text-align: left;
@@ -32,7 +41,7 @@
     }
   }
   .emailExampleContainer {
-    max-width: 600px;
+    max-width: 608px;
     flex: 0 1 auto;
     .emailExample {
       width: 100%;
@@ -41,19 +50,16 @@
       margin-right: auto;
       display: block;
     }
+    margin-left: auto;
+    margin-right: auto;
+    @include respond-to(915px) {
+      margin-left: unset;
+      margin-right: unset;
+    }
   }
 }
 
-.explanationText {
-  font-family: $serif-font;
-  font-size: 1.3em;
-  text-align: center;
-
-  &.bold {
-    font-weight: bold;
-  }
-  &.extraMargin {
-    margin-top: 15px;
-    margin-bottom: 15px;
-  }
+.extraMargin {
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
