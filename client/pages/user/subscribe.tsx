@@ -7,6 +7,8 @@ import React, { useEffect, useState } from "react";
 import { useToasts } from "react-toast-notifications";
 import * as yup from "yup";
 import { Button } from "../../common-components/Button/Button";
+import { DynamicText } from "../../common-components/DynamicText/DynamicText";
+import { H3 } from "../../common-components/H3/H3";
 import { Layout } from "../../common-components/Layout/Layout";
 import { TextInput } from "../../common-components/TextInput/TextInput";
 import { handleGraphQlResponse, stringifyGraphQlError, toastType, useUrlQuery } from "../../lib/utils";
@@ -113,7 +115,7 @@ const NewUserPage: React.FunctionComponent = () => {
   if (userQueryResponse.error) {
     return <Layout error={stringifyGraphQlError(userQueryResponse.error)} />;
   }
-  const title = "Finish Subscribing";
+  const title = "One Last Step";
   if (
     userQueryResponse.loading ||
     !userQueryResponse.data ||
@@ -126,6 +128,11 @@ const NewUserPage: React.FunctionComponent = () => {
 
   return (
     <Layout title={title} isLoading={isSubmitting} >
+      <H3>
+        Enter your email to get
+        these <DynamicText>{user.syndications.length}</DynamicText> comics
+        emailed to you every morning.
+      </H3>
       <div className={styles.container}>
         <TextInput
           name="email"

@@ -1,12 +1,13 @@
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import React, { useState, Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { DynamicText } from "../../common-components/DynamicText/DynamicText";
 import { Layout } from "../../common-components/Layout/Layout";
 import { ResendVerificationEmailLink } from "../../components/ResendVerificationEmailLink/ResendVerificationEmailLink";
 import { SyndicationEditor } from "../../components/SyndicationEditor/SyndicationEditor";
 import { formattedComicDeliveryTime, stringifyGraphQlError, useUrlQuery } from "../../lib/utils";
 import styles from "./index.module.scss";
+import { H3 } from "../../common-components/H3/H3";
 
 interface User {
   email: string;
@@ -71,25 +72,25 @@ const UserPage: React.FunctionComponent = () => {
     if (selectedSyndications == null) {
       // selectedSyndications hasn't loaded yet. Display a generic message.
       verificationBlock = (
-        <p>
+        <H3>
           Your email address is <DynamicText>verified</DynamicText>.
-        </p>
+        </H3>
       );
     } else if (selectedSyndications.size === 0) {
       verificationBlock = (
         <Fragment>
-          <p>Your email address is <DynamicText>verified</DynamicText>.</p>
-          <p>
+          <H3>Your email address is <DynamicText>verified</DynamicText>.</H3>
+          <H3>
             However, you are not subscribed to any comics, so you will not receive any emails.
             Subscribe to some below in order to receive comics every day.
-          </p>
+          </H3>
         </Fragment>
       );
     } else {
       verificationBlock = (
         <Fragment>
-          <p>Your email address is <DynamicText>verified</DynamicText>.</p>
-          <p>You will get an email at <DynamicText>{formattedComicDeliveryTime()}</DynamicText> every day.</p>
+          <H3>Your email address is <DynamicText>verified</DynamicText>.</H3>
+          <H3>You will get an email at <DynamicText>{formattedComicDeliveryTime()}</DynamicText> every day.</H3>
         </Fragment>
       );
     }
@@ -97,16 +98,17 @@ const UserPage: React.FunctionComponent = () => {
     if (isNewUser) {
       verificationBlock = (
         <Fragment>
-          <p>A verification email was just sent to <DynamicText>{email}</DynamicText>.</p>
-          <p><ResendVerificationEmailLink email={email} /></p>
+          <H3>A verification email was just sent to <DynamicText>{email}</DynamicText>.</H3>
+          <H3><ResendVerificationEmailLink email={email} /></H3>
+          <H3>You'll receive comics once you verify your email.</H3>
         </Fragment>
       );
     } else {
       verificationBlock = (
         <Fragment>
-          <p>Your email address is <DynamicText>not verified</DynamicText>.</p>
-          <p>Until you verify your email, you will not receive comics.</p>
-          <p><ResendVerificationEmailLink email={email} /></p>
+          <H3>Your email address is <DynamicText>not verified</DynamicText>.</H3>
+          <H3>Until you verify your email, you will not receive comics.</H3>
+          <H3><ResendVerificationEmailLink email={email} /></H3>
         </Fragment>
       );
     }
@@ -115,9 +117,9 @@ const UserPage: React.FunctionComponent = () => {
   return (
     <Layout title="Edit Subscriptions">
       <div className={styles.block}>
-        <p>
+        <H3>
           Your email is <DynamicText>{email}</DynamicText>.
-        </p>
+        </H3>
         {verificationBlock}
       </div>
       <SyndicationEditor

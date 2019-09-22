@@ -4,7 +4,7 @@ import { Moment } from "moment";
 import React, { Fragment } from "react";
 import Truncate from "react-truncate";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
-import { Subtitle } from "../../common-components/Subtitle/Subtitle";
+import { H2 } from "../../common-components/H2/H2";
 import styles from "./NewsItem.module.scss";
 
 interface Props {
@@ -53,7 +53,7 @@ export const NewsItem = (props: Props) => {
   return (
     <div className={styles.newsItemContainer} key={identifier}>
       <div className={classNames(styles.newsItem, { [styles.isNotLastItem]: !isLastItem && previewOnly })}>
-        <Subtitle className={styles.headline}>{headline}</Subtitle>
+        <H2 className={styles.headline}>{headline}</H2>
         <div className={styles.date}>
           <CommonLink href={`/news/${identifier}`} className={styles.dateLink} lowercase>
             {formattedCreateTime}

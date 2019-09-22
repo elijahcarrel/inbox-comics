@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React, { Fragment } from "react";
 import { LoadingOverlay } from "../LoadingOverlay/LoadingOverlay";
-import { Title } from "../Title/Title";
+import { H1 } from "../H1/H1";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import styles from "./Layout.module.scss";
@@ -36,7 +36,7 @@ export const Layout: React.FunctionComponent<Props> = (props: Props) => {
             {error ? <div className={styles.error}>{error}</div> :
               <Fragment>
                 {showTitle && (
-                  <Title>{title}</Title>
+                  <H1>{title}</H1>
                 )}
                 {isLoading && <LoadingOverlay />}
                 {!isLoading && (

@@ -1,17 +1,17 @@
 import classNames from "classnames";
 import React from "react";
-import styles from "./Title.module.scss";
+import styles from "./H2.module.scss";
 
 interface Props {
   children: React.ReactNode;
   className?: string;
 }
 
-export const Title = (props: Props) => {
+export const H2 = (props: Props) => {
   const { children, className = "" } = props;
   return (
-    <h1 className={classNames(styles.title, className)}>
+    <h2 className={classNames(styles.h2, className)}>
       {children}
-    </h1>
+    </h2>
   );
 };

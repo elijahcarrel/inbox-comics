@@ -1,8 +1,12 @@
 @import "../fonts";
 
-.title {
-  font-weight: bold;
+.h3 {
+  font-weight: normal;
   font-family: $serif-font;
   margin-top: 0;
+  font-size: 1.3em;
   text-align: center;
+  &.bold {
+    font-weight: bold;
+  }
 }
