@@ -9,6 +9,7 @@
 
   .textInput {
     display: block;
+    box-sizing: border-box;
     width: 100%;
     font-size: 1.5em;
     font-family: $serif-font;
