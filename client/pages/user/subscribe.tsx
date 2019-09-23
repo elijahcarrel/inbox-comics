@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@apollo/react-hooks";
 import { FormikHelpers, useFormik } from "formik";
 import gql from "graphql-tag";
 import Router from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 // @ts-ignore
 import { useToasts } from "react-toast-notifications";
 import * as yup from "yup";
@@ -129,9 +129,19 @@ const NewUserPage: React.FunctionComponent = () => {
   return (
     <Layout title={title} isLoading={isSubmitting} >
       <H3>
-        Enter your email to get
-        these <DynamicText>{user.syndications.length}</DynamicText> comics
-        emailed to you every morning.
+        {user.syndications.length === 0 ? (
+          "Enter your email."
+        ) : (
+          <Fragment>
+            Enter your email to get the
+            {" "}
+            <DynamicText>{user.syndications.length}</DynamicText>
+            {" "}
+            {user.syndications.length === 1 ? "comic" : "comics"}
+            {" "}
+            you have selected emailed to you every morning.
+          </Fragment>
+        )}
       </H3>
       <div className={styles.container}>
         <TextInput

@@ -44,7 +44,7 @@ const IndexPage: React.FunctionComponent = () => {
         isSticky
         href="/user/new"
       >
-        Explore our catalog and sign up →
+        Get Started →
       </CallToAction>
       <H3 className={styles.extraMargin}>
         Or, if you'd prefer, <CommonLink href="/faq">read the FAQ</CommonLink> before you jump right in.
