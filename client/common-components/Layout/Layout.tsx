@@ -45,11 +45,11 @@ export const Layout: React.FunctionComponent<Props> = (props: Props) => {
         <link rel="icon" type="image/png" href="/static/images/favs/favicon-96x96.png" sizes="96x96" />
         <link rel="icon" type="image/png" href="/static/images/favs/favicon-32x32.png" sizes="32x32" />
         <link rel="icon" type="image/png" href="/static/images/favs/favicon-16x16.png" sizes="16x16" />
-        <meta property="og:image" content="/static/images/ogimage.png" />
-        <meta name="twitter:image" content="/static/images/ogimage.png" />
+        <meta property="og:image" content="https://www.inboxcomics.com/static/images/ogimage.png" />
+        <meta name="twitter:image" content="https://www.inboxcomics.com/static/images/ogimage.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:creator" content="@inboxcomics" />
-        <meta name="twitter:domain" content="/" />
+        <meta name="twitter:domain" content="https://www.inboxcomics.com/" />
         <meta name="twitter:site" content="@inboxcomics" />
       </Head>
       <div className={styles.bodyContainer}>

@@ -25,7 +25,7 @@ const IndexPage: React.FunctionComponent = () => {
               "Hi and Lois", "Bizarro", "Frazz", "Zits", "Baby Blues", "Dustin", "Pooch Cafe",
               "Beetle Bailey", "Wizard of Id", "Ziggy", "Dennis the Menace", "Luann",
             ].map((syndicationName: string) => (
-              <DynamicText className={styles.comicTeaserListItem}>{syndicationName}</DynamicText>
+              <DynamicText className={styles.comicTeaserListItem} key={syndicationName}>{syndicationName}</DynamicText>
             ))}
           </div>
           <div>
