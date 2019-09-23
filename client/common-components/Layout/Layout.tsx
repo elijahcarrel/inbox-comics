@@ -24,12 +24,33 @@ export const Layout: React.FunctionComponent<Props> = (props: Props) => {
     error,
     errorAction = null,
   } = props;
+  const siteTitle = "Inbox Comics";
+  const displayTitle = title ? `{siteTitle} | ${title}` : siteTitle;
+  const description = "Get your selection of over 400 comics, including Calvin and Hobbes and Pearls Before Swine, emailed to you every morning, completely free and never with any ads. Sign up now— it only takes a minute!";
   return (
     <Fragment>
       <Head>
-        <title>{title ? `Inbox Comics | ${title}` : "Inbox Comics"}</title>
+        <title>{displayTitle}</title>
+        <meta name="twitter:title" content={displayTitle} />
+        <meta name="og:title" content={displayTitle} />
+        <meta name="application-name" content={siteTitle} />
+        <meta property="og:site_name" content={siteTitle} />
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name="description" content={description} />
+        <meta property="og:description" content={description} />
+        <meta property="og:type" content="website" />
+        <link rel="icon" type="image/png" href="/static/images/favs/favicon-196x196.png" sizes="196x196" />
+        <link rel="icon" type="image/png" href="/static/images/favs/favicon-128x128.png" sizes="128x128" />
+        <link rel="icon" type="image/png" href="/static/images/favs/favicon-96x96.png" sizes="96x96" />
+        <link rel="icon" type="image/png" href="/static/images/favs/favicon-32x32.png" sizes="32x32" />
+        <link rel="icon" type="image/png" href="/static/images/favs/favicon-16x16.png" sizes="16x16" />
+        <meta property="og:image" content="/static/images/ogimage.png" />
+        <meta name="twitter:image" content="/static/images/ogimage.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:creator" content="@inboxcomics" />
+        <meta name="twitter:domain" content="/" />
+        <meta name="twitter:site" content="@inboxcomics" />
       </Head>
       <div className={styles.bodyContainer}>
         <div className={styles.body}>
