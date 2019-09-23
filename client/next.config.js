@@ -7,4 +7,5 @@ module.exports = withSass({
   },
   target: 'serverless',
   crossOrigin: 'anonymous',
+  experimental: { publicDirectory: true },
 });
