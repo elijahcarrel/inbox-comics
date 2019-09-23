@@ -1,7 +1,6 @@
 {
   "version": 2,
   "name": "app",
-  "alias": ["app.inboxcomics.now.sh"],
   "builds": [
     { "src": "next.config.js", "use": "@now/next" }
   ],

@@ -1,7 +1,6 @@
 {
   "version": 2,
   "name": "api",
-  "alias": ["api.inboxcomics.now.sh"],
   "builds": [
     {
       "src": "src/index.ts",
@@ -11,8 +10,8 @@
   "env": {
     "mongodb_url": "@mongodb_url",
     "elasticemail_api_key": "@elasticemail_api_key",
-    "domain": "https://app.inboxcomics.now.sh",
-    "graphql_http_endpoint": "https://api.inboxcomics.now.sh/graphql"
+    "domain": "https://www.inboxcomics.com",
+    "graphql_http_endpoint": "https://api.inboxcomics.com/graphql"
   },
   "routes": [
     { "src": "/(.*)", "dest": "/src/index.ts" }

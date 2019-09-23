@@ -3,11 +3,12 @@ import { sendEmail } from "../send-email";
 export const sendVerificationEmail = async (email: string, verificationHash: string) => {
 
   const uriEncodedEmail = encodeURIComponent(email);
+  const subject = "Verify your Inbox Comics Subscription";
   const verificationLink =
     `${process.env.domain}/user/verify?email=${uriEncodedEmail}&verificationHash=${verificationHash}`;
   const body = `<html>
 <head>
-  <title>$subject</title>
+  <title>${subject}</title>
 </head>
 <body>
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -16,8 +17,8 @@ export const sendVerificationEmail = async (email: string, verificationHash: str
         <div id="email" style="padding-left: 10px; padding-right: 10px; text-align: left; max-width: 650px;
         line-height: 1.5; font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif; color: #000000;">
           <a href="${process.env.domain}"><div style="border-bottom: 2px solid rgb(186,1,6); position:relative;"><img
-          src="
-          "
+          src="${process.env.domain}/static/images/stamp-and-text-transparent.png"
+                  srcset="${process.env.domain}/static/images/stamp-and-text-transparent@2x.png 2x"
               style="padding-bottom:0px; width:420px; margin-bottom:0px;
               margin-left:-1px; font-weight:bold; font-size: 1.2em;"
               alt="Inbox Comics" /><br></div></a>
@@ -52,5 +53,5 @@ export const sendVerificationEmail = async (email: string, verificationHash: str
 </html>
 `;
 
-  return await sendEmail(email, "Verify your Inbox Comics Subscription", body);
+  return await sendEmail(email, subject, body);
 };

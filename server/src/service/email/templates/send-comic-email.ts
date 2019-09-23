@@ -90,9 +90,10 @@ export const sendComicEmail = async (
   const updateSubscriptionsUrl = `${process.env.domain}/user?email=${encodeURIComponent(email)}&utm_source=dailycomics&utm_medium=email&utm_term=$dateanalytics&utm_campaign=dailycomics`;
   // tslint:disable-next-line max-line-length
   const googleAnalyticsUrl = `https://www.google-analytics.com/collect?v=1&tid=UA-75894353-1&cid=${googleAnalyticsHash}&t=event&ec=email&ea=open&dp=/email/dailycomics$dateanalytics&dt=$subjectencoded&cn=dailycomics&cm=email`;
+  const subject = `Inbox Comics for ${date.format("MMMM Do, YYYY")}`;
   const body = `<html>
 <head>
-  <title>$subject</title>
+  <title>${subject}</title>
   <style>
 	  .appleLinksBlack a {color: #000000 !important; text-decoration: none;}
   </style>
@@ -140,6 +141,5 @@ export const sendComicEmail = async (
 </body>
 </html>
 `;
-  const subject = `Inbox Comics for ${date.format("MMMM Do, YYYY")}`;
   return await sendEmail(email, subject, body);
 };

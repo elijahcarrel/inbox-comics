@@ -75,7 +75,7 @@ export const toastType = {
 
 export const formattedComicDeliveryTime = () => {
   return moment().tz("America/New_York")
-    .hour(5).minutes(0)
+    .hour(6).minutes(0)
     .tz(moment.tz.guess())
     .format("h:mm a z");
 };
