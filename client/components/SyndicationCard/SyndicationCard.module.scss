@@ -13,7 +13,7 @@
   align-items: center;
   align-content: flex-start;
   cursor: pointer;
-  border-radius: 1em;
+  border-radius: 23px;
 
   .syndicationLogo {
     border-radius: 50px;
@@ -23,12 +23,12 @@
 
   .syndicationTitleText {
     flex: 0 1 auto;
-    border-radius: 1em;
-    width: 100%;
+    border-radius: 13px;
+    width: 108px;
     text-align: center;
     background-color: white;
-    padding-left: 3px;
-    padding-right: 3px;
+    padding-left: 6px;
+    padding-right: 6px;
   }
 
   &.selected {

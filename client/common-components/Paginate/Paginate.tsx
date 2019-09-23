@@ -10,6 +10,9 @@ interface Props {
 export const Paginate = (props: Props) => {
   const { onPageChange, numPages } = props;
   const [pageNumber, setPageNumber] = useState(0);
+  if (numPages === 0) {
+    return null;
+  }
   return (
     <ReactPaginate
       pageCount={numPages}
