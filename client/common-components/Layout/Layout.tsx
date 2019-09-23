@@ -25,7 +25,7 @@ export const Layout: React.FunctionComponent<Props> = (props: Props) => {
     errorAction = null,
   } = props;
   const siteTitle = "Inbox Comics";
-  const displayTitle = title ? `{siteTitle} | ${title}` : siteTitle;
+  const displayTitle = title ? `${siteTitle} | ${title}` : siteTitle;
   const description = "Get your selection of over 400 comics, including Calvin and Hobbes and xkcd, emailed to you every morning, completely free and never with any ads. Sign up now— it only takes a minute!";
   return (
     <Fragment>
