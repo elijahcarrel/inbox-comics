@@ -77,7 +77,7 @@ const UserSyndicationsPage = () => {
             });
           }}
           >
-          {selectedSyndications.size > 0 ? "Next →" : "Continue without selecting comics →"}
+          {selectedSyndications.size > 0 ? "Next →" : "Continue Without Selecting Comics →"}
         </CallToAction>
       )}
     </Layout>
