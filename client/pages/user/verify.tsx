@@ -4,6 +4,8 @@ import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import { Layout } from "../../common-components/Layout/Layout";
 import { GraphQlResult, handleGraphQlResponse, useUrlQuery } from "../../lib/utils";
+import {H3} from "../../common-components/H3/H3";
+import {ResendVerificationEmailLink} from "../../components/ResendVerificationEmailLink/ResendVerificationEmailLink";
 
 const VerifyUserPage: React.FunctionComponent = () => {
   const [urlQuery, urlQueryIsReady] = useUrlQuery();
@@ -41,7 +43,12 @@ const VerifyUserPage: React.FunctionComponent = () => {
   }, [isVerifying, setIsVerifying, urlQueryIsReady]);
 
   if (error != null) {
-    return <Layout error={error} />;
+    return <Layout error={error} errorAction={(
+      <H3><ResendVerificationEmailLink email={String(email)} /></H3>
+    )} />;
+  }
+  if (!urlQueryIsReady) {
+    return <Layout title="Verifying..." isLoading />;
   }
   return (
     <Layout title={`Verifying ${email}...`} isLoading={verificationIsLoading}>

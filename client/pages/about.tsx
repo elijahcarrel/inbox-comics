@@ -6,9 +6,9 @@ const AboutPage: React.FunctionComponent = () => (
   <Layout title="About">
     <p>
       We are
-      {" "}<CommonLink href="http://www.elijahcarrel.me/" lowercase isExternal>Elijah Carrel</CommonLink>{" "}
+      {" "}<CommonLink href="http://www.elijahcarrel.me/" isExternal>Elijah Carrel</CommonLink>{" "}
       and
-      {" "}<CommonLink href="http://www.gabereiss.com/" lowercase isExternal>Gabe Reiss</CommonLink>.
+      {" "}<CommonLink href="http://www.gabereiss.com/" isExternal>Gabe Reiss</CommonLink>.
       We created Inbox Comics for fun in our spare time in the summer of 2014
       before we both left for college,
       just because we wanted a simple paperless way to receive comics every day.</p>
@@ -20,11 +20,11 @@ const AboutPage: React.FunctionComponent = () => (
     </p>
     <p>
       Check out the
-      {" "}<CommonLink href="/faq" lowercase>FAQ</CommonLink>{" "}
+      {" "}<CommonLink href="/faq">FAQ</CommonLink>{" "}
       or the
-      {" "}<CommonLink href="https://www.facebook.com/inboxcomics/" lowercase isExternal>Facebook page</CommonLink>{" "}
+      {" "}<CommonLink href="https://www.facebook.com/inboxcomics/" isExternal>Facebook page</CommonLink>{" "}
       for more info, and please
-      {" "}<CommonLink href="/contact" lowercase>get in touch</CommonLink>{" "}
+      {" "}<CommonLink href="/contact">get in touch</CommonLink>{" "}
       if you have any questions about the site or just want to say hi!
     </p>
   </Layout>

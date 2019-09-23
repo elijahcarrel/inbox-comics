@@ -27,7 +27,7 @@ const NewsItemContent = (props: NewsItemContentProps) => {
     replace: (domNode) => {
       if (domNode.type === "tag" && domNode.name === "a") {
         const href = (domNode.attribs || {}).href;
-        return <CommonLink href={href} lowercase>{domToReact(domNode.children || [])}</CommonLink>;
+        return <CommonLink href={href}>{domToReact(domNode.children || [])}</CommonLink>;
       }
     },
   });
@@ -55,7 +55,7 @@ export const NewsItem = (props: Props) => {
       <div className={classNames(styles.newsItem, { [styles.isNotLastItem]: !isLastItem && previewOnly })}>
         <H2 className={styles.headline}>{headline}</H2>
         <div className={styles.date}>
-          <CommonLink href={`/news/${identifier}`} className={styles.dateLink} lowercase>
+          <CommonLink href={`/news/${identifier}`} className={styles.dateLink}>
             {formattedCreateTime}
           </CommonLink>
         </div>
@@ -64,7 +64,7 @@ export const NewsItem = (props: Props) => {
         </div>
         {previewOnly && (
           <div className={styles.readMore}>
-            <CommonLink href={`/news/${identifier}`} lowercase>Read more &gt;&gt;</CommonLink>
+            <CommonLink href={`/news/${identifier}`}>Read more &gt;&gt;</CommonLink>
           </div>
         )}
       </div>

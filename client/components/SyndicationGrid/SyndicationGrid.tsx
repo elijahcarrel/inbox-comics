@@ -64,7 +64,7 @@ export const SyndicationGrid = (props: Props) => {
             }}
             isLink={sortField !== "title"}
             className={styles.sortButton}
-            lowercase
+
           >
             Sort Alphabetically
             <Icon
@@ -80,7 +80,7 @@ export const SyndicationGrid = (props: Props) => {
             }}
             isLink={sortField !== "numSubscribers"}
             className={styles.sortButton}
-            lowercase
+
           >
             Sort by Popularity
             <Icon

@@ -47,7 +47,7 @@ const IndexPage: React.FunctionComponent = () => {
         Explore our catalog and sign up →
       </CallToAction>
       <H3 className={styles.extraMargin}>
-        Or, if you'd prefer, <CommonLink lowercase href="/faq">read the FAQ</CommonLink> before you jump right in.
+        Or, if you'd prefer, <CommonLink href="/faq">read the FAQ</CommonLink> before you jump right in.
       </H3>
     </Layout>
   );

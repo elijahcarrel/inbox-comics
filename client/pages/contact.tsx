@@ -80,7 +80,7 @@ const ContactPage: React.FunctionComponent = () => {
     <Layout title="Contact" isLoading={isSubmitting}>
       <H3>We'd love to hear from you!</H3>
       <H3>You can also reach us by replying to any of your daily comic emails, or by emailing us at{" "}
-        <CommonLink lowercase href="mailto:hello@inboxcomics.com" isExternal>hello@inboxcomics.com</CommonLink>.
+        <CommonLink href="mailto:hello@inboxcomics.com" isExternal>hello@inboxcomics.com</CommonLink>.
       </H3>
       <div className={styles.contactForm}>
         <TextInput

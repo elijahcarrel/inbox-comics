@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React, { Fragment } from "react";
-import { LoadingOverlay } from "../LoadingOverlay/LoadingOverlay";
 import { H1 } from "../H1/H1";
+import { LoadingOverlay } from "../LoadingOverlay/LoadingOverlay";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import styles from "./Layout.module.scss";
@@ -11,6 +11,7 @@ interface Props {
   showTitle?: boolean;
   isLoading?: boolean;
   error?: string;
+  errorAction?: React.ReactNode;
   children?: React.ReactNode;
 }
 
@@ -21,6 +22,7 @@ export const Layout: React.FunctionComponent<Props> = (props: Props) => {
     showTitle = true,
     isLoading = false,
     error,
+    errorAction = null,
   } = props;
   return (
     <Fragment>
@@ -33,7 +35,12 @@ export const Layout: React.FunctionComponent<Props> = (props: Props) => {
         <div className={styles.body}>
           <Header />
           <div className={styles.content}>
-            {error ? <div className={styles.error}>{error}</div> :
+            {error ?
+              <Fragment>
+                <div className={styles.error}>{error}</div>
+                {errorAction}
+              </Fragment>
+                :
               <Fragment>
                 {showTitle && (
                   <H1>{title}</H1>

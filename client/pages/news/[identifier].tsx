@@ -49,7 +49,7 @@ const NewsPage: React.FunctionComponent = () => {
   const { createTime, headline, content } = newsItem;
   return (
     <Layout title={title}>
-      <CommonLink href="/news" lowercase>&lt;&lt; Back to all news</CommonLink>
+      <CommonLink href="/news">&lt;&lt; Back to all news</CommonLink>
       <NewsItem
         identifier={identifier}
         createTime={moment(createTime)}
