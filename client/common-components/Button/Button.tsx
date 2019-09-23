@@ -6,7 +6,7 @@ import styles from "./Button.module.scss";
 export interface Props {
   href?: string;
   children: React.ReactNode;
-  lowercase?: boolean;
+  uppercase?: boolean;
   onClick?: () => any;
   className?: string;
   disabled?: boolean;
@@ -18,13 +18,13 @@ export const Button: React.FunctionComponent<Props> = (props: Props) => {
     onClick,
     children,
     className,
-    lowercase = false,
+    uppercase = false,
     disabled = false,
   } = props;
   const innerButton = (
     <button
       type="button"
-      className={classNames(className, styles.button, {[styles.uppercase]: !lowercase})}
+      className={classNames(className, styles.button, {[styles.uppercase]: uppercase})}
       onClick={onClick}
       disabled={disabled}
     >

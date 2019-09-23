@@ -46,7 +46,7 @@ export const ResendVerificationEmailLink = (props: Props) => {
           addToast(`Could not send verification email: ${result.combinedErrorMessage}`, toastType.error);
         }
       }}
-      lowercase
+
     >
       Resend verification email.
     </CommonLink>

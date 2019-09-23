@@ -2,7 +2,9 @@ import { ApolloError } from "apollo-client";
 import moment from "moment-timezone";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { CommonLink } from "../common-components/CommonLink/CommonLink";
+import {H3} from "../common-components/H3/H3";
 
 export interface GraphQlResult {
   success: boolean;
@@ -77,3 +79,7 @@ export const formattedComicDeliveryTime = () => {
     .tz(moment.tz.guess())
     .format("h:mm a z");
 };
+
+export const defaultErrorAction = (
+  <H3><CommonLink href="/">Go back to the home page.</CommonLink></H3>
+);

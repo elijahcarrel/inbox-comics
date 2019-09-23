@@ -7,7 +7,7 @@ interface Props {
   href?: string;
   onClick?: () => any;
   children: React.ReactNode;
-  lowercase?: boolean;
+  uppercase?: boolean;
   underline?: boolean;
   className?: string;
   isExternal?: boolean;
@@ -19,7 +19,7 @@ export const CommonLink = (props: Props) => {
   const {
     href,
     children,
-    lowercase = false,
+    uppercase = false,
     underline = true,
     className = "",
     isExternal = false,
@@ -34,7 +34,7 @@ export const CommonLink = (props: Props) => {
   }
   let innerLinkProps: object = {
     className: classNames(styles.link,
-      {[styles.uppercase]: !lowercase},
+      {[styles.uppercase]: uppercase},
       {[styles.noUnderline]: !underline},
       className,
     ),

@@ -11,7 +11,7 @@ export const Header = () => {
         <CommonLink
           href="/"
           underline={false}
-          lowercase
+
           className={styles.logoLink}
         >
           <Logo className={styles.logo} />

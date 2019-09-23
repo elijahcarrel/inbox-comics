@@ -164,7 +164,7 @@ export const SyndicationEditor = (props: Props) => {
                       );
                     }
                   }}
-                  lowercase
+
                 >
                   Undo.
                 </CommonLink>

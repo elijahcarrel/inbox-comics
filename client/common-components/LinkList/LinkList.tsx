@@ -42,6 +42,7 @@ export const LinkList = (props: Props) => {
                 <CommonLink
                   href={href}
                   onClick={onClick}
+                  uppercase
                 >
                   {content}
                 </CommonLink>
