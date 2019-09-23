@@ -41,13 +41,13 @@ graphql_http_endpoint="http://localhost:3000/graphql"
 
 ### Deploying the server
 1. `$ cd ./server`
-1. `$ now`
-1. Server is now deployed to <https://api.inboxcomics.now.sh>.
+1. `$ now --prod`
+1. Server is now deployed to <https://api.inboxcomics.com>.
 
 ### Deploying the client
 1. `$ cd ./client`
-1. `$ now`
-1. Client is now deployed to <https://app.inboxcomics.now.sh>.
+1. `$ now --prod`
+1. Client is now deployed to <https://www.inboxcomics.com>.
 
 ### Opening a local database console.
 1. Open a local database console with `$ mongo ic`. Note that this connects to your local database, not to the production one.
