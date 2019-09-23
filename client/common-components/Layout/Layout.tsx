@@ -27,10 +27,23 @@ export const Layout: React.FunctionComponent<Props> = (props: Props) => {
   const siteTitle = "Inbox Comics";
   const displayTitle = title ? `${siteTitle} | ${title}` : siteTitle;
   const description = "Get your selection of over 400 comics, including Calvin and Hobbes and xkcd, emailed to you every morning, completely free and never with any ads. Sign up now— it only takes a minute!";
+  // @ts-ignore
+  // @ts-ignore
+  // @ts-ignore
   return (
     <Fragment>
       <Head>
         <title>{displayTitle}</title>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-75894353-1"></script>
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments)}
+            gtag('js', new Date());
+            gtag('config', 'UA-75894353-1');
+            `,
+        }}>
+        </script>
         <meta name="twitter:title" content={displayTitle} />
         <meta name="og:title" content={displayTitle} />
         <meta name="application-name" content={siteTitle} />
