@@ -106,7 +106,7 @@ export const emailAllUsers = async (date: Moment, options: EmailAllUsersOptions 
     conditions = {
       ...conditions,
       $or: [
-        { lastEmailCheck: { $lt: date.startOf("day").toDate() } },
+        { lastEmailCheck: { $lt: date.clone().startOf("day").toDate() } },
         { lastEmailCheck: null},
       ],
     };

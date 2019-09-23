@@ -320,13 +320,13 @@ export const scrapeAndSaveAllComics = async (date: Moment, options: ScrapeAndSav
   }
   if (dontRescrapeSyndicationThatSucceededEarlierToday) {
     syndicationsRequest = syndicationsRequest.or([
-      { lastSuccessfulComicScrapeDate: { $lt: date.startOf("day").toDate() } },
+      { lastSuccessfulComicScrapeDate: { $lt: date.clone().startOf("day").toDate() } },
       { lastSuccessfulComicScrapeDate: { $exists: false } },
     ]);
   }
   if (dontRetryInLessThanAnHour) {
     syndicationsRequest = syndicationsRequest.or([
-      { lastAttemptedComicScrapeDate: { $lt: date.subtract(1, "hour").toDate() } },
+      { lastAttemptedComicScrapeDate: { $lt: date.clone().subtract(1, "hour").toDate() } },
       { lastAttemptedComicScrapeDate: { $exists: false } },
     ]);
   }
