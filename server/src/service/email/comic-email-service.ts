@@ -73,7 +73,6 @@ export const emailUsers = async (users: IUser[], options: EmailAllUsersOptions, 
   }));
   const dateAsDate = date.toDate();
   const updatedUsers = augmentedEmailResults
-  .filter((result) => result.emailResult)
   .map(({ user, emailResult }) => {
     user.lastEmailedComics = user.syndications
       .map((syndication) => syndication.lastSuccessfulComic)
@@ -107,7 +106,7 @@ export const emailAllUsers = async (date: Moment, options: EmailAllUsersOptions 
       ...conditions,
       $or: [
         { lastEmailCheck: { $lt: date.clone().startOf("day").toDate() } },
-        { lastEmailCheck: null},
+        { lastEmailCheck: null },
       ],
     };
   }
