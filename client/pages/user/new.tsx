@@ -1,10 +1,12 @@
 import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import Router from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 // @ts-ignore
 import { useToasts } from "react-toast-notifications";
 import { CallToAction } from "../../common-components/CallToAction/CallToAction";
+import { DynamicText } from "../../common-components/DynamicText/DynamicText";
+import { H3 } from "../../common-components/H3/H3";
 import { Layout } from "../../common-components/Layout/Layout";
 import { SyndicationEditor } from "../../components/SyndicationEditor/SyndicationEditor";
 import { handleGraphQlResponse, toastType, useUrlQuery } from "../../lib/utils";
@@ -29,10 +31,24 @@ const UserSyndicationsPage = () => {
   const [createUserWithoutEmailMutation] = useMutation<CreateUserResponse>(mutation);
 
   let title = "Loading...";
+  let helperText = (
+    <H3>
+      Choose comics to receive in your email every morning.
+    </H3>
+  );
   if (urlQueryIsReady) {
     title = "Choose Comics";
     if (selectedSyndications && selectedSyndications.size > 0) {
-      title = `Choose Comics (${selectedSyndications.size} selected)`;
+      helperText = (
+        <Fragment>
+          <H3>
+            {selectedSyndications.size > 1 ? "These " : "This "}
+            <DynamicText>{selectedSyndications.size}</DynamicText>
+            {selectedSyndications.size > 1 ? " comics " : " comic "}
+            will be emailed to you every morning in a single email.
+          </H3>
+        </Fragment>
+      );
     }
   }
 
@@ -62,6 +78,7 @@ const UserSyndicationsPage = () => {
 
   return (
     <Layout title={title}>
+      {helperText}
       <SyndicationEditor
         publicId={publicId}
         onChangeSelectedSyndications={setSelectedSyndications}
