@@ -22,16 +22,27 @@ const Error = (props: Props) => {
   const router = useRouter();
   // TOOD(ecarrel): use a real URL parser.
   if (router.asPath.startsWith("/subscribe.php")) {
-    const { modifysettings, email, ...otherQuery } = router.query;
+    const { modifysettings, ...otherQuery } = router.query;
     if (modifysettings === "yes") {
       return pushWhenReady(router,{
         pathname: "/user",
-        query: { email, ...otherQuery },
+        query: otherQuery,
+      });
+    } else {
+      return pushWhenReady(router,{
+        pathname: "/user/new",
+        query: otherQuery,
       });
     }
   } else if (router.asPath.startsWith("/verify.php")) {
     return pushWhenReady(router,{
       pathname: "/user/verify",
+      query: router.query,
+    });
+  } else if (router.asPath.includes(".php")) {
+    const pathname = router.asPath.replace(".php", "");
+    return pushWhenReady(router,{
+      pathname,
       query: router.query,
     });
   }
