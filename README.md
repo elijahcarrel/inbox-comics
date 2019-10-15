@@ -1,6 +1,21 @@
 # Inbox Comics
 Your favorite comics emailed to you each morning.
 
+## Services & Frameworks used
+### Client (UI)
+1. ES6 Typescript & TSLint
+1. Zeit Now for deployment
+1. Zeit Next.js for SSR (server-side-rendered) React framework and routing
+1. Apollo Client (GraphQL) with react-hooks library for communication with server
+1. SCSS modules as CSS-in-JS solution of choice
+### Server (Back-End)
+1. ES6 Typescript & TSLint
+1. Zeit Now for deployment
+1. Apollo Server (GraphQL) for communication with client
+1. MongoDB Atlas for our database cluster
+1. Mongoose for interacting with mongodb database
+1. ElasticEmail for sending emails-- would not recommend, but is the cheapest option and we have very basic needs.
+
 ## Developer Instructions
 ### Getting environment set up.
 1. Clone the repo with `$ git clone https://github.com/elijahcarrel/inbox-comics.git`.
@@ -29,7 +44,7 @@ graphql_http_endpoint="http://localhost:3000/graphql"
    @elijahcarrel directly what the API key is. The other information is local-specific and do not match the (secret)
    production values. 
 #### Starting the server
-1. First, start the mongo daemon with `$ mongod --config /usr/local/etc/mongod.conf` 
+1. First, in a separate tab or window, start the mongo daemon with `$ mongod --config /usr/local/etc/mongod.conf` 
 1. `$ cd ./server`
 1. Start the server with `$ npm run start`
 1. Server is now running on <http://localhost:3000>.
@@ -55,18 +70,3 @@ graphql_http_endpoint="http://localhost:3000/graphql"
 
 ### Opening a production database console.
 1. The URL and password for the production database are, of course, secret. Ask @elijahcarrel.
-
-## Services & Frameworks used
-### Client (UI)
-1. ES6 Typescript & TSLint
-1. Zeit Now for deployment
-1. Zeit Next.js for SSR (server-side-rendered) React framework and routing
-1. Apollo Client (GraphQL) with react-hooks library for communication with server
-1. SCSS modules as CSS-in-JS solution of choice
-### Server (Back-End)
-1. ES6 Typescript & TSLint
-1. Zeit Now for deployment
-1. Apollo Server (GraphQL) for communication with client
-1. MongoDB Atlas for our database cluster
-1. Mongoose for interacting with mongodb database
-1. ElasticEmail for sending emails-- would not recommend, but is the cheapest option and we have very basic needs.
