@@ -27,7 +27,15 @@ const NewsItemContent = (props: NewsItemContentProps) => {
     replace: (domNode) => {
       if (domNode.type === "tag" && domNode.name === "a") {
         const href = (domNode.attribs || {}).href;
-        return <CommonLink href={href}>{domToReact(domNode.children || [])}</CommonLink>;
+        const isExternal = !href.startsWith("/");
+        return (
+          <CommonLink
+            href={href}
+            isExternal={isExternal}
+          >
+            {domToReact(domNode.children || [])}
+          </CommonLink>
+        );
       }
     },
   });
