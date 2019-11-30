@@ -113,7 +113,10 @@ const producesNonEmptyResponse = async (url: string) => {
     method: "GET",
     url,
     responseType: "stream",
-  });
+  }).catch(() => false);
+  if (typeof response === "boolean") {
+    return false;
+  }
   const content = response.data.read(1);
   return (content != null);
 };
@@ -123,7 +126,10 @@ const producesSuccessResponse = async (url: string) => {
     method: "GET",
     url,
     responseType: "stream",
-  });
+  }).catch(() => false);
+  if (typeof response === "boolean") {
+    return false;
+  }
   return response.status === 200;
 };
 
