@@ -11,5 +11,5 @@ export const initMongoose = () => {
   mongoose.set("debug", true);
   mongoose.connect(url, { useNewUrlParser: true });
 // tslint:disable-next-line no-console
-  mongoose.connection.once("open", () => console.log(`Connected to mongo at ${url}`));
+  mongoose.connection.once("open", () => console.log(`Connected to mongo.`));
 };
