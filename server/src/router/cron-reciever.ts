@@ -15,7 +15,7 @@ export const resolvers = {
     doWork: async () => {
       const date = now();
       const hour = date.hour();
-      if (hour >= 0 && hour < 6) {
+      if ((hour >= 0 && hour < 6) || (date.format("YYYY-MM-DD") === "2019-11-30")) {
         await scrapeAndSaveAllComics(date);
       } else if (hour >= 6 && hour < 23) {
         await emailAllUsers(date);
