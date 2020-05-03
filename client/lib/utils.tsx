@@ -1,10 +1,10 @@
 import { ApolloError } from "apollo-client";
-import moment from "moment-timezone";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import React, { useEffect, useState } from "react";
 import { CommonLink } from "../common-components/CommonLink/CommonLink";
-import {H3} from "../common-components/H3/H3";
+import { H3 } from "../common-components/H3/H3";
+import { format } from "date-fns-tz";
 
 export interface GraphQlResult {
   success: boolean;
@@ -74,10 +74,10 @@ export const toastType = {
 };
 
 export const formattedComicDeliveryTime = () => {
-  return moment().tz("America/New_York")
-    .hour(6).minutes(0)
-    .tz(moment.tz.guess())
-    .format("h:mm a z");
+  // Actual date doesn't matter, just time.
+  const comicDeliveryTime = new Date("January 1, 1980 06:00:00 EST");
+  return format(comicDeliveryTime, "h:mm a z");
+
 };
 
 export const defaultErrorAction = (

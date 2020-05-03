@@ -1,7 +1,7 @@
-import moment from "moment";
 import * as React from "react";
 import { LinkList } from "../LinkList/LinkList";
 import styles from "./Footer.module.scss";
+import { format } from "date-fns";
 
 interface Props {}
 
@@ -11,7 +11,7 @@ export const Footer: React.FunctionComponent<Props> = () => (
       <LinkList
         elements={[
           {
-            content: `© ${moment().year()} Inbox Comics`,
+            content: `© ${format(new Date(), "yyyy")} Inbox Comics`,
             key: "copyright",
           },
           {

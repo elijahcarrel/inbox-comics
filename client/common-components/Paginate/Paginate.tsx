@@ -25,7 +25,7 @@ export const Paginate = (props: Props) => {
         }
       }}
       previousLabel={pageNumber === 0 ? "" : "← Previous"}
-      nextLabel={pageNumber === numPages - 1 ? "" : "→ Next"}
+      nextLabel={pageNumber === numPages - 1 ? "" : "Next →"}
       pageClassName={styles.pageNumberContainer}
       previousClassName={styles.pageNumberContainer}
       nextClassName={styles.pageNumberContainer}

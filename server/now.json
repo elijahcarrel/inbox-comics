@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "api",
   "builds": [
     {
       "src": "src/index.ts",

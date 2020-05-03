@@ -1,5 +1,4 @@
-const withSass = require('@zeit/next-sass');
-module.exports = withSass({
+module.exports = {
   cssModules: true,
   cssLoaderOptions: {
     importLoaders: 1,
@@ -7,5 +6,4 @@ module.exports = withSass({
   },
   target: 'serverless',
   crossOrigin: 'anonymous',
-  experimental: { publicDirectory: true },
-});
+};

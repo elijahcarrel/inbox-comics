@@ -13,8 +13,7 @@ export const LoadingOverlay = (props: Props) => {
   return (
     <div className={classNames(className, styles.container)}>
       <PulseLoader
-        sizeUnit="px"
-        size={30}
+        size="30px"
         color="#ba0106"
         loading={true}
         {...props}

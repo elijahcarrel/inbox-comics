@@ -1,5 +1,5 @@
 import { Moment } from "moment-timezone";
-import uuid from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import { sendEmail } from "../send-email";
 
 export interface ComicForEmail {
@@ -84,7 +84,7 @@ export const sendComicEmail = async (
   comics: ComicForEmail[],
   options: SendComicEmailOptions = {},
   date: Moment,
-  googleAnalyticsHash: string = uuid.v4(),
+  googleAnalyticsHash: string = uuidv4(),
 ) => {
   // tslint:disable-next-line max-line-length
   const updateSubscriptionsUrl = `${process.env.domain}/user?email=${encodeURIComponent(email)}&utm_source=dailycomics&utm_medium=email&utm_term=$dateanalytics&utm_campaign=dailycomics`;

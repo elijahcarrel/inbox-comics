@@ -1,10 +1,11 @@
 import { Syndication } from "../db-models/syndication";
-import { User } from "../db-models/user";
+import { IUser, User } from "../db-models/user";
 
 export const computePopularity = async () => {
   // Only look at real users (users with defined emails).
+  // @ts-ignore cannot assign $ne to null but appears to work?
   const users = await User.find({ email: { $exists: true, $ne: null } }).exec();
-  const populatedUsers = await User.populate(users, [{
+  const populatedUsers: IUser[] = await User.populate(users, [{
     path: "syndications",
   }]);
   const syndications = await Syndication.find({}).exec();

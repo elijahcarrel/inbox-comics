@@ -17,7 +17,7 @@ export const initApollo = () => {
       tabs: [
         {
           endpoint: process.env.graphql_http_endpoint,
-          query: defaultQuery,
+          query: String(defaultQuery),
         },
       ],
     },
