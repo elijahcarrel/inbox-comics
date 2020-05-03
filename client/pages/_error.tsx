@@ -1,7 +1,7 @@
 import { NextRouter, useRouter } from "next/router";
 import React from "react";
 import { Layout } from "../common-components/Layout/Layout";
-import {defaultErrorAction} from "../lib/utils";
+import { defaultErrorAction } from "../lib/utils";
 
 interface Props {
   statusCode: number;
@@ -46,13 +46,11 @@ const Error = (props: Props) => {
       query: router.query,
     });
   }
-  if (statusCode === 404) {
-    return (
-      <Layout title="404 Error" error="This page does not exist." errorAction={defaultErrorAction} />
-    );
-  }
+  const errorMessage = statusCode
+    ? `An unknown error (code ${statusCode}) occurred on server.`
+    : "An unknown error occurred on client.";
   return (
-    <Layout title="Error" error="An unknown error occurred." errorAction={defaultErrorAction} />
+    <Layout title="Error" error={errorMessage} errorAction={defaultErrorAction} />
   );
 };
 

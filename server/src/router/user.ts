@@ -1,5 +1,5 @@
 import { gql, UserInputError } from "apollo-server-micro";
-import uuid from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import { InputUser } from "../api-models/user";
 import { Syndication } from "../db-models/syndication";
 import { User } from "../db-models/user";
@@ -61,8 +61,8 @@ export const resolvers = {
       if (existingUser != null) {
         throw new UserInputError(`User with email "${email}" already exists.`);
       }
-      const verificationHash = uuid.v4();
-      const googleAnalyticsHash = uuid.v4();
+      const verificationHash = uuidv4();
+      const googleAnalyticsHash = uuidv4();
       const user = await User.create({
         email,
         verified: false,
@@ -74,9 +74,9 @@ export const resolvers = {
       return user;
     },
     createUserWithoutEmail: async () => {
-      const verificationHash = uuid.v4();
-      const googleAnalyticsHash = uuid.v4();
-      const publicId = uuid.v4();
+      const verificationHash = uuidv4();
+      const googleAnalyticsHash = uuidv4();
+      const publicId = uuidv4();
       return await User.create({
         publicId,
         verified: false,
@@ -95,6 +95,7 @@ export const resolvers = {
       if (user == null) {
         throw invalidUserByPublicIdError(publicId);
       }
+      // @ts-ignore type of identifier is wrong but appears to work?
       user.syndications = await Syndication.find({ identifier: inputUser.syndications }).exec();
       const changedEmail = user.email !== inputUser.email && !(user.email == null && inputUser.email == null);
       if (changedEmail) {
@@ -119,6 +120,7 @@ export const resolvers = {
       return await sendVerificationEmail(email, user.verificationHash);
     },
     verifyEmail: async (_: any, args: { email: string, verificationHash: string }) => {
+      console.log("args", args);
       const { email, verificationHash } = args;
       const user = await User.findOne({ email }).exec();
       if (user == null) {

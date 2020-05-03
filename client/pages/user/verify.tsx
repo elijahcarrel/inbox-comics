@@ -4,8 +4,8 @@ import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import { Layout } from "../../common-components/Layout/Layout";
 import { GraphQlResult, handleGraphQlResponse, useUrlQuery } from "../../lib/utils";
-import {H3} from "../../common-components/H3/H3";
-import {ResendVerificationEmailLink} from "../../components/ResendVerificationEmailLink/ResendVerificationEmailLink";
+import { H3 } from "../../common-components/H3/H3";
+import { ResendVerificationEmailLink } from "../../components/ResendVerificationEmailLink/ResendVerificationEmailLink";
 
 const VerifyUserPage: React.FunctionComponent = () => {
   const [urlQuery, urlQueryIsReady] = useUrlQuery();
@@ -24,12 +24,17 @@ const VerifyUserPage: React.FunctionComponent = () => {
   const [
     verifyEmailMutation,
     { loading: verificationIsLoading },
-  ] = useMutation<VerifyEmailResponse>(mutation, { variables: { email, verificationHash } });
+  ] = useMutation<VerifyEmailResponse>(mutation);
 
   useEffect(() => {
     if (!isVerifying && urlQueryIsReady) {
       setIsVerifying(true);
-      handleGraphQlResponse(verifyEmailMutation()).then((result: GraphQlResult) => {
+      handleGraphQlResponse(verifyEmailMutation({
+        variables: {
+          email,
+          verificationHash,
+        },
+      })).then((result: GraphQlResult) => {
         if (result.success) {
           Router.push({
             pathname: "/user",

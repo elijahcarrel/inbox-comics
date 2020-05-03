@@ -3,7 +3,7 @@ import cheerio from "cheerio";
 import { client as Client } from "elasticemail-webapiclient";
 
 const options = {
-  apiKey: process.env.elasticemail_api_key,
+  apiKey: process.env.elasticemail_api_key || "",
   apiUri: "https://api.elasticemail.com/",
   apiVersion: "v2",
 };
@@ -19,6 +19,7 @@ export const sendEmail =
       to,
       // tslint:disable-next-line object-literal-key-quotes
       "from": "comics@inboxcomics.com",
+      // @ts-ignore replyTo does not exist.
       replyTo: fromEmail,
       body: $.html(),
       fromName: "Inbox Comics",

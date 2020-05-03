@@ -1,6 +1,5 @@
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import moment from "moment";
 import React from "react";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { Layout } from "../../common-components/Layout/Layout";
@@ -52,7 +51,7 @@ const NewsPage: React.FunctionComponent = () => {
       <CommonLink href="/news">&lt;&lt; Back to all news</CommonLink>
       <NewsItem
         identifier={identifier}
-        createTime={moment(createTime)}
+        createTime={createTime}
         headline={headline}
         isLastItem={false}
         previewOnly={false}

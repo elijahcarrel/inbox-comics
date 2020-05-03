@@ -1,4 +1,4 @@
-import { mdiSort, mdiSortAlphabetical } from "@mdi/js";
+import { mdiSort, mdiSortAlphabeticalAscending } from "@mdi/js";
 import Icon from "@mdi/react";
 import Fuse from "fuse.js";
 import orderBy from "lodash/orderBy";
@@ -7,7 +7,7 @@ import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { Paginate } from "../../common-components/Paginate/Paginate";
 import { TextInput } from "../../common-components/TextInput/TextInput";
 import { SyndicationCard } from "../SyndicationCard/SyndicationCard";
-import styles from "./SyndicationGrid.scss";
+import styles from "./SyndicationGrid.module.scss";
 
 const numComicsPerPage = 24;
 
@@ -47,6 +47,7 @@ export const SyndicationGrid = (props: Props) => {
       threshold: 0.2,
       tokenize: true,
     });
+    // @ts-ignore FuseResult<T> is not compatible with T.
     filteredSyndications = fuse.search(searchText);
   }
   const filteredSyndicationsOnThisPage = filteredSyndications
@@ -68,7 +69,7 @@ export const SyndicationGrid = (props: Props) => {
           >
             Sort Alphabetically
             <Icon
-              path={mdiSortAlphabetical}
+              path={mdiSortAlphabeticalAscending}
               size={1}
               className={styles.sortButtonIcon}
             />

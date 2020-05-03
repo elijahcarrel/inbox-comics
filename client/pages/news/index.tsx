@@ -1,6 +1,5 @@
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-import moment from "moment";
 import React, { useState } from "react";
 import { Layout } from "../../common-components/Layout/Layout";
 import { Paginate } from "../../common-components/Paginate/Paginate";
@@ -54,7 +53,7 @@ const NewsPage: React.FunctionComponent = () => {
       {visibleNewsItems.map(({ identifier, createTime, headline, content }, index) => (
         <NewsItem
           identifier={identifier}
-          createTime={moment(createTime)}
+          createTime={createTime}
           headline={headline}
           isLastItem={index === visibleNewsItems.length - 1}
           content={content}

@@ -80,7 +80,7 @@ const scrapeFailure = (failureMode: ComicFailureMode): ScrapeResult => ({
   imageCaption: null,
 });
 
-const scrapeSuccess = (imageUrl: string | null, imageCaption?: string | null): ScrapeResult => {
+const scrapeSuccess = (imageUrl: string | undefined, imageCaption?: string | null): ScrapeResult => {
   if (imageUrl == null || imageUrl.length === 0) {
     return scrapeFailure(failureModes.UNKNOWN);
   } else {

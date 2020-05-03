@@ -1,15 +1,15 @@
 import classNames from "classnames";
 import parse, { domToReact } from "html-react-parser";
-import { Moment } from "moment";
 import React, { Fragment } from "react";
 import Truncate from "react-truncate";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { H2 } from "../../common-components/H2/H2";
 import styles from "./NewsItem.module.scss";
+import { format } from "date-fns";
 
 interface Props {
   identifier: string;
-  createTime: Moment;
+  createTime: Date;
   headline: string;
   content: string;
   previewOnly: boolean;
@@ -57,7 +57,7 @@ const NewsItemContent = (props: NewsItemContentProps) => {
 
 export const NewsItem = (props: Props) => {
   const { identifier, createTime, headline, content, previewOnly, isLastItem = false } = props;
-  const formattedCreateTime = createTime.format("dddd, MMMM Do, YYYY, h:mm a");
+  const formattedCreateTime = format(createTime, "EEEE, LLLL do, yyyy, h:mm a");
   return (
     <div className={styles.newsItemContainer} key={identifier}>
       <div className={classNames(styles.newsItem, { [styles.isNotLastItem]: !isLastItem && previewOnly })}>
