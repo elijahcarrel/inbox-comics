@@ -3,12 +3,12 @@ import gql from "graphql-tag";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import { Layout } from "../../common-components/Layout/Layout";
-import { GraphQlResult, handleGraphQlResponse, useUrlQuery } from "../../lib/utils";
+import { GraphQlResult, handleGraphQlResponse, useNonEmptyUrlQuery } from "../../lib/utils";
 import { H3 } from "../../common-components/H3/H3";
 import { ResendVerificationEmailLink } from "../../components/ResendVerificationEmailLink/ResendVerificationEmailLink";
 
 const VerifyUserPage: React.FunctionComponent = () => {
-  const [urlQuery, urlQueryIsReady] = useUrlQuery();
+  const [urlQuery, urlQueryIsReady] = useNonEmptyUrlQuery();
   const email = `${urlQuery.email}`;
   const verificationHash = `${urlQuery.verificationHash}`;
 

@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { CommonLink } from "../common-components/CommonLink/CommonLink";
 import { H3 } from "../common-components/H3/H3";
 import { format } from "date-fns-tz";
+import { isEmpty } from "lodash";
 
 export interface GraphQlResult {
   success: boolean;
@@ -44,6 +45,19 @@ export const useUrlQuery = (): [ParsedUrlQuery, boolean] => {
 
   useEffect(() => {
     if (query != null && !queryIsReady) {
+      setQueryIsReady(true);
+    }
+  }, [query, queryIsReady]);
+  return [query, queryIsReady];
+};
+
+export const useNonEmptyUrlQuery = (): [ParsedUrlQuery, boolean] => {
+  const router = useRouter();
+  const [queryIsReady, setQueryIsReady] = useState(false);
+  const { query } = router;
+
+  useEffect(() => {
+    if (query != null && !isEmpty(query) && !queryIsReady) {
       setQueryIsReady(true);
     }
   }, [query, queryIsReady]);

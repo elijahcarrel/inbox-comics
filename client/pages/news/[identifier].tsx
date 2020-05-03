@@ -5,7 +5,7 @@ import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { Layout } from "../../common-components/Layout/Layout";
 import { NewsItem } from "../../components/NewsItem/NewsItem";
 import { stringifyGraphQlError } from "../../lib/utils";
-import { useUrlQuery } from "../../lib/utils";
+import { useNonEmptyUrlQuery } from "../../lib/utils";
 
 interface INewsItem {
   identifier: string;
@@ -21,7 +21,7 @@ interface NewsItemResponse {
 const title = "News";
 
 const NewsPage: React.FunctionComponent = () => {
-  const [urlQuery, urlQueryIsReady] = useUrlQuery();
+  const [urlQuery, urlQueryIsReady] = useNonEmptyUrlQuery();
   const identifier = `${urlQuery.identifier}`;
 
   const newsQuery = gql`
