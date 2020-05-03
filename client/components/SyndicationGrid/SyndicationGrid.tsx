@@ -1,4 +1,4 @@
-import { mdiSort, mdiSortAlphabeticalAscending } from "@mdi/js";
+import { mdiSortAscending, mdiSortAlphabeticalAscending } from "@mdi/js";
 import Icon from "@mdi/react";
 import Fuse from "fuse.js";
 import orderBy from "lodash/orderBy";
@@ -85,7 +85,7 @@ export const SyndicationGrid = (props: Props) => {
           >
             Sort by Popularity
             <Icon
-              path={mdiSort}
+              path={mdiSortAscending}
               size={1}
               className={styles.sortButtonIcon}
             />
