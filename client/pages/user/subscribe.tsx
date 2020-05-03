@@ -44,9 +44,9 @@ const NewUserPage: React.FunctionComponent = () => {
   interface UserQueryResponse {
     userByPublicId: {
       email: string;
-      syndications: Array<{
+      syndications: {
         identifier: string;
-      }>;
+      }[];
     };
   }
 
