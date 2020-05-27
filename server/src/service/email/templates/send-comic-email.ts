@@ -79,6 +79,34 @@ const generateHtmlForComic = (comic: ComicForEmail, options: SendComicEmailOptio
   }
 };
 
+const customMessages: Record<string, string> = {
+  "May 27th, 2020": `
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    Hi everyone,
+</p>
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    Thanks to those who wrote in to note that your comics weren't coming through yesterday or today! As comic fans ourselves, we recognize the small but substantial benefits a bit of humor can have first thing in the morning, especially considering these crazy times.
+</p>
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    So, good news! We've found and fixed the problem (as you can see!). Note that the comics you're receiving in this email might be a couple days old while our system is still recuperating, but you should resume getting your comics as usual first thing tomorrow morning.
+</p>
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    We greatly appreciated your patience as we figured this out. Your kind messages and thoughtful notes are inspiring, and remind us why we run this service, completely free and ad-free, in the first place!
+</p>
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    Hope everyone is staying safe. Remember to wash your hands often, wear masks, and practice good social-distancing habits— it could save lives!
+</p>
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    All the best,<br />
+    Gabe and Elijah<br />
+    Team Inbox Comics
+</p>
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    Without further ado, here are today's comics.
+</p>
+`,
+};
+
 export const sendComicEmail = async (
   email: string,
   comics: ComicForEmail[],
@@ -89,8 +117,16 @@ export const sendComicEmail = async (
   // tslint:disable-next-line max-line-length
   const updateSubscriptionsUrl = `${process.env.domain}/user?email=${encodeURIComponent(email)}&utm_source=dailycomics&utm_medium=email&utm_term=$dateanalytics&utm_campaign=dailycomics`;
   // tslint:disable-next-line max-line-length
-  const subject = `Inbox Comics for ${date.format("MMMM Do, YYYY")}`;
+  const formattedDate = date.format("MMMM Do, YYYY")
+  const subject = `Inbox Comics for ${formattedDate}`;
   const googleAnalyticsUrl = `https://www.google-analytics.com/collect?v=1&tid=UA-75894353-1&cid=${googleAnalyticsHash}&t=event&ec=email&ea=open&dp=/email/dailycomics&dt=${subject}&cn=dailycomics&cm=email`;
+  let message = `
+  <p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    Good morning! Here are today's comics.
+  </p>`;
+  if (customMessages[formattedDate] != null) {
+    message = customMessages[formattedDate];
+  }
   const body = `<html>
 <head>
   <title>${subject}</title>
@@ -118,7 +154,7 @@ export const sendComicEmail = async (
             </div>
           </a>
           <p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-            Good morning! Here are today's comics.
+            ${message}
           </p>
           ${comics.map((comic) => generateHtmlForComic(comic, options)).join("")}
           <h3 style="border-bottom: 1px solid #ddd; font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia,
