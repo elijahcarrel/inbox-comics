@@ -1,8 +1,9 @@
 import { ApolloServer } from "apollo-server-micro";
 import gql from "graphql-tag";
-import { IncomingMessage, ServerResponse } from "http";
-import microCors from "micro-cors";
 import { resolvers, typeDefs } from "./router";
+// import { IncomingMessage, ServerResponse } from "http";
+
+const endpoint = "/api/graphql";
 
 export const initApollo = () => {
   const defaultQuery = gql`query comics {
@@ -16,7 +17,7 @@ export const initApollo = () => {
     playground: {
       tabs: [
         {
-          endpoint: process.env.graphql_http_endpoint,
+          endpoint,
           query: String(defaultQuery),
         },
       ],
@@ -35,17 +36,15 @@ export const initApollo = () => {
     },
   });
 
-  const cors = microCors();
+  // const handleOptions = (handler: any) => (req: IncomingMessage, res: ServerResponse, ...args: any) => {
+  //   if (req.method === "OPTIONS") {
+  //     res.setHeader("Access-Control-Allow-Origin", "*");
+  //     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With");
+  //     res.end();
+  //   } else {
+  //     return handler(req, res, ...args);
+  //   }
+  // };
 
-  const handleOptions = (handler: any) => (req: IncomingMessage, res: ServerResponse, ...args: any) => {
-    if (req.method === "OPTIONS") {
-      res.setHeader("Access-Control-Allow-Origin", "*");
-      res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, Content-Length, X-Requested-With");
-      res.end();
-    } else {
-      return handler(req, res, ...args);
-    }
-  };
-
-  return cors(handleOptions(apolloServer.createHandler()));
+  return apolloServer.createHandler({ path: endpoint });
 };

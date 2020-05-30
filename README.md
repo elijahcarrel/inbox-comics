@@ -4,26 +4,22 @@ Your favorite comics emailed to you each morning.
 ## Services & Frameworks used
 ### Client (UI)
 1. ES6 Typescript & TSLint
-1. Zeit Now for deployment
-1. Zeit Next.js for SSR (server-side-rendered) React framework and routing
+1. Vercel CLI for deployment
+1. Vercel Next.js for SSR (server-side-rendered) React framework and routing
 1. Apollo Client (GraphQL) with react-hooks library for communication with server
-1. SCSS modules (my personal CSS-in-JS solution of choice, though I realize it's a touchy subject)
+1. SCSS modules
+
 ### Server (Back-End)
 1. ES6 Typescript & TSLint
-1. Zeit Now for deployment
+1. Vercel CLI for deployment
 1. Apollo Server (GraphQL) for communication with client
 1. MongoDB Atlas for our database cluster
 1. Mongoose for interacting with mongodb database
 1. ElasticEmail for sending emails-- would not recommend, but is the cheapest option and we have very basic needs.
 
 ## Why this project is open-sourced
-It is a good question. I don't expect the business logic that is specific to the <https://inboxcomics.com> service to be helpful
-to anyone else. However, it does make good use of what I think are some of the best modern web-app frameworks, such as
-speedy server-side react in the form of Next.js, a flexible but well-defined database schema and interaction layer in
-the form of MongoDB/Mongoose, and everyone's favorite client/server interaction layer: GraphQL (specifically, Apollo
-Client and Apollo Server). It also provides an excellent example of using Zeit as a deployment platform (which I have
-grown to appreciate very much). Consequently, this repo can serve as a starter pack for developing modern web apps in
-2019.
+Simply because it's a good template for creating modern web apps. Feel free to fork this as a template for your own
+project (deleting all the business logic of course).
   
 ## Developer Instructions
 ### Getting environment set up.
@@ -32,47 +28,41 @@ grown to appreciate very much). Consequently, this repo can serve as a starter p
 1. Install tools you might or might not already have.
     1. Install Homebrew by following the instructions at <https://brew.sh>.
     1. Install npm with `$ brew install npm`.
-    1. Install MongoDB with `$ brew install mongodb`.
-    1. Install Zeit Now with `$ npm install -g now`
-1. Install client package dependencies with `$ cd ./client` and `$ npm install`.
-1. Install server package dependencies with `$ cd ./server` and `$ npm install`.
-1. Get a database dump from the server by following the instructions on <https://cloud.mongodb.com> after logging in with
-   your credentials.
+    1. Install MongoDB with:
+       - `$ brew tap mongodb/brew`
+       - `$ brew install mongodb-community`
+    1. Install Vercel CLI with `$ npm install -g vercel`
+1. Install client package dependencies with `$ npm install`.
+1. Install api package dependencies with `$ cd ./api` and `$ npm install`.
+1. Get a production database dump from the server by following the instructions on <https://cloud.mongodb.com> after
+   logging in with your credentials.
+1. Start the mongo daemon with `$ brew services start mongodb-community`. By default, homebrew will now keep this
+   service alive at all times, even after a restart. To stop it at any time, you can run
+   `$ brew services stop mongodb-community`.
 
-### Starting the server locally
-#### Prerequisites
-1. `$ cd ./server`
-1. Create a `.env` file in this directory. This file is not tracked in git because it contains secrets. Put the
+### Prerequisites to starting server locally
+1. Create a `.env` file in the root directory. This file is not tracked in git because it contains secrets. Put the
    following there as contents:
 ```bash
 mongodb_url="mongodb://127.0.0.1:27017/ic"
-elasticemail_api_key=""
-domain="http://localhost:4000"
-graphql_http_endpoint="http://localhost:3000/graphql"
+elasticemail_api_key="<get this from @elijahcarrel>"
+domain="http://localhost:3000"
 ```
    The `elasticemail_api_key` parameter is empty because it is the same as production and therefore secret-- ask
    @elijahcarrel directly what the API key is. The other information is local-specific and do not match the (secret)
    production values. 
-#### Starting the server
-1. First, in a separate tab or window, start the mongo daemon with `$ mongod --config /usr/local/etc/mongod.conf` 
-1. `$ cd ./server`
-1. Start the server with `$ npm run start`
-1. Server is now running on <http://localhost:3000>.
 
-### Starting the client locally
-1. `$ cd ./client`
-1. Start the client with `$ npm run start`
-1. Client is now running, and visible in a web browser, on <http://localhost:4000>.
+### Starting the app locally
+1. Start the app with `$ vercel dev`.
+1. App is now running on <http://localhost:3000>, using a local database and production elasticemail credentials.
 
-### Deploying the server
-1. `$ cd ./server`
-1. `$ now --prod`
-1. Server is now deployed to <https://api.inboxcomics.com>.
+### Deploying the app to a preview deployment
+1. `$ vercel`
+1. App is now deployed to app.inboxcomics.vercel.app, using the production database and production elasticemail credentials.
 
-### Deploying the client
-1. `$ cd ./client`
-1. `$ now --prod`
-1. Client is now deployed to <https://www.inboxcomics.com>.
+### Deploying the app
+1. `$ vercel --prod`
+1. App is now deployed to <https://www.inboxcomics.com>.
 
 ### Opening a local database console.
 1. Open a local database console with `$ mongo ic`. Note that this connects to your local database, not to the production one.
