@@ -6,3 +6,4 @@ bundle
 .now
 .next
 .env
+.vercel
