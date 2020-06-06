@@ -9,7 +9,7 @@
     "deploy": "now"
   },
   "dependencies": {
-    "apollo-server-micro": "^2.12.0",
+    "apollo-server-micro": "^2.14.2",
     "axios": "^0.19.2",
     "btoa": "^1.2.1",
     "cheerio": "^1.0.0-rc.3",
