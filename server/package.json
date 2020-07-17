@@ -17,7 +17,7 @@
     "graphql": "^15.0.0",
     "graphql-iso-date": "^3.6.1",
     "graphql-tag": "^2.10.3",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "micro-cors": "^0.1.1",
     "moment": "^2.25.1",
     "moment-timezone": "^0.5.28",
