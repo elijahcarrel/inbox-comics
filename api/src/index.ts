@@ -2,4 +2,5 @@ import { initApollo } from "./apollo";
 import { initMongoose } from "./mongoose";
 
 initMongoose();
-export default initApollo();
+const apolloServer = initApollo();
+export default apolloServer;
