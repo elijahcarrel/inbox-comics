@@ -143,7 +143,13 @@ const NewUserPage: React.FunctionComponent = () => {
           </Fragment>
         )}
       </H3>
-      <div className={styles.container}>
+      <form
+        className={styles.container}
+        onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
+          e.preventDefault()
+          handleSubmit(e);
+        }}
+      >
         <TextInput
           name="email"
           value={values.email}
@@ -161,13 +167,13 @@ const NewUserPage: React.FunctionComponent = () => {
         />
         <br />
         <Button
-          onClick={handleSubmit}
+          type="submit"
           className={styles.button}
           disabled={isSubmitting}
         >
           Go
         </Button>
-      </div>
+      </form>
     </Layout>
   );
 };

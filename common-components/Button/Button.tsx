@@ -10,6 +10,7 @@ export interface Props {
   onClick?: () => any;
   className?: string;
   disabled?: boolean;
+  type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
 }
 
 export const Button: React.FunctionComponent<Props> = (props: Props) => {
@@ -20,10 +21,11 @@ export const Button: React.FunctionComponent<Props> = (props: Props) => {
     className,
     uppercase = false,
     disabled = false,
+    type = "button",
   } = props;
   const innerButton = (
     <button
-      type="button"
+      type={type}
       className={classNames(className, styles.button, {[styles.uppercase]: uppercase})}
       onClick={onClick}
       disabled={disabled}
