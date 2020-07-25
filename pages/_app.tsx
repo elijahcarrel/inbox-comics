@@ -10,10 +10,7 @@ import { ToastProvider } from "react-toast-notifications";
 import { Toast } from "../common-components/Toast/Toast";
 import styles from "./app.module.scss";
 
-// TODO(ecarrel): put these in env variables rather than hardcoding.
-const graphQLHttpEndpoint = process.env.NODE_ENV === "production" ?
-  "https://api.inboxcomics.com/graphql" :
-  "http://localhost:3000/graphql";
+const graphQLHttpEndpoint = "/api/graphql";
 
 class MyApp extends App {
   public render() {

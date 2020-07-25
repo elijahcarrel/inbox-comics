@@ -25,5 +25,5 @@ export const sendEmail =
       fromName: "Inbox Comics",
       bodyType: "HTML",
     });
-    return !!result.success;
+    return !!result;
   };

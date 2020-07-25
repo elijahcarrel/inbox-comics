@@ -18,6 +18,10 @@ interface Syndication {
   numSubscribers: number;
 }
 
+interface AugmentedSyndication extends Syndication {
+  isSelected: boolean;
+}
+
 interface Props {
   syndications: Syndication[];
   selectedSyndicationIdentifiers: Set<string>;
@@ -42,13 +46,11 @@ export const SyndicationGrid = (props: Props) => {
   //  and size of server-side blob per comic are both pretty small.
   let filteredSyndications = orderBy(augmentedSyndications, ["isSelected", sortField, "title"], ["desc", sortFieldOrder, "asc"]);
   if (searchText !== "") {
-    const fuse = new Fuse(filteredSyndications, {
+    const fuse = new Fuse<AugmentedSyndication, Fuse.IFuseOptions<AugmentedSyndication>>(filteredSyndications, {
       keys: ["title"],
       threshold: 0.2,
-      tokenize: true,
     });
-    // @ts-ignore FuseResult<T> is not compatible with T.
-    filteredSyndications = fuse.search(searchText);
+    filteredSyndications = fuse.search(searchText).map((fuseResult) => fuseResult.item);
   }
   const filteredSyndicationsOnThisPage = filteredSyndications
     .slice(offset, offset + numComicsPerPage);
