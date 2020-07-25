@@ -1,7 +1,4 @@
-import { ApolloProvider } from "@apollo/react-hooks";
-import { InMemoryCache } from "apollo-cache-inmemory";
-import { ApolloClient } from "apollo-client";
-import { HttpLink } from "apollo-link-http";
+import { ApolloProvider, ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
 import fetch from "isomorphic-unfetch";
 import App from "next/app";
 import React from "react";

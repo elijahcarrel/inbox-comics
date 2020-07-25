@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import React, { Fragment, useState } from "react";
 import { DynamicText } from "../../common-components/DynamicText/DynamicText";

@@ -62,7 +62,7 @@ export const emailUsers = async (users: IUser[], options: EmailAllUsersOptions, 
   const sendComicEmailOptions = { sendAllComics, mentionNotUpdatedComics };
   const emailResults = await Promise.all(usersAndTheirComics.map(
     ({email, googleAnalyticsHash, comics}) => {
-      if (!isWorthSendingEmail(comics, sendComicEmailOptions)) {
+      if (!isWorthSendingEmail(comics, sendComicEmailOptions) || email == null) {
         return Promise.resolve(false);
       }
       return sendComicEmail(email, comics, sendComicEmailOptions, date, googleAnalyticsHash);

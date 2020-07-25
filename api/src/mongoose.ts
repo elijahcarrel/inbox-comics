@@ -7,7 +7,6 @@ export const initMongoose = () => {
   if (url == null) {
     throw new Error("mongodb_url environment variable is not defined.");
   }
-  mongoose.set("bufferCommands", false);
   mongoose.set("useUnifiedTopology", true);
   mongoose.set("debug", true);
   mongoose.connect(url, { useNewUrlParser: true });

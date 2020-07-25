@@ -7,37 +7,37 @@
     "lint": "tslint --project ."
   },
   "dependencies": {
-    "apollo-server-micro": "^2.13.1",
+    "apollo-server-micro": "^2.16.0",
     "axios": "^0.19.2",
     "btoa": "^1.2.1",
     "cheerio": "^1.0.0-rc.3",
     "elasticemail-webapiclient": "^2.0.14",
-    "graphql": "^15.0.0",
+    "graphql": "^15.3.0",
     "graphql-iso-date": "^3.6.1",
-    "graphql-tag": "^2.10.3",
-    "lodash": "^4.17.15",
+    "graphql-tag": "^2.10.4",
+    "lodash": "^4.17.19",
     "micro-cors": "^0.1.1",
-    "moment": "^2.26.0",
+    "moment": "^2.27.0",
     "moment-timezone": "^0.5.31",
-    "mongoose": "^5.9.15",
+    "mongoose": "^5.9.25",
     "unescape": "^1.0.1",
-    "uuid": "^8.1.0"
+    "uuid": "^8.2.0"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/btoa": "^1.2.3",
-    "@types/cheerio": "^0.22.18",
-    "@types/graphql-iso-date": "^3.3.3",
-    "@types/lodash": "^4.14.152",
+    "@types/cheerio": "^0.22.21",
+    "@types/graphql-iso-date": "^3.4.0",
+    "@types/lodash": "^4.14.158",
     "@types/micro-cors": "^0.1.1",
     "@types/moment": "^2.13.0",
     "@types/moment-timezone": "^0.5.13",
-    "@types/mongoose": "^5.7.21",
+    "@types/mongoose": "^5.7.32",
     "@types/uuid": "^8.0.0",
     "babel-plugin-add-module-exports": "^1.0.2",
-    "ts-node": "^8.10.1",
+    "ts-node": "^8.10.2",
     "tslint": "^6.1.2",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.7"
   },
   "private": true
 }

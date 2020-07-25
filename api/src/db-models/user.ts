@@ -4,14 +4,14 @@ import { ISyndication } from "./syndication";
 
 export interface IUser extends Document {
   publicId: string;
-  email: string;
+  email?: string | null;
   verified: boolean;
   syndications: ISyndication[];
-  lastEmailedComics: IComic[];
+  lastEmailedComics?: IComic[];
   verificationHash: string;
   googleAnalyticsHash: string;
-  lastEmailCheck: Date | null;
-  lastEmailSent: Date | null;
+  lastEmailCheck?: Date | null;
+  lastEmailSent?: Date | null;
 }
 
 const userSchema = new Schema({

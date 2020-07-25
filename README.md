@@ -53,19 +53,19 @@ domain="http://localhost:3000"
    production values. 
 
 ### Starting the app locally
-1. Start the app with `$ vercel dev`.
+1. `$ vercel dev`.
 1. App is now running on <http://localhost:3000>, using a local database and production elasticemail credentials.
 
 ### Deploying the app to a preview deployment
 1. `$ vercel`
-1. App is now deployed to app.inboxcomics.vercel.app, using the production database and production elasticemail credentials.
+1. App is now deployed to <https://app.inboxcomics.vercel.app>, using the production database and production elasticemail credentials.
 
 ### Deploying the app
 1. `$ vercel --prod`
 1. App is now deployed to <https://www.inboxcomics.com>.
 
 ### Opening a local database console.
-1. Open a local database console with `$ mongo ic`. Note that this connects to your local database, not to the production one.
+1. `$ mongo ic`. Note that this connects to your local database, not to the production one.
 1. In the database console, you can run commands like `> db.users.find({});` or `> db.syndications.findOne({ identifier: "calvinandhobbes" });`
 
 ### Opening a production database console.

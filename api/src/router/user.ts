@@ -61,10 +61,12 @@ export const resolvers = {
       if (existingUser != null) {
         throw new UserInputError(`User with email "${email}" already exists.`);
       }
+      const publicId = uuidv4();
       const verificationHash = uuidv4();
       const googleAnalyticsHash = uuidv4();
       const user = await User.create({
         email,
+        publicId,
         verified: false,
         syndications: [],
         verificationHash,
@@ -106,8 +108,10 @@ export const resolvers = {
         user.email = inputUser.email;
       }
       await user.save();
+      // @ts-ignore string | null | undefined is not assignable to type string.
+      const email: string = user.email;
       if (changedEmail) {
-        await sendVerificationEmail(user.email, user.verificationHash);
+        await sendVerificationEmail(email, user.verificationHash);
       }
       return user;
     },
@@ -120,7 +124,6 @@ export const resolvers = {
       return await sendVerificationEmail(email, user.verificationHash);
     },
     verifyEmail: async (_: any, args: { email: string, verificationHash: string }) => {
-      console.log("args", args);
       const { email, verificationHash } = args;
       const user = await User.findOne({ email }).exec();
       if (user == null) {

@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import React, { useState } from "react";
 import { Layout } from "../../common-components/Layout/Layout";
