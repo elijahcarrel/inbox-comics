@@ -72,6 +72,11 @@ const sites = {
     description: "Three Word Phrase",
     id: 10,
   },
+  farside: {
+    name: "FAR_SIDE",
+    description: "The Far Side",
+    id: 11,
+  },
 };
 
 interface ScrapeResult {
@@ -322,6 +327,24 @@ export const scrapeComic = async (
       }
       const imageUrl = `${url}${comicImages.attr("src")}`;
       return scrapeSuccess(imageUrl);
+    }
+    case sites.farside.id: {
+      const url = `https://www.thefarside.com/${date.format("YYYY/MM/DD")}/0`;
+      const $ = await cheerioRequest(url);
+      if ($ === null) {
+        return scrapeFailure(failureModes.FAR_SIDE_REJECTION);
+      }
+      const comicImages = $(".tfs-comic__image img");
+      if (comicImages.length !== 1) {
+        return scrapeFailure(failureModes.FAR_SIDE_MISSING_IMAGE_ON_PAGE);
+      }
+      const comicCaptions = $("figure.tfs-comic__caption figcaption.figure-caption");
+      if (comicCaptions.length !== 1) {
+        return scrapeFailure(failureModes.FAR_SIDE_MISSING_CAPTION_ON_PAGE);
+      }
+      const imageUrl = comicImages.attr("data-src");
+      const imageCaption = comicCaptions.text();
+      return scrapeSuccess(imageUrl, imageCaption);
     }
     default: {
       return scrapeFailure(failureModes.UNKNOWN_SITE);
