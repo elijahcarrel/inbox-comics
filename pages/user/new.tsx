@@ -55,13 +55,12 @@ const UserSyndicationsPage = () => {
   useEffect(() => {
     if (urlQueryIsReady && publicId.length === 0) {
       // No public id supplied. Create a new user.
-      handleGraphQlResponse(createUserWithoutEmailMutation()).then(async (result) => {
-        const { success, combinedErrorMessage } = result;
+      handleGraphQlResponse<CreateUserResponse>(createUserWithoutEmailMutation()).then(async ({ success, combinedErrorMessage, result }) => {
         if (success) {
           const url = {
             pathname: "/user/new",
             query: {
-              publicId: result.result.data.createUserWithoutEmail.publicId,
+              publicId: result?.data?.createUserWithoutEmail.publicId,
             },
           };
           await Router.push(url, url, { shallow: true });

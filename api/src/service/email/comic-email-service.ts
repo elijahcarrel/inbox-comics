@@ -4,6 +4,7 @@ import { ISyndication } from "../../db-models/syndication";
 import { IUser, User } from "../../db-models/user";
 import { EmailAllUsersOptions } from "../../router/email";
 import { ComicForEmail, sendComicEmail, SendComicEmailOptions } from "./templates/send-comic-email";
+import { Email, IEmail } from "../../db-models/email";
 
 const isWorthSendingEmail = (comics: ComicForEmail[], options: SendComicEmailOptions) => {
   if (comics.length === 0) {
@@ -60,26 +61,39 @@ export const emailUsers = async (users: IUser[], options: EmailAllUsersOptions, 
       };
     });
   const sendComicEmailOptions = { sendAllComics, mentionNotUpdatedComics };
-  const emailResults = await Promise.all(usersAndTheirComics.map(
+  const messageIds: (string | null)[] = await Promise.all(usersAndTheirComics.map(
     ({email, googleAnalyticsHash, comics}) => {
       if (!isWorthSendingEmail(comics, sendComicEmailOptions) || email == null) {
-        return Promise.resolve(false);
+        return Promise.resolve(null);
       }
       return sendComicEmail(email, comics, sendComicEmailOptions, date, googleAnalyticsHash);
     }));
-  const augmentedEmailResults = emailResults.map((emailResult, i) => ({
-    user: populatedUsers[i],
-    emailResult,
-  }));
+
   const dateAsDate = date.toDate();
+
+  const savedEmails = await Email.insertMany(messageIds.filter(messageId => messageId).map(messageId => ({
+    messageId,
+    sendTime: dateAsDate,
+  })));
+  const messageIdToSavedEmail = savedEmails.reduce((memo, savedEmail) => {
+    memo[savedEmail.messageId] = savedEmail;
+    return memo;
+  }, {} as Record<string, IEmail>);
+
+  const augmentedEmailResults = messageIds.map((messageId, i) => ({
+    user: populatedUsers[i],
+    savedEmail: messageId ? messageIdToSavedEmail[messageId] : undefined,
+  }));
+
   const updatedUsers = augmentedEmailResults
-  .map(({ user, emailResult }) => {
+  .map(({ user, savedEmail }) => {
     user.lastEmailedComics = user.syndications
       .map((syndication) => syndication.lastSuccessfulComic)
       .filter((comic) => comic != null);
     user.lastEmailCheck = dateAsDate;
-    if (emailResult) {
+    if (savedEmail) {
       user.lastEmailSent = dateAsDate;
+      user.emails = [...(user.emails || []), savedEmail];
     }
     return user;
   });
@@ -89,7 +103,7 @@ export const emailUsers = async (users: IUser[], options: EmailAllUsersOptions, 
       (updatedUser) => updatedUser.save(),
     ));
   }
-  // TODO(ecarrel): return something?
+  return messageIds;
 };
 
 export const emailAllUsers = async (date: Moment, options: EmailAllUsersOptions = {}) => {

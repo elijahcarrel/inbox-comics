@@ -40,9 +40,9 @@ export const SyndicationEditor = (props: Props) => {
   interface UserQueryResponse {
     userByPublicId: {
       email: string;
-      syndications: Array<{
+      syndications: {
         identifier: string;
-      }>;
+      }[];
     };
   }
 
@@ -52,7 +52,7 @@ export const SyndicationEditor = (props: Props) => {
     if (onChangeSelectedSyndications) {
       onChangeSelectedSyndications(newSelectedSyndications);
     }
-    return await handleGraphQlResponse(putUserMutation({
+    return await handleGraphQlResponse<void>(putUserMutation({
       variables: {
         publicId,
         user: {

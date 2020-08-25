@@ -1,5 +1,5 @@
 import Router from "next/router";
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { Button } from "../../common-components/Button/Button";
 import { Layout } from "../../common-components/Layout/Layout";
 import { TextInput } from "../../common-components/TextInput/TextInput";
@@ -9,7 +9,7 @@ const EditUserPage: React.FunctionComponent = () => {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   return (
-    <Layout title="Edit Subscriptions">
+    <Layout title="My Account">
       <form className={styles.container} onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setIsSubmitting(true);

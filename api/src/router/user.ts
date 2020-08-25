@@ -5,7 +5,7 @@ import { Syndication } from "../db-models/syndication";
 import { User } from "../db-models/user";
 import { sendContactEmail } from "../service/email/templates/send-contact-email";
 import { sendVerificationEmail } from "../service/email/templates/send-verification-email";
-import { invalidUserByPublicIdError, invalidUserError } from "../util/error";
+import { internalEmailSendError, invalidUserByPublicIdError, invalidUserError } from "../util/error";
 
 export const typeDefs = gql`
   input InputUser {
@@ -17,6 +17,7 @@ export const typeDefs = gql`
     email: String
     verified: Boolean!
     syndications: [Syndication]!
+    emails: [Email]!
     publicId: ID!
   }
   extend type Query {
@@ -41,8 +42,8 @@ export const resolvers = {
       if (user == null) {
         throw invalidUserError(email);
       }
-      // TODO(ecarrel): only populate syndications if they're requested?
-      return await user.populate("syndications").execPopulate();
+      // TODO(ecarrel): only populate syndications and emails if they're requested?
+      return await user.populate("syndications").populate("emails").execPopulate();
     },
     userByPublicId: async (_: any, args: { publicId: string }) => {
       const { publicId } = args;
@@ -50,8 +51,8 @@ export const resolvers = {
       if (user == null) {
         throw invalidUserByPublicIdError(publicId);
       }
-      // TODO(ecarrel): only populate syndications if they're requested?
-      return await user.populate("syndications").execPopulate();
+      // TODO(ecarrel): only populate syndications and emails if they're requested?
+      return await user.populate("syndications").populate("emails").execPopulate();
     },
   },
   Mutation: {
@@ -72,7 +73,11 @@ export const resolvers = {
         verificationHash,
         googleAnalyticsHash,
       });
-      await sendVerificationEmail(email, verificationHash);
+      try {
+        await sendVerificationEmail(email, user.verificationHash);
+      } catch (err) {
+        throw internalEmailSendError(err);
+      }
       return user;
     },
     createUserWithoutEmail: async () => {
@@ -111,7 +116,11 @@ export const resolvers = {
       // @ts-ignore string | null | undefined is not assignable to type string.
       const email: string = user.email;
       if (changedEmail) {
-        await sendVerificationEmail(email, user.verificationHash);
+        try {
+          await sendVerificationEmail(email, user.verificationHash);
+        } catch (err) {
+          throw internalEmailSendError(err);
+        }
       }
       return user;
     },
@@ -121,7 +130,11 @@ export const resolvers = {
       if (user == null) {
         throw invalidUserError(email);
       }
-      return await sendVerificationEmail(email, user.verificationHash);
+      try {
+        await sendVerificationEmail(email, user.verificationHash);
+      } catch (err) {
+        throw internalEmailSendError(err);
+      }
     },
     verifyEmail: async (_: any, args: { email: string, verificationHash: string }) => {
       const { email, verificationHash } = args;
@@ -130,7 +143,8 @@ export const resolvers = {
         throw invalidUserError(email);
       }
       if (user.verified) {
-        throw new UserInputError(`User "${email}" is already verified.`);
+        // Simply return true. No use returning an error if, say, the user accidentally clicks the link twice.
+        return true;
       }
       if (user.verificationHash === verificationHash) {
         user.verified = true;
@@ -141,7 +155,11 @@ export const resolvers = {
     },
     submitContactForm: async (_: any, args: { email: string, name: string, subject: string, message: string }) => {
       const { email, name, subject, message } = args;
-      return await sendContactEmail(name, email, subject, message);
+      try {
+        await sendContactEmail(name, email, subject, message);
+      } catch (err) {
+        throw internalEmailSendError(err);
+      }
     },
   },
 };

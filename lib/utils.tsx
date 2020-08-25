@@ -1,4 +1,4 @@
-import { ApolloError } from "@apollo/client";
+import { ApolloError, FetchResult } from "@apollo/client";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import React, { useEffect, useState } from "react";
@@ -7,18 +7,18 @@ import { H3 } from "../common-components/H3/H3";
 import { format } from "date-fns-tz";
 import { isEmpty } from "lodash";
 
-export interface GraphQlResult {
+export interface GraphQlResult<T> {
   success: boolean;
   error: ApolloError | null;
   combinedErrorMessage: string | null;
-  result: any;
+  result: T;
 }
 
 export const stringifyGraphQlError = (error: ApolloError) => {
   return error.graphQLErrors.map(({ message }) => message).join(", ");
 };
 
-export const handleGraphQlResponse = async (requestPromise: Promise<any>): Promise<GraphQlResult> => {
+export async function handleGraphQlResponse<T>(requestPromise: Promise<FetchResult<T>>): Promise<GraphQlResult<FetchResult<T> | null>> {
   return requestPromise
   .then((result) => {
     return {

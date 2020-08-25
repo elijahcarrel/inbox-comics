@@ -9,13 +9,13 @@ interface Props {
     list?: string;
     element?: string;
   };
-  elements: Array<{
+  elements: {
     key: string,
     href?: string;
     content: string;
     className?: string;
     onClick?: () => any;
-  }>;
+  }[];
   wrapWidth: "wide" | "medium" | "none";
 }
 

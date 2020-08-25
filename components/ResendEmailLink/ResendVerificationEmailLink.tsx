@@ -5,10 +5,17 @@ import React, { useState } from "react";
 import { useToasts } from "react-toast-notifications";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { handleGraphQlResponse, toastType } from "../../lib/utils";
-import styles from "./ResendVerificationEmail.module.scss";
+import { LoadingOverlay } from "../../common-components/LoadingOverlay/LoadingOverlay";
+import styles from "./ResendEmailLink.module.scss";
+import { mdiCheckCircle } from "@mdi/js";
+import Icon from "@mdi/react";
 
 interface Props {
   email: string;
+}
+
+type ResendVerificationEmailResult = {
+  verifyEmail: boolean;
 }
 
 export const ResendVerificationEmailLink = (props: Props) => {
@@ -21,25 +28,31 @@ export const ResendVerificationEmailLink = (props: Props) => {
       resendVerificationEmail(email: $email)
     }
   `;
-  interface ResendVerificationEmailResponse {
-    success: boolean;
-  }
   const [
     resendVerificationEmailMutation,
     { loading: verificationEmailIsSending },
-  ] = useMutation<ResendVerificationEmailResponse>(mutation, { variables: { email } });
+  ] = useMutation<ResendVerificationEmailResult>(mutation, { variables: { email } });
 
   if (sentEmail) {
-    return <span className={styles.success}>Verification email re-sent.</span>;
+    return <>
+      <Icon
+        path={mdiCheckCircle}
+        size={1}
+        className={styles.successIcon}
+      />
+      Verification email re-sent.
+    </>;
   }
   if (verificationEmailIsSending) {
-    return <span className={styles.warning}>Re-sending verification email...</span>;
+    return <>
+      <LoadingOverlay />
+      Re-sending verification email...
+    </>;
   }
   return (
     <CommonLink
       onClick={async () => {
-        // @ts-ignore
-        const result = await handleGraphQlResponse(resendVerificationEmailMutation());
+        const result = await handleGraphQlResponse<ResendVerificationEmailResult>(resendVerificationEmailMutation());
         if (result.success) {
           setSentEmail(true);
         } else {
