@@ -1,5 +1,5 @@
 import { gql } from "apollo-server-micro";
-import { Syndication } from "../db-models/syndication";
+import { Syndication } from "../db-models/comic-syndication";
 
 export const typeDefs = gql`
   type Syndication {
@@ -19,7 +19,7 @@ export const typeDefs = gql`
 export const resolvers = {
   Query: {
     syndications: async () => {
-      return await Syndication.find({}).exec();
+      return Syndication.find({}).exec();
     },
   },
   Mutation: {

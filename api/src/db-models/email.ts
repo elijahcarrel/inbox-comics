@@ -5,9 +5,12 @@ export interface IEmail extends Document {
   sendTime: Date;
 }
 
-const emailSchema = new Schema({
-  messageId: String!,
-  sendTime: Date!,
-}, { timestamps: true });
+const emailSchema = new Schema(
+  {
+    messageId: String,
+    sendTime: Date,
+  },
+  { timestamps: true },
+);
 
 export const Email = model<IEmail>("email", emailSchema);

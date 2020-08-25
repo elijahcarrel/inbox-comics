@@ -1,11 +1,11 @@
 import classNames from "classnames";
 import parse, { domToReact } from "html-react-parser";
-import React, { Fragment } from "react";
+import React from "react";
 import Truncate from "react-truncate";
+import { format } from "date-fns";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { H2 } from "../../common-components/H2/H2";
 import styles from "./NewsItem.module.scss";
-import { format } from "date-fns";
 
 interface Props {
   identifier: string;
@@ -26,53 +26,62 @@ const NewsItemContent = (props: NewsItemContentProps) => {
   const parsedNode = parse(content, {
     replace: (domNode) => {
       if (domNode.type === "tag" && domNode.name === "a") {
-        const href = (domNode.attribs || {}).href;
+        const { href } = domNode.attribs || {};
         const isExternal = !href.startsWith("/");
         return (
-          <CommonLink
-            href={href}
-            isExternal={isExternal}
-          >
+          <CommonLink href={href} isExternal={isExternal}>
             {domToReact(domNode.children || [])}
           </CommonLink>
         );
       }
+      return undefined;
     },
   });
   if (previewOnly) {
     return (
-      <Truncate
-        lines={3}
-        ellipsis={
-          <span>
-            ...
-          </span>
-        }>
+      <Truncate lines={3} ellipsis={<span>...</span>}>
         {parsedNode}
       </Truncate>
     );
   }
-  return <Fragment>{parsedNode}</Fragment>;
+  return <>{parsedNode}</>;
 };
 
 export const NewsItem = (props: Props) => {
-  const { identifier, createTime, headline, content, previewOnly, isLastItem = false } = props;
+  const {
+    identifier,
+    createTime,
+    headline,
+    content,
+    previewOnly,
+    isLastItem = false,
+  } = props;
   const formattedCreateTime = format(createTime, "EEEE, LLLL do, yyyy, h:mm a");
   return (
     <div className={styles.newsItemContainer} key={identifier}>
-      <div className={classNames(styles.newsItem, { [styles.isNotLastItem]: !isLastItem && previewOnly })}>
+      <div
+        className={classNames(styles.newsItem, {
+          [styles.isNotLastItem]: !isLastItem && previewOnly,
+        })}
+      >
         <H2 className={styles.headline}>{headline}</H2>
         <div className={styles.date}>
           <CommonLink href={`/news/${identifier}`} className={styles.dateLink}>
             {formattedCreateTime}
           </CommonLink>
         </div>
-        <div className={classNames(styles.content, { [styles.previewOnly]: previewOnly })}>
+        <div
+          className={classNames(styles.content, {
+            [styles.previewOnly]: previewOnly,
+          })}
+        >
           <NewsItemContent content={content} previewOnly={previewOnly} />
         </div>
         {previewOnly && (
           <div className={styles.readMore}>
-            <CommonLink href={`/news/${identifier}`}>Read more &gt;&gt;</CommonLink>
+            <CommonLink href={`/news/${identifier}`}>
+              Read more &gt;&gt;
+            </CommonLink>
           </div>
         )}
       </div>

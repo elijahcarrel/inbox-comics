@@ -3,6 +3,7 @@ import { FormikHelpers, useFormik } from "formik";
 import gql from "graphql-tag";
 import Router from "next/router";
 import React from "react";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { useToasts } from "react-toast-notifications";
 import Reaptcha from "reaptcha";
@@ -26,12 +27,24 @@ interface ContactFormValues {
 const ContactPage: React.FunctionComponent = () => {
   const { addToast } = useToasts();
   // TODO(ecarrel): put this in environment variables and secrets. Tried but couldn't get it to work.
-  const recaptchaSiteKey = process.env.NODE_ENV === "production" ?
-    "6Lf-IbYUAAAAACsBvqBlI2EPp3dRfGOtGmki0LVf" : "6LdAIbYUAAAAAJSiFXndt3k3qFw83Jm7w7HnfP3A";
+  const recaptchaSiteKey =
+    process.env.NODE_ENV === "production"
+      ? "6Lf-IbYUAAAAACsBvqBlI2EPp3dRfGOtGmki0LVf"
+      : "6LdAIbYUAAAAAJSiFXndt3k3qFw83Jm7w7HnfP3A";
 
   const mutation = gql`
-    mutation submitContactForm($email: String!, $name: String!, $subject: String!, $message: String!) {
-      submitContactForm(email: $email, name: $name, subject: $subject, message: $message)
+    mutation submitContactForm(
+      $email: String!
+      $name: String!
+      $subject: String!
+      $message: String!
+    ) {
+      submitContactForm(
+        email: $email
+        name: $name
+        subject: $subject
+        message: $message
+      )
     }
   `;
   const [submitContactFormMutation] = useMutation(mutation);
@@ -45,17 +58,35 @@ const ContactPage: React.FunctionComponent = () => {
     },
     validationSchema: yup.object().shape({
       name: yup.string().required("Name is required."),
-      email: yup.string().email("Must provide a valid email.").required("Email is required."),
+      email: yup
+        .string()
+        .email("Must provide a valid email.")
+        .required("Email is required."),
       subject: yup.string().required("Subject is required."),
       message: yup.string().required("Message is required."),
-      recaptchaIsVerified: yup.boolean().oneOf([true], "Please verify that you're not a robot."),
+      recaptchaIsVerified: yup
+        .boolean()
+        .oneOf([true], "Please verify that you're not a robot."),
     }),
-    onSubmit: async (contactFormValues: ContactFormValues, { setSubmitting }: FormikHelpers<ContactFormValues>) => {
-      const { recaptchaIsVerified, ...relevantValues } = contactFormValues;
-      const result = await handleGraphQlResponse<void>(submitContactFormMutation({ variables: relevantValues }));
+    onSubmit: async (
+      contactFormValues: ContactFormValues,
+      { setSubmitting }: FormikHelpers<ContactFormValues>,
+    ) => {
+      const {
+        // We have varsIgnorePattern set correctly but for some reason it's still throwing an error.
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        recaptchaIsVerified: __recaptchaIsVerified,
+        ...relevantValues
+      } = contactFormValues;
+      const result = await handleGraphQlResponse<void>(
+        submitContactFormMutation({ variables: relevantValues }),
+      );
       const { success, combinedErrorMessage } = result;
       if (success) {
-        addToast("Thank you! We'll get back to you in a jiffy.", toastType.success);
+        addToast(
+          "Thank you! We'll get back to you in a jiffy.",
+          toastType.success,
+        );
         await Router.push({
           pathname: "/",
           query: {},
@@ -78,9 +109,14 @@ const ContactPage: React.FunctionComponent = () => {
 
   return (
     <Layout title="Contact" isLoading={isSubmitting}>
-      <H3>We'd love to hear from you!</H3>
-      <H3>You can also reach us by replying to any of your daily comic emails, or by emailing us at{" "}
-        <CommonLink href="mailto:hello@inboxcomics.com" isExternal>hello@inboxcomics.com</CommonLink>.
+      <H3>We&apos;d love to hear from you!</H3>
+      <H3>
+        You can also reach us by replying to any of your daily comic emails, or
+        by emailing us at{" "}
+        <CommonLink href="mailto:hello@inboxcomics.com" isExternal>
+          hello@inboxcomics.com
+        </CommonLink>
+        .
       </H3>
       <div className={styles.contactForm}>
         <TextInput
@@ -127,14 +163,10 @@ const ContactPage: React.FunctionComponent = () => {
         />
         {touched.recaptchaIsVerified && errors.recaptchaIsVerified && (
           <div className={styles.recaptchaErrorText}>
-          {errors.recaptchaIsVerified}
+            {errors.recaptchaIsVerified}
           </div>
         )}
-        <Button
-          onClick={() => handleSubmit()}
-        >
-          Go
-        </Button>
+        <Button onClick={() => handleSubmit()}>Go</Button>
       </div>
     </Layout>
   );

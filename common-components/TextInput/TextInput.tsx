@@ -17,7 +17,8 @@ interface Props {
 }
 
 export const TextInput: React.FunctionComponent<Props> = (props: Props) => {
-  const { name,
+  const {
+    name,
     value,
     onChange,
     onChangeInternal,
@@ -28,18 +29,20 @@ export const TextInput: React.FunctionComponent<Props> = (props: Props) => {
     isClearable = false,
     ...otherProps
   } = props;
-  // tslint:disable-next-line:no-empty
+  // eslint-disable-next-line no-empty, @typescript-eslint/no-empty-function
   let handleChange: (e: React.FormEvent<HTMLInputElement>) => any = () => {};
   if (onChangeInternal) {
     handleChange = onChangeInternal;
   } else if (onChange) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    handleChange = ({ target: { value: newValue }}) => onChange(newValue);
+    handleChange = ({ target: { value: newValue } }) => onChange(newValue);
   }
   const innerElement = multiline ? (
     <textarea
       name={name}
       value={value}
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore technically not the right type for textarea.
       onChange={handleChange}
       className={classNames(styles.textInput, {
@@ -47,8 +50,8 @@ export const TextInput: React.FunctionComponent<Props> = (props: Props) => {
       })}
       {...otherProps}
     >
-        {value}
-      </textarea>
+      {value}
+    </textarea>
   ) : (
     <input
       type="text"
@@ -65,6 +68,7 @@ export const TextInput: React.FunctionComponent<Props> = (props: Props) => {
     <div className={classNames(styles.textInputContainer, className)}>
       {innerElement}
       {isClearable && value.length > 0 && (
+        // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
         <span
           // TODO(ecarrel): make this look good.
           title="Clear"
@@ -72,8 +76,9 @@ export const TextInput: React.FunctionComponent<Props> = (props: Props) => {
           onClick={(e) => {
             e.preventDefault();
             if (onChangeInternal) {
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore technically not the right type for textarea.
-              onChangeInternal({target: { value: "" }});
+              onChangeInternal({ target: { value: "" } });
             } else if (onChange) {
               onChange("");
             }
@@ -83,9 +88,13 @@ export const TextInput: React.FunctionComponent<Props> = (props: Props) => {
         </span>
       )}
       {helperText && (
-        <div className={classNames(styles.helperText, {
-          [styles.hasError]: hasError,
-        })}>{helperText}</div>
+        <div
+          className={classNames(styles.helperText, {
+            [styles.hasError]: hasError,
+          })}
+        >
+          {helperText}
+        </div>
       )}
     </div>
   );

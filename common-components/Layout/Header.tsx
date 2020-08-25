@@ -8,12 +8,7 @@ export const Header = () => {
   return (
     <div className={styles.topBar}>
       <div className={styles.logoContainer}>
-        <CommonLink
-          href="/"
-          underline={false}
-
-          className={styles.logoLink}
-        >
+        <CommonLink href="/" underline={false} className={styles.logoLink}>
           <Logo className={styles.logo} />
         </CommonLink>
       </div>

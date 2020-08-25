@@ -11,9 +11,15 @@ interface Props {
 export const H3 = (props: Props) => {
   const { children, className = "", bold = false } = props;
   return (
-    <h3 className={classNames(styles.h3, {
-      [styles.bold]: bold,
-    }, className)}>
+    <h3
+      className={classNames(
+        styles.h3,
+        {
+          [styles.bold]: bold,
+        },
+        className,
+      )}
+    >
       {children}
     </h3>
   );

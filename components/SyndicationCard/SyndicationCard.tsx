@@ -16,10 +16,15 @@ interface Props {
 export const SyndicationCard = (props: Props) => {
   const { title, identifier, classes = {}, isSelected, onClick } = props;
   return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/no-static-element-interactions
     <div
-      className={classNames(styles.syndicationContainer, classes.syndicationContainer, {
-        [styles.selected]: isSelected,
-      })}
+      className={classNames(
+        styles.syndicationContainer,
+        classes.syndicationContainer,
+        {
+          [styles.selected]: isSelected,
+        },
+      )}
       onClick={onClick}
     >
       <img
@@ -27,9 +32,7 @@ export const SyndicationCard = (props: Props) => {
         src={`/static/images/logos/${identifier}.jpg`}
         alt=""
       />
-      <span className={styles.syndicationTitleText}>
-        {title}
-      </span>
+      <span className={styles.syndicationTitleText}>{title}</span>
     </div>
   );
 };

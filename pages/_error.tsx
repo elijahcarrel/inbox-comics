@@ -12,9 +12,7 @@ const pushWhenReady = (router: NextRouter, args: any) => {
   if (typeof window !== "undefined") {
     router.push(args);
   }
-  return (
-    <Layout title="Loading..." isLoading />
-  );
+  return <Layout title="Loading..." isLoading />;
 };
 
 const Error = (props: Props) => {
@@ -24,24 +22,25 @@ const Error = (props: Props) => {
   if (router.asPath.startsWith("/subscribe.php")) {
     const { modifysettings, ...otherQuery } = router.query;
     if (modifysettings === "yes") {
-      return pushWhenReady(router,{
+      return pushWhenReady(router, {
         pathname: "/user",
         query: otherQuery,
       });
-    } else {
-      return pushWhenReady(router,{
-        pathname: "/user/new",
-        query: otherQuery,
-      });
     }
-  } else if (router.asPath.startsWith("/verify.php")) {
-    return pushWhenReady(router,{
+    return pushWhenReady(router, {
+      pathname: "/user/new",
+      query: otherQuery,
+    });
+  }
+  if (router.asPath.startsWith("/verify.php")) {
+    return pushWhenReady(router, {
       pathname: "/user/verify",
       query: router.query,
     });
-  } else if (router.asPath.includes(".php")) {
+  }
+  if (router.asPath.includes(".php")) {
     const pathname = router.asPath.replace(".php", "");
-    return pushWhenReady(router,{
+    return pushWhenReady(router, {
       pathname,
       query: router.query,
     });
@@ -50,13 +49,26 @@ const Error = (props: Props) => {
     ? `An unknown error (code ${statusCode}) occurred on server.`
     : "An unknown error occurred on client.";
   return (
-    <Layout title="Error" error={errorMessage} errorAction={defaultErrorAction} />
+    <Layout
+      title="Error"
+      error={errorMessage}
+      errorAction={defaultErrorAction}
+    />
   );
 };
 
 Error.getInitialProps = ({ res, err }: any) => {
-  const statusCode = res ? res.statusCode : err ? err.statusCode : null;
-  return { statusCode };
+  let statusCode: any;
+  if (res) {
+    ({ statusCode } = res);
+  } else if (err) {
+    ({ statusCode } = err);
+  }
+
+  if (statusCode) {
+    return { statusCode };
+  }
+  return null;
 };
 
 export default Error;

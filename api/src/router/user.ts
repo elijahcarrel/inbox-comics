@@ -1,17 +1,21 @@
 import { gql, UserInputError } from "apollo-server-micro";
 import { v4 as uuidv4 } from "uuid";
 import { InputUser } from "../api-models/user";
-import { Syndication } from "../db-models/syndication";
 import { User } from "../db-models/user";
 import { sendContactEmail } from "../service/email/templates/send-contact-email";
 import { sendVerificationEmail } from "../service/email/templates/send-verification-email";
-import { internalEmailSendError, invalidUserByPublicIdError, invalidUserError } from "../util/error";
+import {
+  internalEmailSendError,
+  invalidUserByPublicIdError,
+  invalidUserError,
+} from "../util/error";
+import { Syndication } from "../db-models/comic-syndication";
 
 export const typeDefs = gql`
   input InputUser {
-    publicId: ID,
-    email: String,
-    syndications: [String],
+    publicId: ID
+    email: String
+    syndications: [String]
   }
   type User {
     email: String
@@ -30,7 +34,12 @@ export const typeDefs = gql`
     putUser(publicId: String!, user: InputUser): User
     resendVerificationEmail(email: String!): Boolean
     verifyEmail(email: String!, verificationHash: String!): Boolean
-    submitContactForm(email: String!, name: String!, subject: String!, message: String!): Boolean
+    submitContactForm(
+      email: String!
+      name: String!
+      subject: String!
+      message: String!
+    ): Boolean
   }
 `;
 
@@ -43,7 +52,7 @@ export const resolvers = {
         throw invalidUserError(email);
       }
       // TODO(ecarrel): only populate syndications and emails if they're requested?
-      return await user.populate("syndications").populate("emails").execPopulate();
+      return user.populate("syndications").populate("emails").execPopulate();
     },
     userByPublicId: async (_: any, args: { publicId: string }) => {
       const { publicId } = args;
@@ -52,7 +61,7 @@ export const resolvers = {
         throw invalidUserByPublicIdError(publicId);
       }
       // TODO(ecarrel): only populate syndications and emails if they're requested?
-      return await user.populate("syndications").populate("emails").execPopulate();
+      return user.populate("syndications").populate("emails").execPopulate();
     },
   },
   Mutation: {
@@ -84,7 +93,7 @@ export const resolvers = {
       const verificationHash = uuidv4();
       const googleAnalyticsHash = uuidv4();
       const publicId = uuidv4();
-      return await User.create({
+      return User.create({
         publicId,
         verified: false,
         syndications: [],
@@ -93,30 +102,42 @@ export const resolvers = {
       });
     },
     // TODO(ecarrel): type of user is wrong; should be an api object type.
-    putUser: async (_: any, args: { publicId: string, user: InputUser }) => {
+    putUser: async (_: any, args: { publicId: string; user: InputUser }) => {
       const { publicId, user: inputUser } = args;
       if (publicId !== inputUser.publicId) {
-        throw new UserInputError(`Mismatched public ids: ${publicId} and ${inputUser.publicId}.`);
+        throw new UserInputError(
+          `Mismatched public ids: ${publicId} and ${inputUser.publicId}.`,
+        );
       }
       const user = await User.findOne({ publicId }).exec();
       if (user == null) {
         throw invalidUserByPublicIdError(publicId);
       }
-      // @ts-ignore type of identifier is wrong but appears to work?
-      user.syndications = await Syndication.find({ identifier: inputUser.syndications }).exec();
-      const changedEmail = user.email !== inputUser.email && !(user.email == null && inputUser.email == null);
+      user.syndications = await Syndication.find({
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore type of identifier is wrong but appears to work?
+        identifier: inputUser.syndications,
+      }).exec();
+      const changedEmail =
+        user.email !== inputUser.email &&
+        !(user.email == null && inputUser.email == null);
       if (changedEmail) {
-        const existingUserWithThatEmail = await User.findOne({ email: inputUser.email }).exec();
+        const existingUserWithThatEmail = await User.findOne({
+          email: inputUser.email,
+        }).exec();
         if (existingUserWithThatEmail != null) {
-          throw new UserInputError(`User with email "${inputUser.email}" already exists.`);
+          throw new UserInputError(
+            `User with email "${inputUser.email}" already exists.`,
+          );
         }
         user.email = inputUser.email;
       }
       await user.save();
-      // @ts-ignore string | null | undefined is not assignable to type string.
-      const email: string = user.email;
+      const { email } = user;
       if (changedEmail) {
         try {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore string | null | undefined is not assignable to type string.
           await sendVerificationEmail(email, user.verificationHash);
         } catch (err) {
           throw internalEmailSendError(err);
@@ -136,7 +157,10 @@ export const resolvers = {
         throw internalEmailSendError(err);
       }
     },
-    verifyEmail: async (_: any, args: { email: string, verificationHash: string }) => {
+    verifyEmail: async (
+      _: any,
+      args: { email: string; verificationHash: string },
+    ) => {
       const { email, verificationHash } = args;
       const user = await User.findOne({ email }).exec();
       if (user == null) {
@@ -153,7 +177,10 @@ export const resolvers = {
       }
       throw new UserInputError("Incorrect verification string.");
     },
-    submitContactForm: async (_: any, args: { email: string, name: string, subject: string, message: string }) => {
+    submitContactForm: async (
+      _: any,
+      args: { email: string; name: string; subject: string; message: string },
+    ) => {
       const { email, name, subject, message } = args;
       try {
         await sendContactEmail(name, email, subject, message);

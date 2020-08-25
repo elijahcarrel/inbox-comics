@@ -1,11 +1,16 @@
 import { useMutation, useQuery } from "@apollo/client";
 import gql from "graphql-tag";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { useToasts } from "react-toast-notifications";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { LoadingOverlay } from "../../common-components/LoadingOverlay/LoadingOverlay";
-import { handleGraphQlResponse, stringifyGraphQlError, toastType } from "../../lib/utils";
+import {
+  handleGraphQlResponse,
+  stringifyGraphQlError,
+  toastType,
+} from "../../lib/utils";
 import { SyndicationGrid } from "../SyndicationGrid/SyndicationGrid";
 
 interface Props {
@@ -22,8 +27,15 @@ interface Props {
 //  in this whole file.
 export const SyndicationEditor = (props: Props) => {
   const { addToast, removeToast } = useToasts();
-  const { publicId, isNewUser, onChangeSelectedSyndications, onReceiveEmail } = props;
-  const [selectedSyndications, setSelectedSyndications] = useState(new Set<string>());
+  const {
+    publicId,
+    isNewUser,
+    onChangeSelectedSyndications,
+    onReceiveEmail,
+  } = props;
+  const [selectedSyndications, setSelectedSyndications] = useState(
+    new Set<string>(),
+  );
   const [email, setEmail] = useState<string | null>(null);
 
   const mutation = gql`
@@ -52,16 +64,18 @@ export const SyndicationEditor = (props: Props) => {
     if (onChangeSelectedSyndications) {
       onChangeSelectedSyndications(newSelectedSyndications);
     }
-    return await handleGraphQlResponse<void>(putUserMutation({
-      variables: {
-        publicId,
-        user: {
-          email,
+    return handleGraphQlResponse<void>(
+      putUserMutation({
+        variables: {
           publicId,
-          syndications: [...newSelectedSyndications],
+          user: {
+            email,
+            publicId,
+            syndications: [...newSelectedSyndications],
+          },
         },
-      },
-    }));
+      }),
+    );
   };
 
   const userQuery = gql`
@@ -98,13 +112,23 @@ export const SyndicationEditor = (props: Props) => {
     syndications: Syndication[];
   }
 
-  const syndicationsQueryResponse = useQuery<SyndicationsResponse>(syndicationsQuery);
+  const syndicationsQueryResponse = useQuery<SyndicationsResponse>(
+    syndicationsQuery,
+  );
 
   useEffect(() => {
-    if (!userQueryResponse.loading && userQueryResponse.data && userQueryResponse.data.userByPublicId) {
-      const { userByPublicId: { syndications, email: emailFromQuery } } = userQueryResponse.data;
+    if (
+      !userQueryResponse.loading &&
+      userQueryResponse.data &&
+      userQueryResponse.data.userByPublicId
+    ) {
+      const {
+        userByPublicId: { syndications, email: emailFromQuery },
+      } = userQueryResponse.data;
       if (syndications != null) {
-        const newSelectedSyndications = new Set(syndications.map(({ identifier }) => identifier));
+        const newSelectedSyndications = new Set(
+          syndications.map(({ identifier }) => identifier),
+        );
         setSelectedSyndications(newSelectedSyndications);
         if (onChangeSelectedSyndications) {
           onChangeSelectedSyndications(newSelectedSyndications);
@@ -115,7 +139,12 @@ export const SyndicationEditor = (props: Props) => {
         onReceiveEmail(emailFromQuery);
       }
     }
-  }, [userQueryResponse.data, userQueryResponse.loading]);
+  }, [
+    onChangeSelectedSyndications,
+    onReceiveEmail,
+    userQueryResponse.data,
+    userQueryResponse.loading,
+  ]);
   if (syndicationsQueryResponse.error) {
     // TODO(ecarrel): handle errors better.
     throw new Error(stringifyGraphQlError(syndicationsQueryResponse.error));
@@ -144,15 +173,17 @@ export const SyndicationEditor = (props: Props) => {
         if (result.success) {
           if (!isNewUser) {
             let toastId: null | string;
-            const setToastId = ((id: string) => {
+            const setToastId = (id: string) => {
               toastId = id;
-            });
-            addToast((
-              <Fragment>
+            };
+            addToast(
+              <>
                 Subscriptions updated.{" "}
                 <CommonLink
                   onClick={async () => {
-                    const undoResult = await updateSyndications(oldSelectedSyndications);
+                    const undoResult = await updateSyndications(
+                      oldSelectedSyndications,
+                    );
                     if (undoResult.success) {
                       if (toastId != null) {
                         removeToast(toastId);
@@ -164,15 +195,19 @@ export const SyndicationEditor = (props: Props) => {
                       );
                     }
                   }}
-
                 >
                   Undo.
                 </CommonLink>
-              </Fragment>
-            ), toastType.success, setToastId);
+              </>,
+              toastType.success,
+              setToastId,
+            );
           }
         } else {
-          addToast(`Could not update subscriptions: ${result.combinedErrorMessage}`, toastType.error);
+          addToast(
+            `Could not update subscriptions: ${result.combinedErrorMessage}`,
+            toastType.error,
+          );
         }
       }}
     />

@@ -2,10 +2,10 @@ import { ApolloError, FetchResult } from "@apollo/client";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import React, { useEffect, useState } from "react";
-import { CommonLink } from "../common-components/CommonLink/CommonLink";
-import { H3 } from "../common-components/H3/H3";
 import { format } from "date-fns-tz";
 import { isEmpty } from "lodash";
+import { CommonLink } from "../common-components/CommonLink/CommonLink";
+import { H3 } from "../common-components/H3/H3";
 
 export interface GraphQlResult<T> {
   success: boolean;
@@ -18,25 +18,27 @@ export const stringifyGraphQlError = (error: ApolloError) => {
   return error.graphQLErrors.map(({ message }) => message).join(", ");
 };
 
-export async function handleGraphQlResponse<T>(requestPromise: Promise<FetchResult<T>>): Promise<GraphQlResult<FetchResult<T> | null>> {
+export async function handleGraphQlResponse<T>(
+  requestPromise: Promise<FetchResult<T>>,
+): Promise<GraphQlResult<FetchResult<T> | null>> {
   return requestPromise
-  .then((result) => {
-    return {
-      success: true,
-      error: null,
-      combinedErrorMessage: null,
-      result,
-    };
-  })
-  .catch((error: ApolloError) => {
-    return {
-      success: false,
-      error,
-      combinedErrorMessage: stringifyGraphQlError(error),
-      result: null,
-    };
-  });
-};
+    .then((result) => {
+      return {
+        success: true,
+        error: null,
+        combinedErrorMessage: null,
+        result,
+      };
+    })
+    .catch((error: ApolloError) => {
+      return {
+        success: false,
+        error,
+        combinedErrorMessage: stringifyGraphQlError(error),
+        result: null,
+      };
+    });
+}
 
 export const useUrlQuery = (): [ParsedUrlQuery, boolean] => {
   const router = useRouter();
@@ -91,9 +93,10 @@ export const formattedComicDeliveryTime = () => {
   // Actual date doesn't matter, just time.
   const comicDeliveryTime = new Date("January 1, 1980 06:00:00 EST");
   return format(comicDeliveryTime, "h:mm a z");
-
 };
 
 export const defaultErrorAction = (
-  <H3><CommonLink href="/">Go back to the home page.</CommonLink></H3>
+  <H3>
+    <CommonLink href="/">Go back to the home page.</CommonLink>
+  </H3>
 );

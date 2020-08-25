@@ -8,10 +8,10 @@ export interface INewsItem extends Document {
 }
 
 const newsItemSchema = new Schema({
-  identifier: String!,
-  createTime: Date!,
-  headline: String!,
-  content: String!,
+  identifier: String,
+  createTime: Date,
+  headline: String,
+  content: String,
 });
 
 export const NewsItem = model<INewsItem>("newsitem", newsItemSchema);

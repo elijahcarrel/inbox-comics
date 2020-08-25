@@ -1,11 +1,18 @@
 import axios from "axios";
 import cheerio from "cheerio";
 import { Moment } from "moment-timezone";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import unescape from "unescape";
-import { Comic, ComicFailureMode, failureModes, IComic } from "../db-models/comic";
-import { ISyndication, Syndication } from "../db-models/syndication";
-import { ScrapeAndSaveAllComicsOptions } from "../router/scrape";
+import {
+  Comic,
+  ComicFailureMode,
+  failureModes,
+  IComic,
+  ISyndication,
+  Syndication,
+} from "../db-models/comic-syndication";
+import { ScrapeAndSaveAllComicsOptions } from "../api-models/scrape-options";
 
 const sites = {
   gocomics: {
@@ -80,17 +87,19 @@ const scrapeFailure = (failureMode: ComicFailureMode): ScrapeResult => ({
   imageCaption: null,
 });
 
-const scrapeSuccess = (imageUrl: string | undefined, imageCaption?: string | null): ScrapeResult => {
+const scrapeSuccess = (
+  imageUrl: string | undefined,
+  imageCaption?: string | null,
+): ScrapeResult => {
   if (imageUrl == null || imageUrl.length === 0) {
     return scrapeFailure(failureModes.UNKNOWN);
-  } else {
-    return {
-      success: true,
-      imageUrl,
-      failureMode: null,
-      imageCaption: imageCaption || null,
-    };
   }
+  return {
+    success: true,
+    imageUrl,
+    failureMode: null,
+    imageCaption: imageCaption || null,
+  };
 };
 
 const cheerioRequest = async (url: string) => {
@@ -107,8 +116,10 @@ const cheerioRequest = async (url: string) => {
   }
 };
 
-// @ts-ignore (keeping around since might be useful someday).
-const producesNonEmptyResponse = async (url: string) => {
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+// eslint-disable-next-line no-underscore-dangle,@typescript-eslint/no-unused-vars
+const _producesNonEmptyResponse = async (url: string) => {
   const response = await axios({
     method: "GET",
     url,
@@ -118,7 +129,7 @@ const producesNonEmptyResponse = async (url: string) => {
     return false;
   }
   const content = response.data.read(1);
-  return (content != null);
+  return content != null;
 };
 
 const producesSuccessResponse = async (url: string) => {
@@ -133,11 +144,16 @@ const producesSuccessResponse = async (url: string) => {
   return response.status === 200;
 };
 
-export const scrapeComic = async (syndication: ISyndication, date: Moment): Promise<ScrapeResult> => {
+export const scrapeComic = async (
+  syndication: ISyndication,
+  date: Moment,
+): Promise<ScrapeResult> => {
   const { site_id: siteId, theiridentifier: theirIdentifier } = syndication;
   switch (siteId) {
     case sites.gocomics.id: {
-      const url = `http://www.gocomics.com/${theirIdentifier}/${date.format("YYYY/MM/DD")}`;
+      const url = `http://www.gocomics.com/${theirIdentifier}/${date.format(
+        "YYYY/MM/DD",
+      )}`;
       const $ = await cheerioRequest(url);
       if ($ === null) {
         return scrapeFailure(failureModes.GOCOMICS_REJECTION);
@@ -149,7 +165,9 @@ export const scrapeComic = async (syndication: ISyndication, date: Moment): Prom
       return scrapeSuccess(comicImages.attr("src"));
     }
     case sites.comicskingdom.id: {
-      const url = `https://www.comicskingdom.com/${theirIdentifier}/${date.format("YYYY-MM-DD")}`;
+      const url = `https://www.comicskingdom.com/${theirIdentifier}/${date.format(
+        "YYYY-MM-DD",
+      )}`;
       const $ = await cheerioRequest(url);
       if ($ === null) {
         return scrapeFailure(failureModes.COMICS_KINGDOM_REJECTION);
@@ -162,7 +180,10 @@ export const scrapeComic = async (syndication: ISyndication, date: Moment): Prom
     }
     case sites.arcamax.id:
     case sites.arcamaxeditorials.id: {
-      const directory = (siteId === sites.arcamax.id) ? "thefunnies" : "politics/editorialcartoons";
+      const directory =
+        siteId === sites.arcamax.id
+          ? "thefunnies"
+          : "politics/editorialcartoons";
       const url = `https://www.arcamax.com/${directory}/${theirIdentifier}/`;
       const $ = await cheerioRequest(url);
       if ($ === null) {
@@ -176,7 +197,9 @@ export const scrapeComic = async (syndication: ISyndication, date: Moment): Prom
       return scrapeSuccess(`https://www.arcamax.com${imageUrl}`);
     }
     case sites.tundra.id: {
-      const url = `http://www.tundracomicsftp.com/comicspub/daily_tundra/daily/${date.format("YYYY-M-D")}.jpg`;
+      const url = `http://www.tundracomicsftp.com/comicspub/daily_tundra/daily/${date.format(
+        "YYYY-M-D",
+      )}.jpg`;
       if (await producesSuccessResponse(url)) {
         return scrapeSuccess(url);
       }
@@ -196,7 +219,9 @@ export const scrapeComic = async (syndication: ISyndication, date: Moment): Prom
       if (firstItemDescriptions.length === 0) {
         return scrapeFailure(failureModes.XKCD_PARSE_ERROR);
       }
-      const firstItemDescription = unescape(firstItemDescriptions.first().html());
+      const firstItemDescription = unescape(
+        firstItemDescriptions.first().html(),
+      );
       const $$ = cheerio.load(firstItemDescription);
       const comicImages = $$("img");
       if (comicImages.length !== 1) {
@@ -219,7 +244,9 @@ export const scrapeComic = async (syndication: ISyndication, date: Moment): Prom
       if (firstItemDescriptions.length === 0) {
         return scrapeFailure(failureModes.SMBC_PARSE_ERROR);
       }
-      const firstItemDescription = unescape(firstItemDescriptions.first().html());
+      const firstItemDescription = unescape(
+        firstItemDescriptions.first().html(),
+      );
       const $$ = cheerio.load(firstItemDescription);
       const comicImages = $$("img");
       if (comicImages.length !== 1) {
@@ -242,7 +269,9 @@ export const scrapeComic = async (syndication: ISyndication, date: Moment): Prom
       if (firstItemDescriptions.length === 0) {
         return scrapeFailure(failureModes.PHD_COMICS_PARSE_ERROR);
       }
-      const firstItemDescription = unescape(firstItemDescriptions.first().html());
+      const firstItemDescription = unescape(
+        firstItemDescriptions.first().html(),
+      );
       const $$ = cheerio.load(firstItemDescription);
       const comicImages = $$("img");
       if (comicImages.length !== 1) {
@@ -285,7 +314,9 @@ export const scrapeComic = async (syndication: ISyndication, date: Moment): Prom
       }
       const comicImages = $("table tbody tr td center img");
       if (comicImages.length !== 1) {
-        return scrapeFailure(failureModes.THREE_WORD_PHRASE_MISSING_IMAGE_ON_PAGE);
+        return scrapeFailure(
+          failureModes.THREE_WORD_PHRASE_MISSING_IMAGE_ON_PAGE,
+        );
       }
       const imageUrl = `${url}${comicImages.attr("src")}`;
       return scrapeSuccess(imageUrl);
@@ -296,24 +327,46 @@ export const scrapeComic = async (syndication: ISyndication, date: Moment): Prom
   }
 };
 
-const createComicDbObject = (syndication: ISyndication, date: Moment, scrapeResult: ScrapeResult) => {
+const createComicDbObject = (
+  syndication: ISyndication,
+  date: Moment,
+  scrapeResult: ScrapeResult,
+) => {
   const { success, imageUrl, failureMode, imageCaption } = scrapeResult;
-  return { syndication, date: date.toDate(), imageUrl, imageCaption, success, failureMode };
+  return {
+    syndication,
+    date: date.toDate(),
+    imageUrl,
+    imageCaption,
+    success,
+    failureMode,
+  };
 };
 
 // TODO(ecarrel): dedupe code that exists here and in scrapeAndSaveAllComics.
-export const scrapeAndSaveComic = async (syndication: ISyndication, date: Moment) => {
+export const scrapeAndSaveComic = async (
+  syndication: ISyndication,
+  date: Moment,
+) => {
   const scrapeResult = await scrapeComic(syndication, date);
-  const createdComic = await Comic.create(createComicDbObject(syndication, date, scrapeResult));
+  const createdComic = await Comic.create(
+    createComicDbObject(syndication, date, scrapeResult),
+  );
+  // eslint-disable-next-line no-param-reassign
   syndication.lastAttemptedComicScrapeDate = date.toDate();
   if (scrapeResult.success) {
+    // eslint-disable-next-line no-param-reassign
     syndication.lastSuccessfulComicScrapeDate = date.toDate();
+    // eslint-disable-next-line no-param-reassign
     syndication.lastSuccessfulComic = createdComic;
   }
   await syndication.save();
 };
 
-export const scrapeAndSaveAllComics = async (date: Moment, options: ScrapeAndSaveAllComicsOptions = {}) => {
+export const scrapeAndSaveAllComics = async (
+  date: Moment,
+  options: ScrapeAndSaveAllComicsOptions = {},
+) => {
   const {
     siteId,
     limit = 20,
@@ -326,13 +379,21 @@ export const scrapeAndSaveAllComics = async (date: Moment, options: ScrapeAndSav
   }
   if (dontRescrapeSyndicationThatSucceededEarlierToday) {
     syndicationsRequest = syndicationsRequest.or([
-      { lastSuccessfulComicScrapeDate: { $lt: date.clone().startOf("day").toDate() } },
+      {
+        lastSuccessfulComicScrapeDate: {
+          $lt: date.clone().startOf("day").toDate(),
+        },
+      },
       { lastSuccessfulComicScrapeDate: { $exists: false } },
     ]);
   }
   if (dontRetryInLessThanAnHour) {
     syndicationsRequest = syndicationsRequest.or([
-      { lastAttemptedComicScrapeDate: { $lt: date.clone().subtract(1, "hour").toDate() } },
+      {
+        lastAttemptedComicScrapeDate: {
+          $lt: date.clone().subtract(1, "hour").toDate(),
+        },
+      },
       { lastAttemptedComicScrapeDate: { $exists: false } },
     ]);
   }
@@ -346,37 +407,47 @@ export const scrapeAndSaveAllComics = async (date: Moment, options: ScrapeAndSav
   }
   const syndications = await syndicationsRequest.exec();
   const scrapeResults = await Promise.all(
-    syndications.map((syndication: ISyndication) => scrapeComic(syndication, date),
-  ));
+    syndications.map((syndication: ISyndication) =>
+      scrapeComic(syndication, date),
+    ),
+  );
   const augmentedScrapeResults = scrapeResults.map((scrapeResult, i) => ({
     syndication: syndications[i],
     scrapeResult,
   }));
-  const comics = augmentedScrapeResults
-    .map(({ syndication, scrapeResult }) => createComicDbObject(syndication, date, scrapeResult));
+  const comics = augmentedScrapeResults.map(({ syndication, scrapeResult }) =>
+    createComicDbObject(syndication, date, scrapeResult),
+  );
   let createdComics: IComic[] = [];
   if (comics.length > 0) {
     createdComics = await Comic.create(comics);
   }
-  const updatedSyndications = augmentedScrapeResults
-    .map(({ syndication, scrapeResult }) => {
+  const updatedSyndications = augmentedScrapeResults.map(
+    ({ syndication, scrapeResult }) => {
+      // eslint-disable-next-line no-param-reassign
       syndication.lastAttemptedComicScrapeDate = date.toDate();
       if (scrapeResult.success) {
+        // eslint-disable-next-line no-param-reassign
         syndication.lastSuccessfulComicScrapeDate = date.toDate();
         // TODO(ecarrel): there's gotta be a better way to do this.
         const createdComic = createdComics.find(
-          (comic: IComic) => comic.syndication.identifier === syndication.identifier,
+          (comic: IComic) =>
+            comic.syndication.identifier === syndication.identifier,
         );
         if (createdComic != null) {
+          // eslint-disable-next-line no-param-reassign
           syndication.lastSuccessfulComic = createdComic;
         }
       }
       return syndication;
-    });
+    },
+  );
   if (updatedSyndications.length > 0) {
     // TODO(ecarrel): batch this.
-    await Promise.all(updatedSyndications.map(
-      (updatedSyndication) => updatedSyndication.save(),
-    ));
+    await Promise.all(
+      updatedSyndications.map((updatedSyndication) =>
+        updatedSyndication.save(),
+      ),
+    );
   }
 };

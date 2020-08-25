@@ -4,8 +4,7 @@ import React from "react";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { Layout } from "../../common-components/Layout/Layout";
 import { NewsItem } from "../../components/NewsItem/NewsItem";
-import { stringifyGraphQlError } from "../../lib/utils";
-import { useNonEmptyUrlQuery } from "../../lib/utils";
+import { stringifyGraphQlError, useNonEmptyUrlQuery } from "../../lib/utils";
 
 interface INewsItem {
   identifier: string;
@@ -34,7 +33,9 @@ const NewsPage: React.FunctionComponent = () => {
       }
     }
   `;
-  const newsQueryResponse = useQuery<NewsItemResponse>(newsQuery, { skip: !urlQueryIsReady });
+  const newsQueryResponse = useQuery<NewsItemResponse>(newsQuery, {
+    skip: !urlQueryIsReady,
+  });
 
   const { data, error, loading } = newsQueryResponse;
   if (error) {

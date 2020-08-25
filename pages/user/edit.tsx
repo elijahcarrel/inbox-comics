@@ -10,14 +10,17 @@ const EditUserPage: React.FunctionComponent = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   return (
     <Layout title="My Account">
-      <form className={styles.container} onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        setIsSubmitting(true);
-        await Router.push({
-          pathname: "/user",
-          query: { email },
-        });
-      }}>
+      <form
+        className={styles.container}
+        onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
+          e.preventDefault();
+          setIsSubmitting(true);
+          await Router.push({
+            pathname: "/user",
+            query: { email },
+          });
+        }}
+      >
         <TextInput
           name="email"
           value={email}
@@ -26,11 +29,7 @@ const EditUserPage: React.FunctionComponent = () => {
           placeholder="Email"
         />
         <br />
-        <Button
-          type="submit"
-          className={styles.button}
-          disabled={isSubmitting}
-        >
+        <Button type="submit" className={styles.button} disabled={isSubmitting}>
           Go
         </Button>
       </form>

@@ -1,7 +1,13 @@
-import { ApolloProvider, ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import {
+  ApolloProvider,
+  ApolloClient,
+  HttpLink,
+  InMemoryCache,
+} from "@apollo/client";
 import fetch from "isomorphic-unfetch";
 import App from "next/app";
 import React from "react";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { ToastProvider } from "react-toast-notifications";
 import { Toast } from "../common-components/Toast/Toast";
@@ -17,7 +23,7 @@ class MyApp extends App {
       link: new HttpLink({
         uri: graphQLHttpEndpoint,
         credentials: "same-origin",
-        fetch: (!process.browser ? fetch: undefined), // Use fetch() polyfill on the server
+        fetch: !process.browser ? fetch : undefined, // Use fetch() polyfill on the server
       }),
       cache: new InMemoryCache(),
     });

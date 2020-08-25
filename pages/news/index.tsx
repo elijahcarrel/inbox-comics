@@ -46,24 +46,26 @@ const NewsPage: React.FunctionComponent = () => {
   const { getNews: newsItems } = data;
   const offset = pageNumber * numNewsItemsPerPage;
   const numPages = Math.ceil(newsItems.length / numNewsItemsPerPage);
-  const visibleNewsItems = newsItems.slice(offset, offset + numNewsItemsPerPage);
+  const visibleNewsItems = newsItems.slice(
+    offset,
+    offset + numNewsItemsPerPage,
+  );
 
   return (
     <Layout title={title}>
-      {visibleNewsItems.map(({ identifier, createTime, headline, content }, index) => (
-        <NewsItem
-          identifier={identifier}
-          createTime={createTime}
-          headline={headline}
-          isLastItem={index === visibleNewsItems.length - 1}
-          content={content}
-          previewOnly
-        />
-      ))}
-      <Paginate
-        numPages={numPages}
-        onPageChange={setPageNumber}
-      />
+      {visibleNewsItems.map(
+        ({ identifier, createTime, headline, content }, index) => (
+          <NewsItem
+            identifier={identifier}
+            createTime={createTime}
+            headline={headline}
+            isLastItem={index === visibleNewsItems.length - 1}
+            content={content}
+            previewOnly
+          />
+        ),
+      )}
+      <Paginate numPages={numPages} onPageChange={setPageNumber} />
     </Layout>
   );
 };

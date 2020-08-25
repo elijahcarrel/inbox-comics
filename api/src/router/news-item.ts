@@ -5,7 +5,7 @@ import { invalidNewsItemError } from "../util/error";
 export const typeDefs = gql`
   scalar Date
 
- type NewsItem {
+  type NewsItem {
     id: ID!
     identifier: String!
     # TODO(ecarrel): use a datetime field for this.
@@ -23,7 +23,7 @@ export const typeDefs = gql`
 export const resolvers = {
   Query: {
     getNews: async () => {
-      return await NewsItem.find().sort({ createTime: -1 }).exec();
+      return NewsItem.find().sort({ createTime: -1 }).exec();
     },
     getNewsItem: async (_: any, args: { identifier: string }) => {
       const { identifier } = args;

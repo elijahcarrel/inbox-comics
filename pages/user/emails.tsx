@@ -1,14 +1,14 @@
 import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import React, { useState } from "react";
+import { format } from "date-fns";
+import { orderBy } from "lodash";
 import { Layout } from "../../common-components/Layout/Layout";
 import { Paginate } from "../../common-components/Paginate/Paginate";
 import { stringifyGraphQlError, useUrlQuery } from "../../lib/utils";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
-import { format } from "date-fns";
 import { UserByEmailResponse } from "./index";
 import { ViewEmailLink } from "../../components/ViewEmailLink/ViewEmailLink";
-import { orderBy } from "lodash";
 
 const numEmailsPerPage = 20;
 
@@ -18,7 +18,7 @@ const EmailsPage: React.FunctionComponent = () => {
   const email = `${urlQuery.email || ""}`;
   const title = email ? `Past emails for ${email}` : "Past emails";
 
-    const userByEmailQuery = gql`
+  const userByEmailQuery = gql`
         query userByEmail {
             userByEmail(email: "${email}") {
                 email
@@ -32,9 +32,9 @@ const EmailsPage: React.FunctionComponent = () => {
         }
     `;
 
-  const getUserResponse = useQuery<UserByEmailResponse>(userByEmailQuery,
-    { skip: !urlQueryIsReady },
-  );
+  const getUserResponse = useQuery<UserByEmailResponse>(userByEmailQuery, {
+    skip: !urlQueryIsReady,
+  });
   const { data, error, loading } = getUserResponse;
   if (error) {
     return <Layout title={title} error={stringifyGraphQlError(error)} />;
@@ -52,7 +52,9 @@ const EmailsPage: React.FunctionComponent = () => {
 
   return (
     <Layout title={title}>
-      <CommonLink href={`/user?email=${uriEncodedEmail}`}>&lt;&lt; Back to My Account</CommonLink>
+      <CommonLink href={`/user?email=${uriEncodedEmail}`}>
+        &lt;&lt; Back to My Account
+      </CommonLink>
       <ul>
         {visibleEmails.map(({ messageId, sendTime }) => (
           <li key={messageId}>
@@ -62,10 +64,7 @@ const EmailsPage: React.FunctionComponent = () => {
           </li>
         ))}
       </ul>
-      <Paginate
-        numPages={numPages}
-        onPageChange={setPageNumber}
-      />
+      <Paginate numPages={numPages} onPageChange={setPageNumber} />
     </Layout>
   );
 };

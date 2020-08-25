@@ -9,9 +9,5 @@ interface Props {
 
 export const H1 = (props: Props) => {
   const { children, className = "" } = props;
-  return (
-    <h1 className={classNames(styles.h1, className)}>
-      {children}
-    </h1>
-  );
+  return <h1 className={classNames(styles.h1, className)}>{children}</h1>;
 };

@@ -5,8 +5,9 @@
     "start": "vercel dev",
     "build": "next build",
     "type-check": "tsc",
-    "lint": "tslint --project .",
-    "lint-fix": "tslint --project . --fix",
+    "format": "prettier --write {components,common-components,lib,pages}/{,**/}*.{js,jsx,ts,tsx}",
+    "lint": "eslint {components,common-components,lib,pages}/{,**/}*.{js,jsx,ts,tsx} --no-error-on-unmatched-pattern",
+    "lint-fix": "npm run lint -- --fix",
     "preview": "vercel",
     "deploy": "vercel --prod",
     "postinstall": "cd ./api && npm install"
@@ -14,6 +15,7 @@
   "dependencies": {
     "@apollo/client": "^3.0.2",
     "@mdi/js": "^5.3.45",
+    "@mdi/react": "^1.4.0",
     "@types/lodash": "^4.14.158",
     "@types/react-paginate": "^6.2.1",
     "@types/react-truncate": "^2.3.3",
@@ -43,15 +45,15 @@
     "yup": "^0.29.1"
   },
   "devDependencies": {
-    "@mdi/react": "^1.4.0",
     "@types/classnames": "^2.2.10",
     "@types/graphql": "^14.5.0",
     "@types/next": "^9.0.0",
     "@types/react": "^16.9.43",
     "@types/react-dom": "^16.9.8",
     "babel-plugin-add-module-exports": "^1.0.2",
-    "tslint": "^6.1.2",
-    "tslint-react-hooks": "^2.2.2",
+    "eslint": "^7.7.0",
+    "eslint-config-airbnb-typescript-prettier": "^3.1.0",
+    "prettier": "^2.1.0",
     "typescript": "^3.9.7",
     "webpack": "^4.44.0"
   },

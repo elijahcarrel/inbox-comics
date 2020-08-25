@@ -2,12 +2,30 @@ import { gql } from "apollo-server-micro";
 import { GraphQLScalarType } from "graphql";
 import { Kind } from "graphql/language";
 import merge from "lodash/merge";
-import { resolvers as cronReceiverResolvers, typeDefs as cronReceiverTypeDefs } from "./cron-reciever";
-import { resolvers as emailResolvers, typeDefs as emailTypeDefs } from "./email";
-import { resolvers as newsItemResolvers, typeDefs as newsItemTypeDefs } from "./news-item";
-import { resolvers as popularityResolvers, typeDefs as popularityTypeDefs } from "./popularity";
-import { resolvers as scrapeResolvers, typeDefs as scrapeTypeDefs } from "./scrape";
-import { resolvers as comicResolvers, typeDefs as comicTypeDefs } from "./syndication";
+import {
+  resolvers as cronReceiverResolvers,
+  typeDefs as cronReceiverTypeDefs,
+} from "./cron-reciever";
+import {
+  resolvers as emailResolvers,
+  typeDefs as emailTypeDefs,
+} from "./email";
+import {
+  resolvers as newsItemResolvers,
+  typeDefs as newsItemTypeDefs,
+} from "./news-item";
+import {
+  resolvers as popularityResolvers,
+  typeDefs as popularityTypeDefs,
+} from "./popularity";
+import {
+  resolvers as scrapeResolvers,
+  typeDefs as scrapeTypeDefs,
+} from "./scrape";
+import {
+  resolvers as comicResolvers,
+  typeDefs as comicTypeDefs,
+} from "./syndication";
 import { resolvers as userResolvers, typeDefs as userTypeDefs } from "./user";
 
 const commonResolver = {

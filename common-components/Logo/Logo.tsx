@@ -22,7 +22,7 @@ export const Logo = (props: Props) => (
             <g transform="matrix(36.454,0,0,19.382859,22.622677,34.190654)">
               <image
                 mask="url(#mask24)"
-                // tslint:disable-next-line max-line-length
+                // eslint-disable-next-line  max-len
                 xlinkHref="data:image/png;base64,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"
                 transform="matrix(1,0,0,-1,0,1)"
                 preserveAspectRatio="none"
@@ -43,56 +43,56 @@ export const Logo = (props: Props) => (
                 <g transform="translate(72.1059,70.8983)">
                   <path
                     className={classNames(styles.stroke, styles.mediumStroke)}
-                    // tslint:disable-next-line max-line-length
+                    // eslint-disable-next-line  max-len
                     d="m 0,0 c 9.781,0 9.781,-12 19.562,-12 9.781,0 9.781,12 19.562,12 9.781,0 9.781,-12 19.563,-12 9.782,0 9.782,12 19.565,12 9.783,0 9.783,-12 19.565,-12"
                   />
                 </g>
                 <g transform="translate(78.2505,61.8704)">
                   <path
                     className={classNames(styles.stroke, styles.mediumStroke)}
-                    // tslint:disable-next-line max-line-length
+                    // eslint-disable-next-line  max-len
                     d="m 0,0 c 5.499,-4.427 9.489,-13.452 18.149,-8.687 6.415,3.53 8.746,13.372 17.949,10.348 7.174,-2.358 8.675,-12.368 17.498,-11.477 7.854,0.793 9.484,10.931 17.254,11.879 9.849,1.202 11.476,-11.951 20.823,-11.93"
                   />
                 </g>
                 <g transform="translate(80.8956,52.3101)">
                   <path
                     className={classNames(styles.stroke, styles.mediumStroke)}
-                    // tslint:disable-next-line max-line-length
+                    // eslint-disable-next-line  max-len
                     d="M 0,0 C 4.728,-5.656 11.227,-10.52 17.936,-4.17 22.925,0.552 27.459,8.332 35.508,3.354 41.52,-0.363 43.851,-9.35 52.665,-6.836 59.671,-4.838 61.217,4.63 69.246,4.794 78.37,4.981 79.992,-7.218 89.028,-7.202"
                   />
                 </g>
                 <g transform="translate(81.9964,43.7507)">
                   <path
                     className={classNames(styles.stroke, styles.mediumStroke)}
-                    // tslint:disable-next-line max-line-length
+                    // eslint-disable-next-line  max-len
                     d="m 0,0 c 4.889,-6.057 11.968,-8.157 17.783,-1.847 4.673,5.071 10.121,11.49 17.461,5.952 5.483,-4.137 8.467,-12.556 17.012,-9.379 6.729,2.501 8.27,11.745 16.537,11.4 8.669,-0.361 10.288,-12.008 19.134,-11.992"
                   />
                 </g>
                 <g transform="translate(81.5582,36.6868)">
                   <path
                     className={classNames(styles.stroke, styles.mediumStroke)}
-                    // tslint:disable-next-line max-line-length
+                    // eslint-disable-next-line  max-len
                     d="m 0,0 c 4.74,-5.853 11.599,-9.171 17.755,-2.887 4.802,4.903 9.814,12.051 17.517,6.758 5.744,-3.946 8.38,-12.654 17.081,-9.801 6.908,2.264 8.428,11.691 16.662,11.523 8.822,-0.18 10.441,-12.012 19.35,-11.996"
                   />
                 </g>
                 <g transform="translate(80.6717,30.8534)">
                   <path
                     className={classNames(styles.stroke, styles.mediumStroke)}
-                    // tslint:disable-next-line max-line-length
+                    // eslint-disable-next-line  max-len
                     d="m 0,0 c 4.709,-5.535 11.017,-10.915 17.913,-4.667 5.113,4.634 9.449,12.75 17.674,7.85 6.094,-3.631 8.295,-12.668 17.121,-10.329 7.126,1.889 8.685,11.511 16.762,11.678 9.124,0.188 10.745,-12.013 19.782,-11.996"
                   />
                 </g>
                 <g transform="translate(78.5134,26.1464)">
                   <path
                     className={classNames(styles.stroke, styles.mediumStroke)}
-                    // tslint:disable-next-line max-line-length
+                    // eslint-disable-next-line  max-len
                     d="m 0,0 c 5.367,-4.567 9.668,-13.373 18.183,-8.299 6.212,3.701 8.722,13.302 17.822,10.115 7.105,-2.488 8.64,-12.483 17.531,-11.398 7.771,0.948 9.401,11.086 17.255,11.879 9.711,0.98 11.331,-11.97 20.619,-11.949"
                   />
                 </g>
                 <g transform="translate(75.2245,20.7984)">
                   <path
                     className={classNames(styles.stroke, styles.mediumStroke)}
-                    // tslint:disable-next-line max-line-length
+                    // eslint-disable-next-line  max-len
                     d="m 0,0 c 7.432,-2.453 9.045,-13.247 18.478,-11.337 7.791,1.577 9.299,12.33 18.168,11.79 8.33,-0.508 9.951,-11.454 18.281,-11.961 8.87,-0.54 10.379,10.213 18.171,11.79 10.356,2.096 12.037,-11.832 21.601,-11.81"
                   />
                 </g>
@@ -102,7 +102,7 @@ export const Logo = (props: Props) => (
           <g transform="translate(1,43.885)">
             <path
               className={classNames(styles.stroke, styles.thickStroke)}
-              // tslint:disable-next-line max-line-length
+              // eslint-disable-next-line  max-len
               d="M 0,0 C 0,22.008 17.841,39.85 39.85,39.85 61.858,39.85 79.699,22.008 79.699,0 79.699,-22.008 61.858,-39.85 39.85,-39.85 17.841,-39.85 0,-22.008 0,0 Z"
             />
           </g>
@@ -401,7 +401,7 @@ export const Logo = (props: Props) => (
           <g transform="translate(65.9323,43.885)">
             <path
               className={classNames(styles.stroke, styles.thickStroke)}
-              // tslint:disable-next-line max-line-length
+              // eslint-disable-next-line  max-len
               d="m 0,0 c 0,-13.853 -11.23,-25.082 -25.082,-25.082 -13.853,0 -25.083,11.229 -25.083,25.082 0,13.853 11.23,25.083 25.083,25.083 C -11.23,25.083 0,13.853 0,0 Z"
             />
           </g>

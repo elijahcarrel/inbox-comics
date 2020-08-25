@@ -20,21 +20,21 @@ const VerifyUserPage: React.FunctionComponent = () => {
       verifyEmail(email: $email, verificationHash: $verificationHash)
     }
   `;
-  interface VerifyEmailResponse {}
-  const [
-    verifyEmailMutation,
-    { loading: verificationIsLoading },
-  ] = useMutation<VerifyEmailResponse>(mutation);
+  const [verifyEmailMutation, { loading: verificationIsLoading }] = useMutation<
+    void
+  >(mutation);
 
   useEffect(() => {
     if (!isVerifying && urlQueryIsReady) {
       setIsVerifying(true);
-      handleGraphQlResponse<VerifyEmailResponse>(verifyEmailMutation({
-        variables: {
-          email,
-          verificationHash,
-        },
-      })).then(({ success, combinedErrorMessage }) => {
+      handleGraphQlResponse<void>(
+        verifyEmailMutation({
+          variables: {
+            email,
+            verificationHash,
+          },
+        }),
+      ).then(({ success, combinedErrorMessage }) => {
         if (success) {
           Router.push({
             pathname: "/user",
@@ -45,19 +45,32 @@ const VerifyUserPage: React.FunctionComponent = () => {
         }
       });
     }
-  }, [isVerifying, setIsVerifying, urlQueryIsReady]);
+  }, [
+    email,
+    isVerifying,
+    setIsVerifying,
+    urlQueryIsReady,
+    verificationHash,
+    verifyEmailMutation,
+  ]);
 
   if (error != null) {
-    return <Layout error={error} errorAction={(
-      <H3><ResendVerificationEmailLink email={String(email)} /></H3>
-    )} />;
+    return (
+      <Layout
+        error={error}
+        errorAction={
+          <H3>
+            <ResendVerificationEmailLink email={String(email)} />
+          </H3>
+        }
+      />
+    );
   }
   if (!urlQueryIsReady) {
     return <Layout title="Verifying..." isLoading />;
   }
   return (
-    <Layout title={`Verifying ${email}...`} isLoading={verificationIsLoading}>
-    </Layout>
+    <Layout title={`Verifying ${email}...`} isLoading={verificationIsLoading} />
   );
 };
 

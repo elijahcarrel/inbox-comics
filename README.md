@@ -3,19 +3,19 @@ Your favorite comics emailed to you each morning.
 
 ## Services & Frameworks used
 ### Client (UI)
-1. ES6 Typescript & TSLint
+1. ES6 Typescript with ESLint & Prettier
 1. Vercel CLI for deployment
 1. Vercel Next.js for SSR (server-side-rendered) React framework and routing
 1. Apollo Client (GraphQL) with react-hooks library for communication with server
 1. SCSS modules
 
 ### Server (Back-End)
-1. ES6 Typescript & TSLint
+1. ES6 Typescript with ESLint & Prettier
 1. Vercel CLI for deployment
 1. Apollo Server (GraphQL) for communication with client
 1. MongoDB Atlas for our database cluster
 1. Mongoose for interacting with mongodb database
-1. ElasticEmail for sending emails-- would not recommend, but is the cheapest option and we have very basic needs.
+1. ElasticEmail for sending emails
 
 ## Why this project is open-sourced
 Simply because it's a good template for creating modern web apps. Feel free to fork this as a template for your own

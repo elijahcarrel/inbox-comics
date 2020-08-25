@@ -1,4 +1,5 @@
 import { UserInputError, ApolloError } from "apollo-server-micro";
+
 export const invalidUserError = (email: string) =>
   new UserInputError(`No user with email "${email}".`);
 export const invalidUserByPublicIdError = (publicId: string) =>

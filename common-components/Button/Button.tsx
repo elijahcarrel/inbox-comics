@@ -25,8 +25,11 @@ export const Button: React.FunctionComponent<Props> = (props: Props) => {
   } = props;
   const innerButton = (
     <button
+      // eslint-disable-next-line react/button-has-type
       type={type}
-      className={classNames(className, styles.button, {[styles.uppercase]: uppercase})}
+      className={classNames(className, styles.button, {
+        [styles.uppercase]: uppercase,
+      })}
       onClick={onClick}
       disabled={disabled}
     >
@@ -34,13 +37,7 @@ export const Button: React.FunctionComponent<Props> = (props: Props) => {
     </button>
   );
   if (href) {
-    return (
-      <Link
-        href={href}
-      >
-        {innerButton}
-      </Link>
-    );
+    return <Link href={href}>{innerButton}</Link>;
   }
   return innerButton;
 };

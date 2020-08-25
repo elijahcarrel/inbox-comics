@@ -1,11 +1,9 @@
 import * as React from "react";
+import { format } from "date-fns";
 import { LinkList } from "../LinkList/LinkList";
 import styles from "./Footer.module.scss";
-import { format } from "date-fns";
 
-interface Props {}
-
-export const Footer: React.FunctionComponent<Props> = () => (
+export const Footer: React.FunctionComponent = () => (
   <footer className={styles.footer}>
     <nav className={styles.footerNav}>
       <LinkList

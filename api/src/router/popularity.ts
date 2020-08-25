@@ -3,14 +3,14 @@ import { computePopularity } from "../service/popularity";
 
 export const typeDefs = gql`
   extend type Mutation {
-    computePopularity: Boolean,
+    computePopularity: Boolean
   }
 `;
 
 export const resolvers = {
   Mutation: {
     computePopularity: async () => {
-      return await computePopularity();
+      return computePopularity();
     },
   },
 };

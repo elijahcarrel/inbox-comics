@@ -1,7 +1,8 @@
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import Router from "next/router";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { useToasts } from "react-toast-notifications";
 import { CallToAction } from "../../common-components/CallToAction/CallToAction";
@@ -14,7 +15,9 @@ import { handleGraphQlResponse, toastType, useUrlQuery } from "../../lib/utils";
 const UserSyndicationsPage = () => {
   const [urlQuery, urlQueryIsReady] = useUrlQuery();
   const publicId = `${urlQuery.publicId || ""}`;
-  const [selectedSyndications, setSelectedSyndications] = useState<Set<string> | null>(null);
+  const [selectedSyndications, setSelectedSyndications] = useState<Set<
+    string
+  > | null>(null);
   const { addToast } = useToasts();
   const mutation = gql`
     mutation createUserWithoutEmail {
@@ -28,26 +31,26 @@ const UserSyndicationsPage = () => {
       publicId: string;
     };
   }
-  const [createUserWithoutEmailMutation] = useMutation<CreateUserResponse>(mutation);
+  const [createUserWithoutEmailMutation] = useMutation<CreateUserResponse>(
+    mutation,
+  );
 
   let title = "Loading...";
   let helperText = (
-    <H3>
-      Choose comics to receive in your email every morning.
-    </H3>
+    <H3>Choose comics to receive in your email every morning.</H3>
   );
   if (urlQueryIsReady) {
     title = "Choose Comics";
     if (selectedSyndications && selectedSyndications.size > 0) {
       helperText = (
-        <Fragment>
+        <>
           <H3>
             {selectedSyndications.size > 1 ? "These " : "This "}
             <DynamicText>{selectedSyndications.size}</DynamicText>
             {selectedSyndications.size > 1 ? " comics " : " comic "}
             will be emailed to you every morning in a single email.
           </H3>
-        </Fragment>
+        </>
       );
     }
   }
@@ -55,7 +58,9 @@ const UserSyndicationsPage = () => {
   useEffect(() => {
     if (urlQueryIsReady && publicId.length === 0) {
       // No public id supplied. Create a new user.
-      handleGraphQlResponse<CreateUserResponse>(createUserWithoutEmailMutation()).then(async ({ success, combinedErrorMessage, result }) => {
+      handleGraphQlResponse<CreateUserResponse>(
+        createUserWithoutEmailMutation(),
+      ).then(async ({ success, combinedErrorMessage, result }) => {
         if (success) {
           const url = {
             pathname: "/user/new",
@@ -92,8 +97,10 @@ const UserSyndicationsPage = () => {
               query: { publicId },
             });
           }}
-          >
-          {selectedSyndications.size > 0 ? "Next →" : "Continue Without Selecting Comics →"}
+        >
+          {selectedSyndications.size > 0
+            ? "Next →"
+            : "Continue Without Selecting Comics →"}
         </CallToAction>
       )}
     </Layout>

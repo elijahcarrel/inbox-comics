@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { Fragment } from "react";
+import React from "react";
 import { CommonLink } from "../CommonLink/CommonLink";
 import styles from "./LinkList.module.scss";
 
@@ -10,7 +10,7 @@ interface Props {
     element?: string;
   };
   elements: {
-    key: string,
+    key: string;
     href?: string;
     content: string;
     className?: string;
@@ -39,21 +39,14 @@ export const LinkList = (props: Props) => {
             key={key}
           >
             {href || onClick ? (
-                <CommonLink
-                  href={href}
-                  onClick={onClick}
-                  uppercase
-                >
-                  {content}
-                </CommonLink>
-              ) : (
-                <Fragment>
-                  {content}
-                </Fragment>
-              )
-            }
+              <CommonLink href={href} onClick={onClick} uppercase>
+                {content}
+              </CommonLink>
+            ) : (
+              <>{content}</>
+            )}
           </li>
-          ))}
+        ))}
       </ul>
     </div>
   );

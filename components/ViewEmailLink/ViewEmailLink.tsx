@@ -1,12 +1,12 @@
 import React, { ComponentProps } from "react";
-import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { mdiOpenInNew } from "@mdi/js";
 import Icon from "@mdi/react";
+import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import styles from "./ViewEmailLink.module.scss";
 
 type Props = {
   messageId: string;
-} & Omit<ComponentProps<typeof CommonLink>, "isExternal" | "href">
+} & Omit<ComponentProps<typeof CommonLink>, "isExternal" | "href">;
 
 export const ViewEmailLink: React.FunctionComponent<Props> = (props) => {
   const { messageId, children, ...otherProps } = props;
@@ -26,4 +26,4 @@ export const ViewEmailLink: React.FunctionComponent<Props> = (props) => {
       </>
     </CommonLink>
   );
-}
+};

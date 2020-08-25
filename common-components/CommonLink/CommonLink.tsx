@@ -28,14 +28,13 @@ export const CommonLink = (props: Props) => {
     onClick,
   } = props;
   if (!isLink) {
-    return (
-      <span className={className}>{children}</span>
-    );
+    return <span className={className}>{children}</span>;
   }
-  let innerLinkProps: object = {
-    className: classNames(styles.link,
-      {[styles.uppercase]: uppercase},
-      {[styles.noUnderline]: !underline},
+  let innerLinkProps: Record<string, any> = {
+    className: classNames(
+      styles.link,
+      { [styles.uppercase]: uppercase },
+      { [styles.noUnderline]: !underline },
       className,
     ),
     onClick: onClick && onClick,
@@ -48,23 +47,14 @@ export const CommonLink = (props: Props) => {
       rel: "noopener noreferrer",
     };
   }
-  const innerLink = InnerLinkComponent == null ? (
-    <a {...innerLinkProps}>
-      {children}
-    </a>
-  ) : (
-    <InnerLinkComponent {...innerLinkProps}>
-      {children}
-    </InnerLinkComponent>
-  );
+  const innerLink =
+    InnerLinkComponent == null ? (
+      <a {...innerLinkProps}>{children}</a>
+    ) : (
+      <InnerLinkComponent {...innerLinkProps}>{children}</InnerLinkComponent>
+    );
   if (!href || isExternal) {
     return innerLink;
   }
-  return (
-    <Link
-      href={href}
-    >
-      {innerLink}
-    </Link>
-  );
+  return <Link href={href}>{innerLink}</Link>;
 };

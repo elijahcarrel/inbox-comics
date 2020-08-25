@@ -2,7 +2,8 @@ import { useMutation, useQuery } from "@apollo/client";
 import { FormikHelpers, useFormik } from "formik";
 import gql from "graphql-tag";
 import Router from "next/router";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { useToasts } from "react-toast-notifications";
 import * as yup from "yup";
@@ -11,7 +12,12 @@ import { DynamicText } from "../../common-components/DynamicText/DynamicText";
 import { H3 } from "../../common-components/H3/H3";
 import { Layout } from "../../common-components/Layout/Layout";
 import { TextInput } from "../../common-components/TextInput/TextInput";
-import { handleGraphQlResponse, stringifyGraphQlError, toastType, useUrlQuery } from "../../lib/utils";
+import {
+  handleGraphQlResponse,
+  stringifyGraphQlError,
+  toastType,
+  useUrlQuery,
+} from "../../lib/utils";
 import styles from "./subscribe.module.scss";
 
 interface SubscribeFormValues {
@@ -61,23 +67,32 @@ const NewUserPage: React.FunctionComponent = () => {
           }
       }
   `;
-  const userQueryResponse = useQuery<UserQueryResponse>(userQuery, { skip: !urlQueryIsReady });
+  const userQueryResponse = useQuery<UserQueryResponse>(userQuery, {
+    skip: !urlQueryIsReady,
+  });
 
   const formikConfig = {
     initialValues: {
       email: "",
     },
     validationSchema: yup.object().shape({
-      email: yup.string().email("Must provide a valid email.").required("Email is required."),
+      email: yup
+        .string()
+        .email("Must provide a valid email.")
+        .required("Email is required."),
     }),
-    onSubmit: async (_: SubscribeFormValues, { setSubmitting }: FormikHelpers<SubscribeFormValues>) => {
-      const result = await handleGraphQlResponse<void>(putUserMutation(
-        {
+    onSubmit: async (
+      _: SubscribeFormValues,
+      { setSubmitting }: FormikHelpers<SubscribeFormValues>,
+    ) => {
+      const result = await handleGraphQlResponse<void>(
+        putUserMutation({
           variables: {
             user,
             publicId,
           },
-        }));
+        }),
+      );
       const { success, combinedErrorMessage } = result;
       if (success) {
         await Router.push({
@@ -103,15 +118,21 @@ const NewUserPage: React.FunctionComponent = () => {
   } = useFormik(formikConfig);
 
   useEffect(() => {
-    if (!userQueryResponse.loading && userQueryResponse.data && userQueryResponse.data.userByPublicId) {
-      const { userByPublicId: { email, syndications } } = userQueryResponse.data;
+    if (
+      !userQueryResponse.loading &&
+      userQueryResponse.data &&
+      userQueryResponse.data.userByPublicId
+    ) {
+      const {
+        userByPublicId: { email, syndications },
+      } = userQueryResponse.data;
       setUser({
         email,
         publicId,
         syndications: syndications.map(({ identifier }) => identifier),
       });
     }
-  }, [userQueryResponse.data, userQueryResponse.loading]);
+  }, [publicId, userQueryResponse.data, userQueryResponse.loading]);
   if (userQueryResponse.error) {
     return <Layout error={stringifyGraphQlError(userQueryResponse.error)} />;
   }
@@ -127,26 +148,23 @@ const NewUserPage: React.FunctionComponent = () => {
   }
 
   return (
-    <Layout title={title} isLoading={isSubmitting} >
+    <Layout title={title} isLoading={isSubmitting}>
       <H3>
         {user.syndications.length === 0 ? (
           "Enter your email."
         ) : (
-          <Fragment>
-            Enter your email to get the
-            {" "}
-            <DynamicText>{user.syndications.length}</DynamicText>
-            {" "}
-            {user.syndications.length === 1 ? "comic" : "comics"}
-            {" "}
-            you have selected emailed to you every morning.
-          </Fragment>
+          <>
+            Enter your email to get the{" "}
+            <DynamicText>{user.syndications.length}</DynamicText>{" "}
+            {user.syndications.length === 1 ? "comic" : "comics"} you have
+            selected emailed to you every morning.
+          </>
         )}
       </H3>
       <form
         className={styles.container}
         onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
-          e.preventDefault()
+          e.preventDefault();
           handleSubmit(e);
         }}
       >
@@ -166,11 +184,7 @@ const NewUserPage: React.FunctionComponent = () => {
           placeholder="Email"
         />
         <br />
-        <Button
-          type="submit"
-          className={styles.button}
-          disabled={isSubmitting}
-        >
+        <Button type="submit" className={styles.button} disabled={isSubmitting}>
           Go
         </Button>
       </form>

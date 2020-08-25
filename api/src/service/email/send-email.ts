@@ -27,7 +27,7 @@ export const sendEmail =
     const result: SendEmailResult = await elasticEmailClient.Email.Send({
       subject,
       to,
-      // tslint:disable-next-line object-literal-key-quotes
+      // eslint-disable-next-line  quote-props
       "from": "comics@inboxcomics.com",
       // @ts-ignore ElasticEmail type definitions are wrong.
       replyTo: fromEmail,

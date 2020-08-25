@@ -3,11 +3,11 @@ import { emailAllUsers } from "../service/email/comic-email-service";
 import { computePopularity } from "../service/popularity";
 import { scrapeAndSaveAllComics } from "../service/scrape";
 import { now } from "../util/date";
-import { EmailAllUsersOptions } from "./email";
+import { EmailAllUsersOptions } from "../api-models/email-options";
 
 export const typeDefs = gql`
   extend type Mutation {
-    doWork: Boolean,
+    doWork: Boolean
   }
 `;
 
@@ -20,11 +20,14 @@ export const resolvers = {
     doWork: async () => {
       const date = now();
       const hour = date.hour();
-      if ((hour >= 0 && hour < 6) || (hour < 12 && date.format("YYYY-MM-DD") === "2019-12-18")) {
+      if (
+        (hour >= 0 && hour < 6) ||
+        (hour < 12 && date.format("YYYY-MM-DD") === "2019-12-18")
+      ) {
         await scrapeAndSaveAllComics(date);
       } else if (hour >= 6 && hour < 23) {
-        const formattedDate = date.format("MMMM Do, YYYY")
-        const options: EmailAllUsersOptions = {}
+        const formattedDate = date.format("MMMM Do, YYYY");
+        const options: EmailAllUsersOptions = {};
         if (daysToSendAllComics[formattedDate] != null) {
           options.sendAllComics = daysToSendAllComics[formattedDate];
         }

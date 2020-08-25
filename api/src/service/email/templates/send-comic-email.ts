@@ -114,9 +114,9 @@ export const sendComicEmail = async (
   date: Moment,
   googleAnalyticsHash: string = uuidv4(),
 ) => {
-  // tslint:disable-next-line max-line-length
+  // eslint-disable-next-line  max-len
   const updateSubscriptionsUrl = `${process.env.domain}/user?email=${encodeURIComponent(email)}&utm_source=dailycomics&utm_medium=email&utm_term=$dateanalytics&utm_campaign=dailycomics`;
-  // tslint:disable-next-line max-line-length
+  // eslint-disable-next-line  max-len
   const formattedDate = date.format("MMMM Do, YYYY")
   const subject = `Inbox Comics for ${formattedDate}`;
   const googleAnalyticsUrl = `https://www.google-analytics.com/collect?v=1&tid=UA-75894353-1&cid=${googleAnalyticsHash}&t=event&ec=email&ea=open&dp=/email/dailycomics&dt=${subject}&cn=dailycomics&cm=email`;
@@ -180,7 +180,7 @@ export const sendComicEmail = async (
   try {
     return await sendEmail(email, subject, body);
   } catch (e) {
-    // tslint:disable-next-line:no-console
+    // eslint-disable-next-line no-console
     console.error(e);
     return null;
   }

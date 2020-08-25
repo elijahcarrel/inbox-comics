@@ -2,7 +2,7 @@ import { mdiSortAscending, mdiSortAlphabeticalAscending } from "@mdi/js";
 import Icon from "@mdi/react";
 import Fuse from "fuse.js";
 import orderBy from "lodash/orderBy";
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { Paginate } from "../../common-components/Paginate/Paginate";
 import { TextInput } from "../../common-components/TextInput/TextInput";
@@ -30,7 +30,9 @@ interface Props {
 
 export const SyndicationGrid = (props: Props) => {
   const { syndications, selectedSyndicationIdentifiers, onChange } = props;
-  const [sortField, setSortField] = useState<"title" | "numSubscribers">("numSubscribers");
+  const [sortField, setSortField] = useState<"title" | "numSubscribers">(
+    "numSubscribers",
+  );
   const [sortFieldOrder, setSortFieldOrder] = useState<"asc" | "desc">("desc");
   const [searchText, setSearchText] = useState("");
   // TODO(ecarrel): callers should do this, not me. (I think.)
@@ -44,20 +46,31 @@ export const SyndicationGrid = (props: Props) => {
   const offset = pageNumber * numComicsPerPage;
   // TODO(ecarrel): paginate server-side? Probably not necessary, number of comics
   //  and size of server-side blob per comic are both pretty small.
-  let filteredSyndications = orderBy(augmentedSyndications, ["isSelected", sortField, "title"], ["desc", sortFieldOrder, "asc"]);
+  let filteredSyndications = orderBy(
+    augmentedSyndications,
+    ["isSelected", sortField, "title"],
+    ["desc", sortFieldOrder, "asc"],
+  );
   if (searchText !== "") {
-    const fuse = new Fuse<AugmentedSyndication, Fuse.IFuseOptions<AugmentedSyndication>>(filteredSyndications, {
+    const fuse = new Fuse<
+      AugmentedSyndication,
+      Fuse.IFuseOptions<AugmentedSyndication>
+    >(filteredSyndications, {
       keys: ["title"],
       threshold: 0.2,
     });
-    filteredSyndications = fuse.search(searchText).map((fuseResult) => fuseResult.item);
+    filteredSyndications = fuse
+      .search(searchText)
+      .map((fuseResult) => fuseResult.item);
   }
-  const filteredSyndicationsOnThisPage = filteredSyndications
-    .slice(offset, offset + numComicsPerPage);
+  const filteredSyndicationsOnThisPage = filteredSyndications.slice(
+    offset,
+    offset + numComicsPerPage,
+  );
   const numPages = Math.ceil(filteredSyndications.length / numComicsPerPage);
 
   return (
-    <Fragment>
+    <>
       <div className={styles.filteringSection}>
         <div className={styles.sortButtons}>
           <CommonLink
@@ -67,7 +80,6 @@ export const SyndicationGrid = (props: Props) => {
             }}
             isLink={sortField !== "title"}
             className={styles.sortButton}
-
           >
             Sort Alphabetically
             <Icon
@@ -83,7 +95,6 @@ export const SyndicationGrid = (props: Props) => {
             }}
             isLink={sortField !== "numSubscribers"}
             className={styles.sortButton}
-
           >
             Sort by Popularity
             <Icon
@@ -122,7 +133,9 @@ export const SyndicationGrid = (props: Props) => {
               }}
               isSelected={isSelected}
               onClick={() => {
-                const newSelectedSyndications = new Set(selectedSyndicationIdentifiers);
+                const newSelectedSyndications = new Set(
+                  selectedSyndicationIdentifiers,
+                );
                 if (isSelected) {
                   newSelectedSyndications.delete(identifier);
                 } else {
@@ -135,10 +148,7 @@ export const SyndicationGrid = (props: Props) => {
           );
         })}
       </div>
-      <Paginate
-        numPages={numPages}
-        onPageChange={setPageNumber}
-      />
-    </Fragment>
+      <Paginate numPages={numPages} onPageChange={setPageNumber} />
+    </>
   );
 };

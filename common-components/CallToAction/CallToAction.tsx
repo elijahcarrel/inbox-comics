@@ -11,15 +11,14 @@ type Props = {
 export const CallToAction = (props: Props) => {
   const { children, isSticky, ...otherProps } = props;
   return (
-    <div className={classNames(styles.outerButtonContainer, {
-      [styles.isSticky]: isSticky,
-    })}>
+    <div
+      className={classNames(styles.outerButtonContainer, {
+        [styles.isSticky]: isSticky,
+      })}
+    >
       <div className={styles.faderElement} />
       <div className={styles.innerButtonContainer}>
-        <Button
-          className={styles.button}
-          {...otherProps}
-        >
+        <Button className={styles.button} {...otherProps}>
           {children}
         </Button>
       </div>
