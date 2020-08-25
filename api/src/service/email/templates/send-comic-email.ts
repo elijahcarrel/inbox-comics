@@ -177,5 +177,11 @@ export const sendComicEmail = async (
 </body>
 </html>
 `;
-  return await sendEmail(email, subject, body);
+  try {
+    return await sendEmail(email, subject, body);
+  } catch (e) {
+    // tslint:disable-next-line:no-console
+    console.error(e);
+    return null;
+  }
 };

@@ -9,21 +9,40 @@ const options = {
 };
 const elasticEmailClient = new Client(options);
 
+type SendEmailResult = {
+  success: boolean;
+  data?: {
+    transactionid?: string;
+    messageid?: string;
+  };
+  error?: string;
+};
+
 export const sendEmail =
   async (to: string, subject: string, body: string, fromEmail: string = "comics@inboxcomics.com") => {
     const $ = cheerio.load(body);
     const updateSubscriptionsUrl = `${process.env.domain}/user?email=${encodeURIComponent(to)}`;
     $("body").append(`<a href="{unsubscribe:${updateSubscriptionsUrl}}"></a>`);
-    const result = await elasticEmailClient.Email.Send({
+    // @ts-ignore ElasticEmail type definitions are wrong.
+    const result: SendEmailResult = await elasticEmailClient.Email.Send({
       subject,
       to,
       // tslint:disable-next-line object-literal-key-quotes
       "from": "comics@inboxcomics.com",
-      // @ts-ignore replyTo does not exist.
+      // @ts-ignore ElasticEmail type definitions are wrong.
       replyTo: fromEmail,
       body: $.html(),
       fromName: "Inbox Comics",
       bodyType: "HTML",
     });
-    return !!result;
+    if (!result) {
+      throw new Error("Unknown error sending email.");
+    }
+    if (!result.success) {
+      throw new Error(`Error sending email: ${result.error}`);
+    }
+    if (!result.data || !result.data.messageid) {
+      throw new Error("No messageid was returned.");
+    }
+    return result.data.messageid;
   };

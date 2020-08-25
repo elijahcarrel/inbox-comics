@@ -15,7 +15,7 @@ export const LoadingOverlay = (props: Props) => {
       <PulseLoader
         size="30px"
         color="#ba0106"
-        loading={true}
+        loading
         {...props}
       />
     </div>

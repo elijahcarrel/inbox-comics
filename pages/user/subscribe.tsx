@@ -71,7 +71,7 @@ const NewUserPage: React.FunctionComponent = () => {
       email: yup.string().email("Must provide a valid email.").required("Email is required."),
     }),
     onSubmit: async (_: SubscribeFormValues, { setSubmitting }: FormikHelpers<SubscribeFormValues>) => {
-      const result = await handleGraphQlResponse(putUserMutation(
+      const result = await handleGraphQlResponse<void>(putUserMutation(
         {
           variables: {
             user,

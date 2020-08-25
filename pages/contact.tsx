@@ -13,7 +13,7 @@ import { Layout } from "../common-components/Layout/Layout";
 import { TextInput } from "../common-components/TextInput/TextInput";
 import { handleGraphQlResponse, toastType } from "../lib/utils";
 import styles from "./contact.module.scss";
-import {H3} from "../common-components/H3/H3";
+import { H3 } from "../common-components/H3/H3";
 
 interface ContactFormValues {
   email: string;
@@ -52,7 +52,7 @@ const ContactPage: React.FunctionComponent = () => {
     }),
     onSubmit: async (contactFormValues: ContactFormValues, { setSubmitting }: FormikHelpers<ContactFormValues>) => {
       const { recaptchaIsVerified, ...relevantValues } = contactFormValues;
-      const result = await handleGraphQlResponse(submitContactFormMutation({ variables: relevantValues }));
+      const result = await handleGraphQlResponse<void>(submitContactFormMutation({ variables: relevantValues }));
       const { success, combinedErrorMessage } = result;
       if (success) {
         addToast("Thank you! We'll get back to you in a jiffy.", toastType.success);

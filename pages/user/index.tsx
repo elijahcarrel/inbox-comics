@@ -3,23 +3,31 @@ import gql from "graphql-tag";
 import React, { Fragment, useState } from "react";
 import { DynamicText } from "../../common-components/DynamicText/DynamicText";
 import { Layout } from "../../common-components/Layout/Layout";
-import { ResendVerificationEmailLink } from "../../components/ResendVerificationEmailLink/ResendVerificationEmailLink";
+import { ResendVerificationEmailLink } from "../../components/ResendEmailLink/ResendVerificationEmailLink";
 import { SyndicationEditor } from "../../components/SyndicationEditor/SyndicationEditor";
 import { formattedComicDeliveryTime, stringifyGraphQlError, useUrlQuery } from "../../lib/utils";
 import styles from "./index.module.scss";
 import { H3 } from "../../common-components/H3/H3";
+import { CommonLink } from "../../common-components/CommonLink/CommonLink";
+import { ResendTodaysEmailLink } from "../../components/ResendEmailLink/ResendTodaysEmailLink";
+
+interface Email {
+  messageId: string;
+  sendTime: Date;
+}
 
 interface User {
   email: string;
   publicId: string;
   verified: boolean;
+  emails?: Email[];
 }
 
 interface UserByPublicIdResponse {
   userByPublicId: User;
 }
 
-interface UserByEmailResponse {
+export interface UserByEmailResponse {
   userByEmail: User;
 }
 
@@ -39,6 +47,9 @@ const UserPage: React.FunctionComponent = () => {
           email
           publicId
           verified
+          emails {
+            messageId
+          }
         }
       }
     `;
@@ -49,6 +60,9 @@ const UserPage: React.FunctionComponent = () => {
           email
           publicId
           verified
+          emails {
+            messageId
+          }
         }
       }
     `;
@@ -65,19 +79,19 @@ const UserPage: React.FunctionComponent = () => {
   if (loading || !data || (!data.userByPublicId && !data.userByEmail)) {
     return <Layout title="Loading..." isLoading />;
   }
-  const { verified, email, publicId } = data.userByPublicId || data.userByEmail;
+  const { verified, email, publicId, emails = [] } = data.userByPublicId || data.userByEmail;
 
-  let verificationBlock = null;
+  let infoBlock = null;
   if (verified) {
     if (selectedSyndications == null) {
       // selectedSyndications hasn't loaded yet. Display a generic message.
-      verificationBlock = (
+      infoBlock = (
         <H3>
           Your email address is <DynamicText>verified</DynamicText>.
         </H3>
       );
     } else if (selectedSyndications.size === 0) {
-      verificationBlock = (
+      infoBlock = (
         <Fragment>
           <H3>Your email address is <DynamicText>verified</DynamicText>.</H3>
           <H3>
@@ -87,16 +101,21 @@ const UserPage: React.FunctionComponent = () => {
         </Fragment>
       );
     } else {
-      verificationBlock = (
+      const uriEncodedEmail = encodeURIComponent(email);
+      infoBlock = (
         <Fragment>
           <H3>Your email address is <DynamicText>verified</DynamicText>.</H3>
           <H3>You will get an email at <DynamicText>{formattedComicDeliveryTime()}</DynamicText> every day.</H3>
+          {emails.length > 0 && (
+            <H3><CommonLink href={`/user/emails?email=${uriEncodedEmail}`}>View past emails.</CommonLink></H3>
+          )}
+          <H3><ResendTodaysEmailLink email={email} isFirstEmail={emails.length === 0} /></H3>
         </Fragment>
       );
     }
   } else {
     if (isNewUser) {
-      verificationBlock = (
+      infoBlock = (
         <Fragment>
           <H3>A verification email was just sent to <DynamicText>{email}</DynamicText>.</H3>
           <H3><ResendVerificationEmailLink email={email} /></H3>
@@ -104,7 +123,7 @@ const UserPage: React.FunctionComponent = () => {
         </Fragment>
       );
     } else {
-      verificationBlock = (
+      infoBlock = (
         <Fragment>
           <H3>Your email address is <DynamicText>not verified</DynamicText>.</H3>
           <H3>Until you verify your email, you will not receive comics.</H3>
@@ -115,12 +134,12 @@ const UserPage: React.FunctionComponent = () => {
   }
 
   return (
-    <Layout title="Edit Subscriptions">
+    <Layout title="My Account">
       <div className={styles.block}>
         <H3>
           Your email is <DynamicText>{email}</DynamicText>.
         </H3>
-        {verificationBlock}
+        {infoBlock}
       </div>
       <SyndicationEditor
         publicId={publicId}

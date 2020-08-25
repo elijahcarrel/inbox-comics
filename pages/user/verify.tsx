@@ -3,9 +3,9 @@ import gql from "graphql-tag";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import { Layout } from "../../common-components/Layout/Layout";
-import { GraphQlResult, handleGraphQlResponse, useNonEmptyUrlQuery } from "../../lib/utils";
+import { handleGraphQlResponse, useNonEmptyUrlQuery } from "../../lib/utils";
 import { H3 } from "../../common-components/H3/H3";
-import { ResendVerificationEmailLink } from "../../components/ResendVerificationEmailLink/ResendVerificationEmailLink";
+import { ResendVerificationEmailLink } from "../../components/ResendEmailLink/ResendVerificationEmailLink";
 
 const VerifyUserPage: React.FunctionComponent = () => {
   const [urlQuery, urlQueryIsReady] = useNonEmptyUrlQuery();
@@ -29,19 +29,19 @@ const VerifyUserPage: React.FunctionComponent = () => {
   useEffect(() => {
     if (!isVerifying && urlQueryIsReady) {
       setIsVerifying(true);
-      handleGraphQlResponse(verifyEmailMutation({
+      handleGraphQlResponse<VerifyEmailResponse>(verifyEmailMutation({
         variables: {
           email,
           verificationHash,
         },
-      })).then((result: GraphQlResult) => {
-        if (result.success) {
+      })).then(({ success, combinedErrorMessage }) => {
+        if (success) {
           Router.push({
             pathname: "/user",
             query: { email },
           });
         } else {
-          setError(result.combinedErrorMessage);
+          setError(combinedErrorMessage);
         }
       });
     }

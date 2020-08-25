@@ -50,6 +50,7 @@ export const resolvers = merge(
   newsItemResolvers,
   commonResolver,
 );
+
 export const typeDefs = [
   rootTypeDefs,
   comicTypeDefs,

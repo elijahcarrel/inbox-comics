@@ -1,6 +1,7 @@
 import { Document, model, Schema } from "mongoose";
 import { IComic } from "./comic";
 import { ISyndication } from "./syndication";
+import { IEmail } from "./email";
 
 export interface IUser extends Document {
   publicId: string;
@@ -12,6 +13,7 @@ export interface IUser extends Document {
   googleAnalyticsHash: string;
   lastEmailCheck?: Date | null;
   lastEmailSent?: Date | null;
+  emails?: IEmail[];
 }
 
 const userSchema = new Schema({
@@ -30,6 +32,10 @@ const userSchema = new Schema({
   googleAnalyticsHash: String!,
   lastEmailCheck: Date,
   lastEmailSent: Date,
+  emails: [{
+    type: Schema.Types.ObjectId,
+    ref: "email",
+  }],
 }, { timestamps: true });
 
 export const User = model<IUser>("user", userSchema);
