@@ -24,13 +24,9 @@ const AboutPage: React.FunctionComponent = () => (
       for many years to come.
     </p>
     <p>
-      Check out the <CommonLink href="/faq">FAQ</CommonLink> or the{" "}
-      <CommonLink href="https://www.facebook.com/inboxcomics/" isExternal>
-        Facebook page
-      </CommonLink>{" "}
-      for more info, and please{" "}
-      <CommonLink href="/contact">get in touch</CommonLink> if you have any
-      questions about the site or just want to say hi!
+      Check out the <CommonLink href="/faq">FAQ</CommonLink> for more info, and
+      please <CommonLink href="/contact">get in touch</CommonLink> if you have
+      any questions about the site or just want to say hi!
     </p>
   </Layout>
 );
