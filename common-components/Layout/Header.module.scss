@@ -11,6 +11,13 @@
   align-items: flex-start;
   align-content: flex-start;
 
+  .blackLivesMatter {
+    font-style: italic;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
   .logoContainer {
     order: 1;
     flex: 0 1 auto;
