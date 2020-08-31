@@ -46,7 +46,8 @@ export const typeDefs = gql`
 export const resolvers = {
   Query: {
     userByEmail: async (_: any, args: { email: string }) => {
-      const { email } = args;
+      const { email: rawEmail } = args;
+      const email = rawEmail.toLowerCase();
       const user = await User.findOne({ email }).exec();
       if (user == null) {
         throw invalidUserError(email);
@@ -118,19 +119,23 @@ export const resolvers = {
         // @ts-ignore type of identifier is wrong but appears to work?
         identifier: inputUser.syndications,
       }).exec();
+      let inputEmail: string | null = null;
+      if (inputUser.email != null) {
+        inputEmail = inputUser.email.toLowerCase();
+      }
       const changedEmail =
-        user.email !== inputUser.email &&
-        !(user.email == null && inputUser.email == null);
+        user.email !== inputEmail &&
+        !(user.email == null && inputEmail == null);
       if (changedEmail) {
         const existingUserWithThatEmail = await User.findOne({
-          email: inputUser.email,
+          email: inputEmail,
         }).exec();
         if (existingUserWithThatEmail != null) {
           throw new UserInputError(
-            `User with email "${inputUser.email}" already exists.`,
+            `User with email "${inputEmail}" already exists.`,
           );
         }
-        user.email = inputUser.email;
+        user.email = inputEmail;
       }
       await user.save();
       const { email } = user;
