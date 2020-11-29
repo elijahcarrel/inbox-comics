@@ -47,9 +47,10 @@ export const ResendTodaysEmailLink = (props: Props) => {
     }, 1000);
     return () => clearInterval(interval);
   }, [secondsUntilCanViewMessageInBrowser]);
-  const [emailUserMutation, { loading: emailIsSending }] = useMutation<
-    EmailUserMutationResult
-  >(mutation, {
+  const [
+    emailUserMutation,
+    { loading: emailIsSending },
+  ] = useMutation<EmailUserMutationResult>(mutation, {
     variables: {
       email,
       options: {

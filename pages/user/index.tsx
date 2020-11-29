@@ -40,9 +40,10 @@ const UserPage: React.FunctionComponent = () => {
   const publicIdFromUrl = `${urlQuery.publicId || ""}`;
   const emailFromUrl = `${urlQuery.email || ""}`;
   const isNewUser = !!urlQuery.new;
-  const [selectedSyndications, setSelectedSyndications] = useState<Set<
-    string
-  > | null>(null);
+  const [
+    selectedSyndications,
+    setSelectedSyndications,
+  ] = useState<Set<string> | null>(null);
 
   // TODO(ecarrel): there's gotta be a better way to do this...
   let userQuery;

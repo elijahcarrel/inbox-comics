@@ -15,9 +15,10 @@ import { handleGraphQlResponse, toastType, useUrlQuery } from "../../lib/utils";
 const UserSyndicationsPage = () => {
   const [urlQuery, urlQueryIsReady] = useUrlQuery();
   const publicId = `${urlQuery.publicId || ""}`;
-  const [selectedSyndications, setSelectedSyndications] = useState<Set<
-    string
-  > | null>(null);
+  const [
+    selectedSyndications,
+    setSelectedSyndications,
+  ] = useState<Set<string> | null>(null);
   const { addToast } = useToasts();
   const mutation = gql`
     mutation createUserWithoutEmail {

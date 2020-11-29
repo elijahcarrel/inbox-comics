@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import React from "react";
+import Image from "next/image";
 import styles from "./SyndicationCard.module.scss";
 
 interface Props {
@@ -27,10 +28,12 @@ export const SyndicationCard = (props: Props) => {
       )}
       onClick={onClick}
     >
-      <img
+      <Image
         className={classNames(styles.syndicationLogo, classes.syndicationLogo)}
         src={`/static/images/logos/${identifier}.jpg`}
         alt=""
+        width="100"
+        height="100"
       />
       <span className={styles.syndicationTitleText}>{title}</span>
     </div>

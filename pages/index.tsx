@@ -1,4 +1,5 @@
 import * as React from "react";
+import Image from "next/image";
 import { CallToAction } from "../common-components/CallToAction/CallToAction";
 import { CommonLink } from "../common-components/CommonLink/CommonLink";
 import { DynamicText } from "../common-components/DynamicText/DynamicText";
@@ -64,10 +65,11 @@ const IndexPage: React.FunctionComponent = () => {
         </div>
         <div className={styles.emailExampleContainer}>
           {/* eslint-disable-next-line jsx-a11y/alt-text */}
-          <img
-            src="/static/images/narrow_serif.png"
+          <Image
+            src="/static/images/narrow_serif@2x.png"
             className={styles.emailExample}
-            srcSet="/static/images/narrow_serif@2x.png 2x"
+            width="608"
+            height="834"
           />
         </div>
       </div>

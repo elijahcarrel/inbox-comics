@@ -52,10 +52,7 @@ export const SyndicationGrid = (props: Props) => {
     ["desc", sortFieldOrder, "asc"],
   );
   if (searchText !== "") {
-    const fuse = new Fuse<
-      AugmentedSyndication,
-      Fuse.IFuseOptions<AugmentedSyndication>
-    >(filteredSyndications, {
+    const fuse = new Fuse<AugmentedSyndication>(filteredSyndications, {
       keys: ["title"],
       threshold: 0.2,
     });
