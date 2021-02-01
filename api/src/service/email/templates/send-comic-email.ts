@@ -39,7 +39,8 @@ const generateHtmlForComic = (
         ${imageCaptionToDisplay}
 		  </p>
 `;
-  } else if (imageUrl == null) {
+  }
+  if (imageUrl == null) {
     // This only happens when the syndication has never, ever been updated.
     return `
     	<h3 style="border-bottom: 1px solid #ddd; font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia,
@@ -50,7 +51,8 @@ const generateHtmlForComic = (
 		    ${syndicationName} wasn't updated today.
 		  </p>
 `;
-  } else if (sendAllComics) {
+  }
+  if (sendAllComics) {
     return `
     	<h3 style="border-bottom: 1px solid #ddd; font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia,
     	 serif; color: #000000 !important; text-decoration:none !important;">
@@ -66,7 +68,8 @@ const generateHtmlForComic = (
         ${imageCaptionToDisplay}
 		  </p>
 `;
-  } else if (mentionNotUpdatedComics) {
+  }
+  if (mentionNotUpdatedComics) {
     return `
     	<h3 style="border-bottom: 1px solid #ddd; font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia,
     	 serif; color: #000000 !important; text-decoration:none !important;">
@@ -80,6 +83,7 @@ const generateHtmlForComic = (
       </p>
 `;
   }
+  return null;
 };
 
 const customMessages: Record<string, string> = {

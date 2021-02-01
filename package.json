@@ -6,7 +6,7 @@
     "build": "next build",
     "type-check": "tsc",
     "format": "prettier --write \"{components,common-components,lib,pages}/{,**/}*.{js,jsx,ts,tsx}\"",
-    "lint": "eslint {components,common-components,lib,pages}/{,**/}*.{js,jsx,ts,tsx} --no-error-on-unmatched-pattern",
+    "lint": "eslint \"{components,common-components,lib,pages}/{,**/}*.{js,jsx,ts,tsx}\" --no-error-on-unmatched-pattern",
     "lint-fix": "npm run lint -- --fix",
     "preview": "vercel",
     "deploy": "vercel --prod",

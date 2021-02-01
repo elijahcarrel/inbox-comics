@@ -54,5 +54,5 @@ export const sendVerificationEmail = async (
 </html>
 `;
 
-  return await sendEmail(email, subject, body);
+  return sendEmail(email, subject, body);
 };
