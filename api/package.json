@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "apollo-server-micro": "^2.19.0",
+    "aws-sdk": "^2.834.0",
     "axios": "^0.21.0",
     "btoa": "^1.2.1",
     "cheerio": "^1.0.0-rc.3",
-    "elasticemail-webapiclient": "^2.0.14",
     "graphql": "^15.4.0",
     "graphql-iso-date": "^3.6.1",
     "graphql-tag": "^2.11.0",

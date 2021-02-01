@@ -15,7 +15,7 @@ Your favorite comics emailed to you each morning.
 1. Apollo Server (GraphQL) for communication with client
 1. MongoDB Atlas for our database cluster
 1. Mongoose for interacting with mongodb database
-1. ElasticEmail for sending emails
+1. AWS SES for sending emails
 
 ## Why this project is open-sourced
 Simply because it's a good template for creating modern web apps. Feel free to fork this as a template for your own
@@ -45,20 +45,21 @@ project (deleting all the business logic of course).
    following there as contents:
 ```bash
 mongodb_url="mongodb://127.0.0.1:27017/ic"
-elasticemail_api_key="<get this from @elijahcarrel>"
+ses_access_key_id="<get this from @elijahcarrel>"
+ses_secret_access_key="<get this from @elijahcarrel>"
 domain="http://localhost:3000"
 ```
-   The `elasticemail_api_key` parameter is empty because it is the same as production and therefore secret-- ask
-   @elijahcarrel directly what the API key is. The other information is local-specific and do not match the (secret)
-   production values. 
+   The `ses_access_key_id` and `ses_secret_access_key` parameters are the same as production and therefore secret-- ask
+   @elijahcarrel directly what they are. The other information is local-specific and do not match the (secret)
+   production values.
 
 ### Starting the app locally
 1. `$ vercel dev`.
-1. App is now running on <http://localhost:3000>, using a local database and production elasticemail credentials.
+1. App is now running on <http://localhost:3000>, using a local database and production AWS SES credentials.
 
 ### Deploying the app to a preview deployment
 1. `$ vercel`
-1. App is now deployed to <https://app.inboxcomics.vercel.app>, using the production database and production elasticemail credentials.
+1. App is now deployed to <https://app.inboxcomics.vercel.app>, using the production database and production AWS SES credentials.
 
 ### Deploying the app
 1. `$ vercel --prod`

@@ -45,10 +45,6 @@ export const sendContactEmail = async (
           color: #000000 !important; text-decoration:none !important;">
             ${message}
           </p>
-          <p style="color: grey; font-style: italic;
-           font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-          {accountaddress}
-          </p>
         </div>
       </td>
     </tr>

@@ -39,7 +39,8 @@ const generateHtmlForComic = (
         ${imageCaptionToDisplay}
 		  </p>
 `;
-  } else if (imageUrl == null) {
+  }
+  if (imageUrl == null) {
     // This only happens when the syndication has never, ever been updated.
     return `
     	<h3 style="border-bottom: 1px solid #ddd; font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia,
@@ -50,7 +51,8 @@ const generateHtmlForComic = (
 		    ${syndicationName} wasn't updated today.
 		  </p>
 `;
-  } else if (sendAllComics) {
+  }
+  if (sendAllComics) {
     return `
     	<h3 style="border-bottom: 1px solid #ddd; font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia,
     	 serif; color: #000000 !important; text-decoration:none !important;">
@@ -66,7 +68,8 @@ const generateHtmlForComic = (
         ${imageCaptionToDisplay}
 		  </p>
 `;
-  } else if (mentionNotUpdatedComics) {
+  }
+  if (mentionNotUpdatedComics) {
     return `
     	<h3 style="border-bottom: 1px solid #ddd; font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia,
     	 serif; color: #000000 !important; text-decoration:none !important;">
@@ -180,8 +183,6 @@ export const sendComicEmail = async (
           If you have any other questions, hit the reply button and let us know!</p>
           <p style="color: #AAAAAA; font-style: italic; font-style: italic; font-family: Palatino,
           'Palatino Linotype', 'Book Antiqua', Georgia, serif;">Brought to you with ♥ from Team Inbox Comics.</p>
-          <p style="color: #AAAAAA; font-style: italic; font-style: italic; font-family: Palatino,
-          'Palatino Linotype', 'Book Antiqua', Georgia, serif;">{accountaddress}</p>
         </div>
       </td>
     </tr>

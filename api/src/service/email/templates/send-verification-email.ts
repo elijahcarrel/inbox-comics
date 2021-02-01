@@ -44,8 +44,6 @@ export const sendVerificationEmail = async (
             hit the reply button and let us know!</p>
           <p style="color: #AAAAAA; font-style: italic; font-style: italic; font-family: Palatino,
           'Palatino Linotype', 'Book Antiqua', Georgia, serif;">Brought to you with ♥ from Team Inbox Comics.</p>
-          <p style="color: #AAAAAA; font-style: italic; font-style: italic; font-family: Palatino,
-          'Palatino Linotype', 'Book Antiqua', Georgia, serif;">{accountaddress}</p>
         </div>
       </td>
     </tr>

@@ -21,6 +21,7 @@
     "@types/react-truncate": "^2.3.3",
     "@types/yup": "^0.29.9",
     "@zeit/next-typescript": "^1.1.1",
+    "aws-sdk": "^2.834.0",
     "classnames": "^2.2.6",
     "date-fns": "^2.16.1",
     "date-fns-tz": "^1.0.12",

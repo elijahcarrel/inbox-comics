@@ -1,48 +1,52 @@
-import cheerio from "cheerio";
-// @ts-ignore
-import { client as Client } from "elasticemail-webapiclient";
+import { SES } from "aws-sdk";
 
-const options = {
-  apiKey: process.env.elasticemail_api_key || "",
-  apiUri: "https://api.elasticemail.com/",
-  apiVersion: "v2",
-};
-const elasticEmailClient = new Client(options);
-
-type SendEmailResult = {
-  success: boolean;
-  data?: {
-    transactionid?: string;
-    messageid?: string;
-  };
-  error?: string;
+const config: SES.Types.ClientConfiguration = {
+  accessKeyId: process.env.ses_access_key_id || "",
+  secretAccessKey: process.env.ses_secret_access_key || "",
+  region: "us-west-2",
 };
 
-export const sendEmail =
-  async (to: string, subject: string, body: string, fromEmail: string = "comics@inboxcomics.com") => {
-    const $ = cheerio.load(body);
-    const updateSubscriptionsUrl = `${process.env.domain}/user?email=${encodeURIComponent(to)}`;
-    $("body").append(`<a href="{unsubscribe:${updateSubscriptionsUrl}}"></a>`);
-    // @ts-ignore ElasticEmail type definitions are wrong.
-    const result: SendEmailResult = await elasticEmailClient.Email.Send({
-      subject,
-      to,
-      // eslint-disable-next-line  quote-props
-      "from": "comics@inboxcomics.com",
-      // @ts-ignore ElasticEmail type definitions are wrong.
-      replyTo: fromEmail,
-      body: $.html(),
-      fromName: "Inbox Comics",
-      bodyType: "HTML",
-    });
-    if (!result) {
-      throw new Error("Unknown error sending email.");
-    }
-    if (!result.success) {
-      throw new Error(`Error sending email: ${result.error}`);
-    }
-    if (!result.data || !result.data.messageid) {
-      throw new Error("No messageid was returned.");
-    }
-    return result.data.messageid;
+const sesClient = new SES(config);
+
+export const sendEmail = async (
+  to: string,
+  subject: string,
+  body: string,
+  fromEmail = "comics@inboxcomics.com",
+): Promise<string> => {
+  const emailParams: SES.Types.SendEmailRequest = {
+    Source: fromEmail,
+    Destination: {
+      ToAddresses: [to],
+    },
+    ReplyToAddresses: [],
+    Message: {
+      Body: {
+        Html: {
+          Charset: "UTF-8",
+          Data: body,
+        },
+      },
+      Subject: {
+        Charset: "UTF-8",
+        Data: subject,
+      },
+    },
   };
+  const result = await sesClient.sendEmail(emailParams).promise();
+  if (result.$response.error) {
+    throw new Error(
+      `Error sending email: ${JSON.stringify(result.$response.error)}`,
+    );
+  }
+  if (!result) {
+    throw new Error("Error sending email: empty result.");
+  }
+  if (!result.$response.data) {
+    throw new Error("Error sending email: empty response data.");
+  }
+  if (!result.MessageId) {
+    throw new Error("Error sending email: no messageid was returned.");
+  }
+  return String(result.MessageId);
+};
