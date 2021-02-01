@@ -83,6 +83,7 @@ const generateHtmlForComic = (
       </p>
 `;
   }
+  return null;
 };
 
 const customMessages: Record<string, string> = {

@@ -57,6 +57,7 @@ export const emailUsers = async (
       } else {
         const comic = lastEmailedComics.find(
           (lastEmailedComic) =>
+            // eslint-disable-next-line no-underscore-dangle
             String(lastEmailedComic.syndication) === String(syndication._id),
         );
         if (comic != null) {
@@ -106,8 +107,10 @@ export const emailUsers = async (
       })),
   );
   const messageIdToSavedEmail = savedEmails.reduce((memo, savedEmail) => {
-    memo[savedEmail.messageId] = savedEmail;
-    return memo;
+    return {
+      ...memo,
+      [savedEmail.messageId]: savedEmail,
+    };
   }, {} as Record<string, IEmail>);
 
   const augmentedEmailResults = messageIds.map((messageId, i) => ({
@@ -116,15 +119,19 @@ export const emailUsers = async (
   }));
 
   const updatedUsers = augmentedEmailResults.map(({ user, savedEmail }) => {
-    user.lastEmailedComics = user.syndications
-      .map((syndication) => syndication.lastSuccessfulComic)
-      .filter((comic) => comic != null);
-    user.lastEmailCheck = dateAsDate;
-    if (savedEmail) {
-      user.lastEmailSent = dateAsDate;
-      user.emails = [...(user.emails || []), savedEmail];
-    }
-    return user;
+    return {
+      ...user,
+      lastEmailedComics: user.syndications
+        .map((syndication) => syndication.lastSuccessfulComic)
+        .filter((comic) => comic != null),
+      lastEmailCheck: dateAsDate,
+      ...(savedEmail
+        ? {
+            lastEmailSent: dateAsDate,
+            emails: [...(user.emails || []), savedEmail],
+          }
+        : {}),
+    };
   });
   if (updatedUsers.length > 0) {
     // TODO(ecarrel): batch this.
@@ -159,5 +166,5 @@ export const emailAllUsers = async (
   if (users == null) {
     throw new ApolloError("Could not find users");
   }
-  return await emailUsers(users, options, date);
+  return emailUsers(users, options, date);
 };

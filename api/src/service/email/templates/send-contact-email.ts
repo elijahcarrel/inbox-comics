@@ -53,5 +53,5 @@ export const sendContactEmail = async (
 </html>
 `;
 
-  return await sendEmail("support@inboxcomics.com", subject, body, fromEmail);
+  return sendEmail("support@inboxcomics.com", subject, body, fromEmail);
 };
