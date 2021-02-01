@@ -1,11 +1,12 @@
 import { sendEmail } from "../send-email";
 
-export const sendVerificationEmail = async (email: string, verificationHash: string) => {
-
+export const sendVerificationEmail = async (
+  email: string,
+  verificationHash: string,
+) => {
   const uriEncodedEmail = encodeURIComponent(email);
   const subject = "Verify your Inbox Comics Subscription";
-  const verificationLink =
-    `${process.env.domain}/user/verify?email=${uriEncodedEmail}&verificationHash=${verificationHash}`;
+  const verificationLink = `${process.env.domain}/user/verify?email=${uriEncodedEmail}&verificationHash=${verificationHash}`;
   const body = `<html>
 <head>
   <title>${subject}</title>

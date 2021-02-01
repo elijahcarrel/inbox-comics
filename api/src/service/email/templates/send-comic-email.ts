@@ -17,9 +17,12 @@ export interface SendComicEmailOptions {
 }
 
 // TODO(ecarrel): clean this up a ton (or scrap it entirely).
-const generateHtmlForComic = (comic: ComicForEmail, options: SendComicEmailOptions) => {
+const generateHtmlForComic = (
+  comic: ComicForEmail,
+  options: SendComicEmailOptions,
+) => {
   const { imageUrl, syndicationName, wasUpdated, imageCaption } = comic;
-  const imageCaptionToDisplay = (imageCaption) ? `<br /> ${imageCaption}` : "";
+  const imageCaptionToDisplay = imageCaption ? `<br /> ${imageCaption}` : "";
   const { sendAllComics = false, mentionNotUpdatedComics = true } = options;
   if (wasUpdated) {
     return `
@@ -115,9 +118,13 @@ export const sendComicEmail = async (
   googleAnalyticsHash: string = uuidv4(),
 ) => {
   // eslint-disable-next-line  max-len
-  const updateSubscriptionsUrl = `${process.env.domain}/user?email=${encodeURIComponent(email)}&utm_source=dailycomics&utm_medium=email&utm_term=$dateanalytics&utm_campaign=dailycomics`;
+  const updateSubscriptionsUrl = `${
+    process.env.domain
+  }/user?email=${encodeURIComponent(
+    email,
+  )}&utm_source=dailycomics&utm_medium=email&utm_term=$dateanalytics&utm_campaign=dailycomics`;
   // eslint-disable-next-line  max-len
-  const formattedDate = date.format("MMMM Do, YYYY")
+  const formattedDate = date.format("MMMM Do, YYYY");
   const subject = `Inbox Comics for ${formattedDate}`;
   const googleAnalyticsUrl = `https://www.google-analytics.com/collect?v=1&tid=UA-75894353-1&cid=${googleAnalyticsHash}&t=event&ec=email&ea=open&dp=/email/dailycomics&dt=${subject}&cn=dailycomics&cm=email`;
   let message = `
@@ -143,8 +150,12 @@ export const sendComicEmail = async (
           <a href="${process.env.domain}/">
           	<div style="border-bottom: 2px solid rgb(186,1,6); position:relative;">
 	          	<a href="${process.env.domain}/">
-                <img src="${process.env.domain}/static/images/stamp-and-text-transparent.png"
-                  srcset="${process.env.domain}/static/images/stamp-and-text-transparent@2x.png 2x"
+                <img src="${
+                  process.env.domain
+                }/static/images/stamp-and-text-transparent.png"
+                  srcset="${
+                    process.env.domain
+                  }/static/images/stamp-and-text-transparent@2x.png 2x"
                   style="padding-bottom:0px; width:350px; margin-bottom:0px;
                   margin-left:-1px; font-weight:bold; font-size: 1.2em;
                   font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif; color: #000000;"
@@ -156,7 +167,9 @@ export const sendComicEmail = async (
           <p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
             ${message}
           </p>
-          ${comics.map((comic) => generateHtmlForComic(comic, options)).join("")}
+          ${comics
+            .map((comic) => generateHtmlForComic(comic, options))
+            .join("")}
           <h3 style="border-bottom: 1px solid #ddd; font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia,
            serif;" class="appleLinksBlack">That's all for today!</h3>
           <p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">If you would rather get

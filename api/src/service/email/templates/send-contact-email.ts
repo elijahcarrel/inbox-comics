@@ -1,7 +1,12 @@
 import { now } from "../../../util/date";
 import { sendEmail } from "../send-email";
 
-export const sendContactEmail = async (name: string, fromEmail: string, subject: string, message: string) => {
+export const sendContactEmail = async (
+  name: string,
+  fromEmail: string,
+  subject: string,
+  message: string,
+) => {
   const date = now().format("dddd, MMMM Do YYYY, h:mm:ss a");
   const body = `
 <html>

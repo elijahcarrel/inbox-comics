@@ -10,6 +10,6 @@ export const initMongoose = () => {
   mongoose.set("useUnifiedTopology", true);
   mongoose.set("debug", true);
   mongoose.connect(url, { useNewUrlParser: true });
-// eslint-disable-next-line  no-console
+  // eslint-disable-next-line  no-console
   mongoose.connection.once("open", () => console.log(`Connected to mongodb.`));
 };
