@@ -20,6 +20,7 @@ export const sendEmail = async (
       ToAddresses: [to],
     },
     ReplyToAddresses: [],
+    ReturnPath: "inboxcomics+bounces@gmail.com",
     Message: {
       Body: {
         Html: {
