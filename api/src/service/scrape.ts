@@ -4,6 +4,7 @@ import { Moment } from "moment-timezone";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import unescape from "unescape";
+import https from "https";
 import {
   Comic,
   ComicFailureMode,
@@ -108,6 +109,7 @@ const cheerioRequest = async (url: string) => {
       method: "GET",
       url,
       responseType: "text",
+      httpsAgent: new https.Agent({ rejectUnauthorized: false }),
     });
     // TODO(ecarrel): check if response.request.res.responseUrl !== url to detect redirects.
     return cheerio.load(response.data);
