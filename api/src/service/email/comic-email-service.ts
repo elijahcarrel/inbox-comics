@@ -119,19 +119,19 @@ export const emailUsers = async (
   }));
 
   const updatedUsers = augmentedEmailResults.map(({ user, savedEmail }) => {
-    return {
-      ...user,
-      lastEmailedComics: user.syndications
-        .map((syndication) => syndication.lastSuccessfulComic)
-        .filter((comic) => comic != null),
-      lastEmailCheck: dateAsDate,
-      ...(savedEmail
-        ? {
-            lastEmailSent: dateAsDate,
-            emails: [...(user.emails || []), savedEmail],
-          }
-        : {}),
-    };
+    // eslint-disable-next-line no-param-reassign
+    user.lastEmailedComics = user.syndications
+      .map((syndication) => syndication.lastSuccessfulComic)
+      .filter((comic) => comic != null);
+    // eslint-disable-next-line no-param-reassign
+    user.lastEmailCheck = dateAsDate;
+    if (savedEmail) {
+      // eslint-disable-next-line no-param-reassign
+      user.lastEmailSent = dateAsDate;
+      // eslint-disable-next-line no-param-reassign
+      user.emails = [...(user.emails || []), savedEmail];
+    }
+    return user;
   });
   if (updatedUsers.length > 0) {
     // TODO(ecarrel): batch this.
