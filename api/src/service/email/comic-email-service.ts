@@ -135,9 +135,7 @@ export const emailUsers = async (
   });
   if (updatedUsers.length > 0) {
     // TODO(ecarrel): batch this.
-    await Promise.all(
-      updatedUsers.map((updatedUser) => updatedUser.save && updatedUser.save()),
-    );
+    await Promise.all(updatedUsers.map((updatedUser) => updatedUser.save()));
   }
   return messageIds;
 };
