@@ -6,7 +6,7 @@ const AboutPage: React.FunctionComponent = () => (
   <Layout title="About">
     <p>
       We are{" "}
-      <CommonLink href="http://www.elijahcarrel.me/" isExternal>
+      <CommonLink href="http://www.elijahcarrel.com/" isExternal>
         Elijah Carrel
       </CommonLink>{" "}
       and{" "}
@@ -18,10 +18,16 @@ const AboutPage: React.FunctionComponent = () => (
       way to receive comics every day.
     </p>
     <p>
-      While we are no longer developing it as actively we did that summer, we
-      regularly improve the service in our spare time. We continue to deliver
-      thousands of comics to our users every morning, and we plan on doing so
-      for many years to come.
+      We continue to develop it semi-actively in our spare time. See our{" "}
+      <CommonLink href="/news">news</CommonLink> page for the latest updates.
+      All code is open-source on{" "}
+      <CommonLink
+        isExternal
+        href="https://github.com/elijahcarrel/inbox-comics"
+      >
+        our GitHub repository
+      </CommonLink>
+      .
     </p>
     <p>
       Check out the <CommonLink href="/faq">FAQ</CommonLink> for more info, and

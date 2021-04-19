@@ -18,7 +18,7 @@ const FAQPage: React.FunctionComponent = () => {
         <>
           Yes— you can choose to subscribe to whichever ones you like, from just
           your one favorite strip to every single one you used to read in the
-          papers. We currently offer <DynamicText>440</DynamicText>{" "}
+          papers. We currently offer <DynamicText>439</DynamicText>{" "}
           syndications, but this regularly increases as we build a larger
           database in response to your requests. Regardless of how many comics
           you subscribe to, they&apos;ll all come together as one daily email.
