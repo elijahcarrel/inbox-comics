@@ -6,6 +6,7 @@ export interface IUser extends Document {
   publicId: string;
   email?: string | null;
   verified: boolean;
+  enabled: boolean;
   syndications: ISyndication[];
   lastEmailedComics?: IComic[];
   verificationHash: string;
@@ -20,6 +21,7 @@ const userSchema = new Schema(
     publicId: String,
     email: String,
     verified: Boolean,
+    enabled: Boolean,
     syndications: [
       {
         type: Schema.Types.ObjectId,

@@ -1,5 +1,6 @@
 export interface InputUser {
   publicId: string;
   email: string;
-  syndications: string[];
+  syndications?: string[];
+  enabled?: boolean;
 }

@@ -3,27 +3,20 @@ import gql from "graphql-tag";
 import React, { useState } from "react";
 import { DynamicText } from "../../common-components/DynamicText/DynamicText";
 import { Layout } from "../../common-components/Layout/Layout";
-import { ResendVerificationEmailLink } from "../../components/ResendEmailLink/ResendVerificationEmailLink";
 import { SyndicationEditor } from "../../components/SyndicationEditor/SyndicationEditor";
-import {
-  formattedComicDeliveryTime,
-  stringifyGraphQlError,
-  useUrlQuery,
-} from "../../lib/utils";
+import { stringifyGraphQlError, useUrlQuery } from "../../lib/utils";
 import styles from "./index.module.scss";
 import { H3 } from "../../common-components/H3/H3";
-import { CommonLink } from "../../common-components/CommonLink/CommonLink";
-import { ResendTodaysEmailLink } from "../../components/ResendEmailLink/ResendTodaysEmailLink";
-
-interface Email {
-  messageId: string;
-  sendTime: Date;
-}
+import {
+  Email,
+  UserInfoBlock,
+} from "../../components/UserInfoBlock/UserInfoBlock";
 
 interface User {
   email: string;
   publicId: string;
   verified: boolean;
+  enabled: boolean;
   emails?: Email[];
 }
 
@@ -54,6 +47,7 @@ const UserPage: React.FunctionComponent = () => {
           email
           publicId
           verified
+          enabled
           emails {
             messageId
           }
@@ -67,6 +61,7 @@ const UserPage: React.FunctionComponent = () => {
           email
           publicId
           verified
+          enabled
           emails {
             messageId
           }
@@ -86,84 +81,8 @@ const UserPage: React.FunctionComponent = () => {
   if (loading || !data || (!data.userByPublicId && !data.userByEmail)) {
     return <Layout title="Loading..." isLoading />;
   }
-  const { verified, email, publicId, emails = [] } =
+  const { verified, enabled, email, publicId, emails = [] } =
     data.userByPublicId || data.userByEmail;
-
-  let infoBlock = null;
-  if (verified) {
-    if (selectedSyndications == null) {
-      // selectedSyndications hasn't loaded yet. Display a generic message.
-      infoBlock = (
-        <H3>
-          Your email address is <DynamicText>verified</DynamicText>.
-        </H3>
-      );
-    } else if (selectedSyndications.size === 0) {
-      infoBlock = (
-        <>
-          <H3>
-            Your email address is <DynamicText>verified</DynamicText>.
-          </H3>
-          <H3>
-            However, you are not subscribed to any comics, so you will not
-            receive any emails. Subscribe to some below in order to receive
-            comics every day.
-          </H3>
-        </>
-      );
-    } else {
-      const uriEncodedEmail = encodeURIComponent(email);
-      infoBlock = (
-        <>
-          <H3>
-            Your email address is <DynamicText>verified</DynamicText>.
-          </H3>
-          <H3>
-            You will get an email at{" "}
-            <DynamicText>{formattedComicDeliveryTime()}</DynamicText> every day.
-          </H3>
-          {emails.length > 0 && (
-            <H3>
-              <CommonLink href={`/user/emails?email=${uriEncodedEmail}`}>
-                View past emails.
-              </CommonLink>
-            </H3>
-          )}
-          <H3>
-            <ResendTodaysEmailLink
-              email={email}
-              isFirstEmail={emails.length === 0}
-            />
-          </H3>
-        </>
-      );
-    }
-  } else if (isNewUser) {
-    infoBlock = (
-      <>
-        <H3>
-          A verification email was just sent to{" "}
-          <DynamicText>{email}</DynamicText>.
-        </H3>
-        <H3>
-          <ResendVerificationEmailLink email={email} />
-        </H3>
-        <H3>You&apos;ll receive comics once you verify your email.</H3>
-      </>
-    );
-  } else {
-    infoBlock = (
-      <>
-        <H3>
-          Your email address is <DynamicText>not verified</DynamicText>.
-        </H3>
-        <H3>Until you verify your email, you will not receive comics.</H3>
-        <H3>
-          <ResendVerificationEmailLink email={email} />
-        </H3>
-      </>
-    );
-  }
 
   return (
     <Layout title="My Account">
@@ -171,7 +90,15 @@ const UserPage: React.FunctionComponent = () => {
         <H3>
           Your email is <DynamicText>{email}</DynamicText>.
         </H3>
-        {infoBlock}
+        <UserInfoBlock
+          verified={verified}
+          enabled={enabled}
+          email={email}
+          publicId={publicId}
+          emails={emails}
+          selectedSyndications={selectedSyndications}
+          isNewUser={isNewUser}
+        />
       </div>
       <SyndicationEditor
         publicId={publicId}

@@ -16,10 +16,12 @@ export const typeDefs = gql`
     publicId: ID
     email: String
     syndications: [String]
+    enabled: Boolean
   }
   type User {
     email: String
     verified: Boolean!
+    enabled: Boolean!
     syndications: [Syndication]!
     emails: [Email]!
     publicId: ID!
@@ -79,6 +81,7 @@ export const resolvers = {
         email,
         publicId,
         verified: false,
+        enabled: true,
         syndications: [],
         verificationHash,
         googleAnalyticsHash,
@@ -97,6 +100,7 @@ export const resolvers = {
       return User.create({
         publicId,
         verified: false,
+        enabled: true,
         syndications: [],
         verificationHash,
         googleAnalyticsHash,
@@ -114,11 +118,13 @@ export const resolvers = {
       if (user == null) {
         throw invalidUserByPublicIdError(publicId);
       }
-      user.syndications = await Syndication.find({
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore type of identifier is wrong but appears to work?
-        identifier: inputUser.syndications,
-      }).exec();
+      if (inputUser.syndications != null) {
+        user.syndications = await Syndication.find({
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore type of identifier is wrong but appears to work?
+          identifier: inputUser.syndications,
+        }).exec();
+      }
       let inputEmail: string | null = null;
       if (inputUser.email != null) {
         inputEmail = inputUser.email.toLowerCase();
@@ -136,6 +142,9 @@ export const resolvers = {
           );
         }
         user.email = inputEmail;
+      }
+      if (inputUser.enabled != null) {
+        user.enabled = inputUser.enabled;
       }
       await user.save();
       const { email } = user;

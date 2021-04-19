@@ -147,6 +147,7 @@ export const emailAllUsers = async (
   const { onlyIfWeHaventCheckedToday = true, limit = 50 } = options;
   let conditions: any = {
     verified: true,
+    enabled: true,
     email: { $exists: true, $ne: null },
   };
   if (onlyIfWeHaventCheckedToday) {

@@ -23,7 +23,6 @@ const EmailsPage: React.FunctionComponent = () => {
             userByEmail(email: "${email}") {
                 email
                 publicId
-                verified
                 emails {
                     messageId
                     sendTime
