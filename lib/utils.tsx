@@ -4,6 +4,7 @@ import { ParsedUrlQuery } from "querystring";
 import React, { useEffect, useState } from "react";
 import { format } from "date-fns-tz";
 import { isEmpty } from "lodash";
+import { Options } from "react-toast-notifications";
 import { CommonLink } from "../common-components/CommonLink/CommonLink";
 import { H3 } from "../common-components/H3/H3";
 
@@ -66,26 +67,26 @@ export const useNonEmptyUrlQuery = (): [ParsedUrlQuery, boolean] => {
   return [query, queryIsReady];
 };
 
-const toastOptions = {
+const commonToastOptions: Partial<Options> = {
   autoDismiss: true,
 };
 
-export const toastType = {
+export const toastType: Record<string, Options> = {
   error: {
     appearance: "error",
-    ...toastOptions,
+    ...commonToastOptions,
   },
   warning: {
     appearance: "warning",
-    ...toastOptions,
+    ...commonToastOptions,
   },
   success: {
     appearance: "success",
-    ...toastOptions,
+    ...commonToastOptions,
   },
   info: {
     appearance: "info",
-    ...toastOptions,
+    ...commonToastOptions,
   },
 };
 

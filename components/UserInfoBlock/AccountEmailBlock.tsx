@@ -1,8 +1,6 @@
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import React, { useState } from "react";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { useToasts } from "react-toast-notifications";
 import * as yup from "yup";
 import { FormikHelpers, useFormik } from "formik";

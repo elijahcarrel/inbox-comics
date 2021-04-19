@@ -2,8 +2,6 @@ import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { useToasts } from "react-toast-notifications";
 import { CallToAction } from "../../common-components/CallToAction/CallToAction";
 import { DynamicText } from "../../common-components/DynamicText/DynamicText";

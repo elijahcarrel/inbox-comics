@@ -1,6 +1,4 @@
 import React from "react";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { DefaultToast } from "react-toast-notifications";
 import styles from "./Toast.module.scss";
 
@@ -12,6 +10,8 @@ export const Toast = (props: Props) => {
   const { children, ...otherProps } = props;
   return (
     <div className={styles.toastContainer}>
+      {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+      {/* @ts-ignore className is not defined on DefaultToast */}
       <DefaultToast className={styles.toast} {...otherProps}>
         <span className={styles.innerToast}>{children}</span>
       </DefaultToast>

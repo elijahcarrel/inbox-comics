@@ -1,8 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import React, { useEffect, useState } from "react";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { useToasts } from "react-toast-notifications";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { LoadingOverlay } from "../../common-components/LoadingOverlay/LoadingOverlay";

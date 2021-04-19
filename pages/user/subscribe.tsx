@@ -3,8 +3,6 @@ import { FormikHelpers, useFormik } from "formik";
 import gql from "graphql-tag";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { useToasts } from "react-toast-notifications";
 import * as yup from "yup";
 import { Button } from "../../common-components/Button/Button";
@@ -154,10 +152,11 @@ const NewUserPage: React.FunctionComponent = () => {
           "Enter your email."
         ) : (
           <>
-            Enter your email to get the{" "}
-            <DynamicText>{user.syndications.length}</DynamicText>{" "}
-            {user.syndications.length === 1 ? "comic" : "comics"} you have
-            selected emailed to you every morning.
+            Enter your email to get
+            {user.syndications.length === 1 ? " this " : " these "}
+            <DynamicText>{user.syndications.length}</DynamicText>
+            {user.syndications.length === 1 ? " comic" : " comics"} emailed to
+            you every morning.
           </>
         )}
       </H3>
