@@ -54,6 +54,8 @@ export const AccountEnabledSection = (props: Props) => {
         won&apos;t receive any more emails from us.{" "}
         <CommonLink
           onClick={async () => {
+            // Because this shouldn't fail, we optimistically call
+            // onSetNewEnabledValue before awaiting the result.
             onSetNewEnabledValue(true);
             const result = await updatedEnabledStatus(true);
             if (result.success) {
@@ -76,6 +78,8 @@ export const AccountEnabledSection = (props: Props) => {
       Your account is <DynamicText>enabled</DynamicText>.{" "}
       <CommonLink
         onClick={async () => {
+          // Because this shouldn't fail, we optimistically call
+          // onSetNewEnabledValue before awaiting the result.
           onSetNewEnabledValue(false);
           const result = await updatedEnabledStatus(false);
           if (result.success) {

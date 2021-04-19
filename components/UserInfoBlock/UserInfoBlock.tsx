@@ -6,6 +6,7 @@ import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { ResendTodaysEmailLink } from "../ResendEmailLink/ResendTodaysEmailLink";
 import { ResendVerificationEmailLink } from "../ResendEmailLink/ResendVerificationEmailLink";
 import { AccountEnabledSection } from "./AccountEnabledSection";
+import { AccountEmailBlock } from "./AccountEmailBlock";
 
 export interface Email {
   messageId: string;
@@ -20,6 +21,7 @@ interface Props {
   emails: Email[] | undefined;
   selectedSyndications: Set<string> | null;
   isNewUser: boolean;
+  hasJustChangedEmail: boolean;
 }
 
 export const UserInfoBlock = (props: Props) => {
@@ -31,6 +33,7 @@ export const UserInfoBlock = (props: Props) => {
     emails = [],
     selectedSyndications,
     isNewUser,
+    hasJustChangedEmail,
   } = props;
 
   const [newEnabledValue, setNewEnabledValue] = useState<boolean | undefined>();
@@ -38,54 +41,9 @@ export const UserInfoBlock = (props: Props) => {
   const enabled =
     newEnabledValue != null ? newEnabledValue : currentEnabledValue;
 
-  // First, check if the user is a new user who has just completed registration.
-  // If so, we can assume that the user is enabled but not verified and display
-  // the same message without checking anything else.
-  if (isNewUser) {
-    return (
-      <>
-        <H3>
-          A verification email was just sent to{" "}
-          <DynamicText>{email}</DynamicText>.
-        </H3>
-        <H3>
-          <ResendVerificationEmailLink email={email} />
-        </H3>
-        <H3>You&apos;ll receive comics once you verify your email.</H3>
-      </>
-    );
-  }
-  // If they are not a new user, the next thing we check is whether the user's
-  // email is verified. If not, we simply ask them to verify their email.
-  //
-  // Since we assume users only go from unverified to verified, we do not need
-  // to consider any other cases (i.e. whether the user is "enabled" or not,
-  // because we have never given them the option to disable it, or whether the
-  // user has received any past emails or not, because we assume they haven't).
-  if (!verified) {
-    return (
-      <>
-        <H3>
-          Your email address is <DynamicText>not verified</DynamicText>.
-        </H3>
-        <H3>
-          Until you verify your email, you will not receive comics (or any other
-          emails from our service).
-        </H3>
-        <H3>
-          <ResendVerificationEmailLink email={email} />
-        </H3>
-      </>
-    );
-  }
-
-  // By this point, the user is verified. All info text should be prepended with
-  // information saying so.
   let infoBlock = (
     <>
-      <H3>
-        Your email address is <DynamicText>verified</DynamicText>.
-      </H3>
+      <AccountEmailBlock email={email} publicId={publicId} />
     </>
   );
 
@@ -102,12 +60,68 @@ export const UserInfoBlock = (props: Props) => {
     </>
   );
 
-  // At this point, we should also display the AccountEnabledSection which
+  // The next thing we check is whether the user's email is verified. If not, we
+  // simply ask them to verify their email.
+
+  // We don't bother displaying the AccountEnabledSection as it is useless to
+  // them (enabling/disabling doesn't matter if they are unverified), and we
+  // also don't check the number of syndications (because again,
+  // adding/subtracting comments doesn't matter if they're unverified).
+  if (!verified) {
+    // However, we first, check if the user is a new user who has just completed
+    // registration, or a user who has just changed their email. If so, we
+    // indicate that we've just sent them a verification email and ask them to
+    // verify it.
+    if (isNewUser || hasJustChangedEmail) {
+      return (
+        <>
+          {infoBlock}
+          <H3>
+            A verification email was just sent to{" "}
+            <DynamicText>{email}</DynamicText>.
+          </H3>
+          <H3>
+            <ResendVerificationEmailLink email={email} />
+          </H3>
+          <H3>
+            You&apos;ll receive comics once you verify your
+            {hasJustChangedEmail ? " new " : " "}email.
+          </H3>
+          {pastEmailsBlock}
+        </>
+      );
+    }
+
+    // If they are not a new user or a user who has just changed their email, we
+    // simply tell them their email isn't verified and ask them to verify it.
+    return (
+      <>
+        {infoBlock}
+        <H3>
+          Your email address is <DynamicText>not verified</DynamicText>.
+        </H3>
+        <H3>
+          Until you verify your email, you will not receive comics (or any other
+          emails from our service).
+        </H3>
+        <H3>
+          <ResendVerificationEmailLink email={email} />
+        </H3>
+        {pastEmailsBlock}
+      </>
+    );
+  }
+
+  // By this point, the user is verified. All info text should be prepended with
+  // information saying so. We should also display the AccountEnabledSection which
   // handles telling the user whether their account is enabled or not and
   // allowing them to change it.
   infoBlock = (
     <>
       {infoBlock}
+      <H3>
+        Your email address is <DynamicText>verified</DynamicText>.
+      </H3>
       <AccountEnabledSection
         publicId={publicId}
         enabled={enabled}
@@ -150,8 +164,9 @@ export const UserInfoBlock = (props: Props) => {
       </>
     );
   }
+
   // At this point, the user's account is verified, enabled, and they subscribe
-  // to at least one comic.
+  // to at least one comic-- we should tell them to expect to receive emails!
   return (
     <>
       {infoBlock}

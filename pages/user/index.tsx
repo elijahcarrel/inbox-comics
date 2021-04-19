@@ -1,12 +1,10 @@
 import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import React, { useState } from "react";
-import { DynamicText } from "../../common-components/DynamicText/DynamicText";
 import { Layout } from "../../common-components/Layout/Layout";
 import { SyndicationEditor } from "../../components/SyndicationEditor/SyndicationEditor";
 import { stringifyGraphQlError, useUrlQuery } from "../../lib/utils";
 import styles from "./index.module.scss";
-import { H3 } from "../../common-components/H3/H3";
 import {
   Email,
   UserInfoBlock,
@@ -33,6 +31,7 @@ const UserPage: React.FunctionComponent = () => {
   const publicIdFromUrl = `${urlQuery.publicId || ""}`;
   const emailFromUrl = `${urlQuery.email || ""}`;
   const isNewUser = !!urlQuery.new;
+  const hasJustChangedEmail = !!urlQuery.oldEmail;
   const [
     selectedSyndications,
     setSelectedSyndications,
@@ -87,9 +86,6 @@ const UserPage: React.FunctionComponent = () => {
   return (
     <Layout title="My Account">
       <div className={styles.block}>
-        <H3>
-          Your email is <DynamicText>{email}</DynamicText>.
-        </H3>
         <UserInfoBlock
           verified={verified}
           enabled={enabled}
@@ -98,6 +94,7 @@ const UserPage: React.FunctionComponent = () => {
           emails={emails}
           selectedSyndications={selectedSyndications}
           isNewUser={isNewUser}
+          hasJustChangedEmail={hasJustChangedEmail}
         />
       </div>
       <SyndicationEditor

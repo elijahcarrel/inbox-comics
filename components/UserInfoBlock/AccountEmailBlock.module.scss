@@ -1,0 +1,21 @@
+.form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+
+  .yourEmailIsText {
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+  .emailInput {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .cancelLink {
+    margin-left: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+}
