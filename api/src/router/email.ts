@@ -40,6 +40,9 @@ export const resolvers = {
       if (!user.verified) {
         throw new UserInputError(`User "${email}" is not verified.`);
       }
+      if (!user.enabled) {
+        throw new UserInputError(`User "${email}" is disabled.`);
+      }
       let messageIds: (string | null)[] = [];
       try {
         messageIds = await emailUsers([user], options, date);
