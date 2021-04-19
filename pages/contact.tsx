@@ -3,8 +3,6 @@ import { FormikHelpers, useFormik } from "formik";
 import gql from "graphql-tag";
 import Router from "next/router";
 import React from "react";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { useToasts } from "react-toast-notifications";
 import Reaptcha from "reaptcha";
 import * as yup from "yup";

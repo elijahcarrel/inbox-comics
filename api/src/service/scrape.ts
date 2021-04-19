@@ -351,6 +351,8 @@ export const scrapeAndSaveComic = async (
   date: Moment,
 ) => {
   const scrapeResult = await scrapeComic(syndication, date);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore TS2615 see https://github.com/microsoft/TypeScript/issues/38279.
   const createdComic = await Comic.create(
     createComicDbObject(syndication, date, scrapeResult),
   );

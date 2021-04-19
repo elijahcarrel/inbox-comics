@@ -1,8 +1,6 @@
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import React from "react";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { useToasts } from "react-toast-notifications";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { handleGraphQlResponse, toastType } from "../../lib/utils";

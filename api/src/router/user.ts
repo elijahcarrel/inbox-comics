@@ -119,9 +119,9 @@ export const resolvers = {
         throw invalidUserByPublicIdError(publicId);
       }
       if (inputUser.syndications != null) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore type of identifier is wrong but appears to work?
         user.syndications = await Syndication.find({
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore type of identifier is wrong but appears to work?
           identifier: inputUser.syndications,
         }).exec();
       }

@@ -7,8 +7,6 @@ import {
 import fetch from "isomorphic-unfetch";
 import App from "next/app";
 import React from "react";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { ToastProvider } from "react-toast-notifications";
 import { Toast } from "../common-components/Toast/Toast";
 import styles from "./app.module.scss";

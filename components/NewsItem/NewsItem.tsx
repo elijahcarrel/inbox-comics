@@ -3,6 +3,7 @@ import parse, { domToReact } from "html-react-parser";
 import React from "react";
 import Truncate from "react-truncate";
 import { format } from "date-fns";
+import { Element } from "domhandler";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { H2 } from "../../common-components/H2/H2";
 import styles from "./NewsItem.module.scss";
@@ -25,14 +26,16 @@ const NewsItemContent = (props: NewsItemContentProps) => {
   const { content, previewOnly } = props;
   const parsedNode = parse(content, {
     replace: (domNode) => {
-      if (domNode.type === "tag" && domNode.name === "a") {
-        const { href } = domNode.attribs || {};
-        const isExternal = !href.startsWith("/");
-        return (
-          <CommonLink href={href} isExternal={isExternal}>
-            {domToReact(domNode.children || [])}
-          </CommonLink>
-        );
+      if (domNode instanceof Element && domNode.attribs) {
+        if (domNode.type === "tag" && domNode.name === "a") {
+          const { href } = domNode.attribs || {};
+          const isExternal = !href.startsWith("/");
+          return (
+            <CommonLink href={href} isExternal={isExternal}>
+              {domToReact(domNode.children || [])}
+            </CommonLink>
+          );
+        }
       }
       return undefined;
     },

@@ -102,7 +102,7 @@ export const emailUsers = async (
     messageIds
       .filter((messageId) => messageId)
       .map((messageId) => ({
-        messageId,
+        messageId: messageId as string,
         sendTime: dateAsDate,
       })),
   );
