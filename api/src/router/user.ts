@@ -142,6 +142,7 @@ export const resolvers = {
           );
         }
         user.email = inputEmail;
+        user.verified = false;
       }
       if (inputUser.enabled != null) {
         user.enabled = inputUser.enabled;
