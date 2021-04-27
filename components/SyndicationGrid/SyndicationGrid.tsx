@@ -39,9 +39,12 @@ export const SyndicationGrid = (props: Props) => {
   const numComicsPerPageParam = urlQueryIsReady
     ? parseInt(`${urlQuery?.numComicsPerPage || ""}`, 10)
     : NaN;
-  const numComicsPerPage = Number.isNaN(numComicsPerPageParam)
-    ? defaultNumComicsPerPage
-    : numComicsPerPageParam;
+  const numComicsPerPage =
+    Number.isNaN(numComicsPerPageParam) ||
+    numComicsPerPageParam < 1 ||
+    numComicsPerPageParam > 100
+      ? defaultNumComicsPerPage
+      : numComicsPerPageParam;
   const [sortFieldOrder, setSortFieldOrder] = useState<"asc" | "desc">("desc");
   const [searchText, setSearchText] = useState("");
   // TODO(ecarrel): callers should do this, not me. (I think.)
@@ -69,6 +72,8 @@ export const SyndicationGrid = (props: Props) => {
     },
     [onChange, selectedSyndicationIdentifiers],
   );
+  // TODO(ecarrel): paginate server-side? Probably not necessary, number of comics
+  //  and size of server-side blob per comic are both pretty small.
   // All selected comics should go on the first page, otherwise dragging
   // doesn't work and some interactions get weird.
   const numComicsOnFirstPage = Math.max(
@@ -76,11 +81,9 @@ export const SyndicationGrid = (props: Props) => {
     selectedSyndicationIdentifiers.length,
   );
   const isOnFirstPage = pageNumber === 0;
-  const offset =
-    pageNumber * numComicsPerPage +
-    (isOnFirstPage ? 0 : numComicsOnFirstPage - numComicsPerPage);
-  // TODO(ecarrel): paginate server-side? Probably not necessary, number of comics
-  //  and size of server-side blob per comic are both pretty small.
+  const offset = isOnFirstPage
+    ? 0
+    : numComicsOnFirstPage + (pageNumber - 1) * numComicsPerPage;
   let filteredSyndications = orderBy(
     augmentedSyndications,
     ["isSelected", "selectedIndex", sortField, "title"],
@@ -99,7 +102,11 @@ export const SyndicationGrid = (props: Props) => {
     offset,
     offset + (isOnFirstPage ? numComicsOnFirstPage : numComicsPerPage),
   );
-  const numPages = Math.ceil(filteredSyndications.length / numComicsPerPage);
+  const numExtraComicsOnFirstPage = numComicsOnFirstPage - numComicsPerPage;
+  const numPages = Math.ceil(
+    (filteredSyndications.length - numExtraComicsOnFirstPage) /
+      numComicsPerPage,
+  );
 
   return (
     <>
