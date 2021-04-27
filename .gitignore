@@ -3,7 +3,6 @@ node_modules
 bundle
 .DS_STORE
 .idea
-.now
 .next
 .env
 .vercel
