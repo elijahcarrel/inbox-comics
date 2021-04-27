@@ -13,10 +13,9 @@ import { handleGraphQlResponse, toastType, useUrlQuery } from "../../lib/utils";
 const UserSyndicationsPage = () => {
   const [urlQuery, urlQueryIsReady] = useUrlQuery();
   const publicId = `${urlQuery.publicId || ""}`;
-  const [
-    selectedSyndications,
-    setSelectedSyndications,
-  ] = useState<Set<string> | null>(null);
+  const [selectedSyndications, setSelectedSyndications] = useState<
+    string[] | null
+  >(null);
   const { addToast } = useToasts();
   const mutation = gql`
     mutation createUserWithoutEmail {
@@ -40,13 +39,13 @@ const UserSyndicationsPage = () => {
   );
   if (urlQueryIsReady) {
     title = "Choose Comics";
-    if (selectedSyndications && selectedSyndications.size > 0) {
+    if (selectedSyndications && selectedSyndications.length > 0) {
       helperText = (
         <>
           <H3>
-            {selectedSyndications.size > 1 ? "These " : "This "}
-            <DynamicText>{selectedSyndications.size}</DynamicText>
-            {selectedSyndications.size > 1 ? " comics " : " comic "}
+            {selectedSyndications.length > 1 ? "These " : "This "}
+            <DynamicText>{selectedSyndications.length}</DynamicText>
+            {selectedSyndications.length > 1 ? " comics " : " comic "}
             will be emailed to you every morning in a single email.
           </H3>
         </>
@@ -89,7 +88,7 @@ const UserSyndicationsPage = () => {
       />
       {selectedSyndications && (
         <CallToAction
-          isSticky={selectedSyndications.size > 0}
+          isSticky={selectedSyndications.length > 0}
           onClick={async () => {
             await Router.push({
               pathname: "/user/subscribe",
@@ -97,7 +96,7 @@ const UserSyndicationsPage = () => {
             });
           }}
         >
-          {selectedSyndications.size > 0
+          {selectedSyndications.length > 0
             ? "Next →"
             : "Continue Without Selecting Comics →"}
         </CallToAction>

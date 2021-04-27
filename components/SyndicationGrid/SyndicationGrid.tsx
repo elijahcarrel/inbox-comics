@@ -2,14 +2,15 @@ import { mdiSortAscending, mdiSortAlphabeticalAscending } from "@mdi/js";
 import Icon from "@mdi/react";
 import Fuse from "fuse.js";
 import orderBy from "lodash/orderBy";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { Paginate } from "../../common-components/Paginate/Paginate";
 import { TextInput } from "../../common-components/TextInput/TextInput";
 import { SyndicationCard } from "../SyndicationCard/SyndicationCard";
 import styles from "./SyndicationGrid.module.scss";
+import { useUrlQuery } from "../../lib/utils";
 
-const numComicsPerPage = 24;
+const defaultNumComicsPerPage = 24;
 
 // TODO(ecarrel): consolidate into common types file (perhaps shared client/server?)
 interface Syndication {
@@ -20,12 +21,13 @@ interface Syndication {
 
 interface AugmentedSyndication extends Syndication {
   isSelected: boolean;
+  selectedIndex: number;
 }
 
 interface Props {
   syndications: Syndication[];
-  selectedSyndicationIdentifiers: Set<string>;
-  onChange: (selectedSyndicationIdentifiers: Set<string>) => any;
+  selectedSyndicationIdentifiers: string[];
+  onChange: (selectedSyndicationIdentifiers: string[]) => void;
 }
 
 export const SyndicationGrid = (props: Props) => {
@@ -33,23 +35,56 @@ export const SyndicationGrid = (props: Props) => {
   const [sortField, setSortField] = useState<"title" | "numSubscribers">(
     "numSubscribers",
   );
+  const [urlQuery, urlQueryIsReady] = useUrlQuery();
+  const numComicsPerPageParam = urlQueryIsReady
+    ? parseInt(`${urlQuery?.numComicsPerPage || ""}`, 10)
+    : NaN;
+  const numComicsPerPage = Number.isNaN(numComicsPerPageParam)
+    ? defaultNumComicsPerPage
+    : numComicsPerPageParam;
   const [sortFieldOrder, setSortFieldOrder] = useState<"asc" | "desc">("desc");
   const [searchText, setSearchText] = useState("");
   // TODO(ecarrel): callers should do this, not me. (I think.)
   const augmentedSyndications = syndications.map((syndication) => {
+    const selectedSyndicationIndex = selectedSyndicationIdentifiers.findIndex(
+      (selectedSyndicationIdentifier) =>
+        selectedSyndicationIdentifier === syndication.identifier,
+    );
     return {
       ...syndication,
-      isSelected: selectedSyndicationIdentifiers.has(syndication.identifier),
+      isSelected: selectedSyndicationIndex !== -1,
+      selectedIndex: selectedSyndicationIndex,
     };
   });
   const [pageNumber, setPageNumber] = useState(0);
-  const offset = pageNumber * numComicsPerPage;
+  const onMoveCard = useCallback(
+    (dragIndex: number, hoverIndex: number) => {
+      const dragIdentifier = selectedSyndicationIdentifiers[dragIndex];
+      const newSelectedSyndicationIdentifiers = [
+        ...selectedSyndicationIdentifiers,
+      ];
+      newSelectedSyndicationIdentifiers.splice(dragIndex, 1);
+      newSelectedSyndicationIdentifiers.splice(hoverIndex, 0, dragIdentifier);
+      onChange(newSelectedSyndicationIdentifiers);
+    },
+    [onChange, selectedSyndicationIdentifiers],
+  );
+  // All selected comics should go on the first page, otherwise dragging
+  // doesn't work and some interactions get weird.
+  const numComicsOnFirstPage = Math.max(
+    numComicsPerPage,
+    selectedSyndicationIdentifiers.length,
+  );
+  const isOnFirstPage = pageNumber === 0;
+  const offset =
+    pageNumber * numComicsPerPage +
+    (isOnFirstPage ? 0 : numComicsOnFirstPage - numComicsPerPage);
   // TODO(ecarrel): paginate server-side? Probably not necessary, number of comics
   //  and size of server-side blob per comic are both pretty small.
   let filteredSyndications = orderBy(
     augmentedSyndications,
-    ["isSelected", sortField, "title"],
-    ["desc", sortFieldOrder, "asc"],
+    ["isSelected", "selectedIndex", sortField, "title"],
+    ["desc", "asc", sortFieldOrder, "asc"],
   );
   if (searchText !== "") {
     const fuse = new Fuse<AugmentedSyndication>(filteredSyndications, {
@@ -62,7 +97,7 @@ export const SyndicationGrid = (props: Props) => {
   }
   const filteredSyndicationsOnThisPage = filteredSyndications.slice(
     offset,
-    offset + numComicsPerPage,
+    offset + (isOnFirstPage ? numComicsOnFirstPage : numComicsPerPage),
   );
   const numPages = Math.ceil(filteredSyndications.length / numComicsPerPage);
 
@@ -119,7 +154,7 @@ export const SyndicationGrid = (props: Props) => {
         </div>
       </div>
       <div className={styles.syndicationGridContainer}>
-        {filteredSyndicationsOnThisPage.map((syndication) => {
+        {filteredSyndicationsOnThisPage.map((syndication, index) => {
           const { title, identifier, isSelected } = syndication;
           return (
             <SyndicationCard
@@ -129,18 +164,23 @@ export const SyndicationGrid = (props: Props) => {
                 syndicationContainer: styles.syndicationContainer,
               }}
               isSelected={isSelected}
+              onMoveCard={onMoveCard}
               onClick={() => {
-                const newSelectedSyndications = new Set(
-                  selectedSyndicationIdentifiers,
-                );
                 if (isSelected) {
-                  newSelectedSyndications.delete(identifier);
+                  // Delete it.
+                  onChange(
+                    selectedSyndicationIdentifiers.filter(
+                      (otherIdentifier) => otherIdentifier !== identifier,
+                    ),
+                  );
                 } else {
-                  newSelectedSyndications.add(identifier);
+                  // Add it.
+                  onChange([...selectedSyndicationIdentifiers, identifier]);
                 }
-                onChange(newSelectedSyndications);
               }}
               key={identifier}
+              index={index}
+              numSelectedSyndications={selectedSyndicationIdentifiers.length}
             />
           );
         })}

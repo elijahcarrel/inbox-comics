@@ -1,5 +1,6 @@
 import { gql, UserInputError } from "apollo-server-micro";
 import { v4 as uuidv4 } from "uuid";
+import { sortBy } from "lodash";
 import { InputUser } from "../api-models/user";
 import { User } from "../db-models/user";
 import { sendContactEmail } from "../service/email/templates/send-contact-email";
@@ -119,11 +120,13 @@ export const resolvers = {
         throw invalidUserByPublicIdError(publicId);
       }
       if (inputUser.syndications != null) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore type of identifier is wrong but appears to work?
-        user.syndications = await Syndication.find({
-          identifier: inputUser.syndications,
-        }).exec();
+        const syndicationIdentifiers = inputUser.syndications as string[];
+        const foundSyndications = await Syndication.find({
+          identifier: { $in: syndicationIdentifiers },
+        });
+        user.syndications = sortBy(foundSyndications, (foundSyndication) =>
+          syndicationIdentifiers.indexOf(foundSyndication.identifier),
+        );
       }
       let inputEmail: string | null = null;
       if (inputUser.email != null) {

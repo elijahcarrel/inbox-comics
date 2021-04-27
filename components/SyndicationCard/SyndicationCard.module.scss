@@ -14,11 +14,13 @@
   align-content: flex-start;
   cursor: pointer;
   border-radius: 23px;
+  position: relative;
 
   .syndicationLogo {
     border-radius: 50px;
     margin: 10px;
     flex: 0 1 auto;
+    position: absolute;
   }
 
   .syndicationTitleText {
@@ -35,6 +37,25 @@
     background-color: $red-color;
     .syndicationTitleText {
       background-color: lighten($red-color, 55);
+    }
+    &.isDragging {
+      opacity: 0.5;
+    }
+  }
+
+  .dragIcon {
+    position: relative;
+    background-color: lighten($red-color, 55);
+    border-radius: 13px;
+    margin-left: 0;
+    margin-right: auto;
+    color: $dark-grey-color;
+    width: 26px;
+    height: 26px;
+    text-align: center;
+    cursor: grab;
+    &:not(.isDragIconVisible) {
+      visibility: hidden;
     }
   }
 }
