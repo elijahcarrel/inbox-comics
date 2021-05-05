@@ -17,7 +17,6 @@ interface Props {
   // TODO(ecarrel): kinda gross that these two things are handled internally
   //  and externally.
   onChangeSelectedSyndications?: (selectedSyndications: string[]) => void;
-  // TODO(ecarrel): delete this since not being used?
   onReceiveEmail?: (email: string) => any;
 }
 

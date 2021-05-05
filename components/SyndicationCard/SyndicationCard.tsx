@@ -16,8 +16,8 @@ interface Props {
   isSelected: boolean;
   onClick: () => any;
   onMoveCard: (dragIndex: number, hoverIndex: number) => void;
+  onDropCard: (didDrop: boolean) => void;
   index: number;
-  numSelectedSyndications: number;
 }
 
 interface DragItem {
@@ -38,6 +38,7 @@ export const SyndicationCard = (props: Props) => {
     isSelected,
     onClick,
     onMoveCard,
+    onDropCard,
     index,
   } = props;
   const ref = useRef<HTMLDivElement>(null);
@@ -113,6 +114,7 @@ export const SyndicationCard = (props: Props) => {
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
+    end: (_, monitor) => onDropCard(monitor.didDrop()),
     canDrag: isSelected,
   });
 
@@ -142,14 +144,19 @@ export const SyndicationCard = (props: Props) => {
       >
         <Icon path={mdiDragHorizontalVariant} size={1} />
       </div>
-      <Image
-        className={classNames(styles.syndicationLogo, classes.syndicationLogo)}
-        src={`/static/images/logos/${identifier}.jpg`}
-        alt=""
-        width="100"
-        height="100"
-      />
-      <span className={styles.syndicationTitleText}>{title}</span>
+      <div className={styles.syndicationContainerLogoAndText}>
+        <Image
+          className={classNames(
+            styles.syndicationLogo,
+            classes.syndicationLogo,
+          )}
+          src={`/static/images/logos/${identifier}.jpg`}
+          alt=""
+          width="100"
+          height="100"
+        />
+        <span className={styles.syndicationTitleText}>{title}</span>
+      </div>
     </div>
   );
 };

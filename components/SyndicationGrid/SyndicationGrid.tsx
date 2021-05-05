@@ -2,7 +2,7 @@ import { mdiSortAscending, mdiSortAlphabeticalAscending } from "@mdi/js";
 import Icon from "@mdi/react";
 import Fuse from "fuse.js";
 import orderBy from "lodash/orderBy";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { Paginate } from "../../common-components/Paginate/Paginate";
 import { TextInput } from "../../common-components/TextInput/TextInput";
@@ -32,6 +32,17 @@ interface Props {
 
 export const SyndicationGrid = (props: Props) => {
   const { syndications, selectedSyndicationIdentifiers, onChange } = props;
+  // tempSelectedSyndicationIdentifiers are the same as
+  // selectedSyndicationIdentifiers except that
+  // tempSelectedSyndicationIdentifiers change mid-drag-and-drop, but only get
+  // committed to selectedSyndicationIdentifiers upon a successful drop.
+  const [
+    tempSelectedSyndicationIdentifiers,
+    setTempSelectedSyndicationIdentifiers,
+  ] = useState(selectedSyndicationIdentifiers);
+  useEffect(() => {
+    setTempSelectedSyndicationIdentifiers(selectedSyndicationIdentifiers);
+  }, [setTempSelectedSyndicationIdentifiers, selectedSyndicationIdentifiers]);
   const [sortField, setSortField] = useState<"title" | "numSubscribers">(
     "numSubscribers",
   );
@@ -49,7 +60,7 @@ export const SyndicationGrid = (props: Props) => {
   const [searchText, setSearchText] = useState("");
   // TODO(ecarrel): callers should do this, not me. (I think.)
   const augmentedSyndications = syndications.map((syndication) => {
-    const selectedSyndicationIndex = selectedSyndicationIdentifiers.findIndex(
+    const selectedSyndicationIndex = tempSelectedSyndicationIdentifiers.findIndex(
       (selectedSyndicationIdentifier) =>
         selectedSyndicationIdentifier === syndication.identifier,
     );
@@ -62,15 +73,38 @@ export const SyndicationGrid = (props: Props) => {
   const [pageNumber, setPageNumber] = useState(0);
   const onMoveCard = useCallback(
     (dragIndex: number, hoverIndex: number) => {
-      const dragIdentifier = selectedSyndicationIdentifiers[dragIndex];
-      const newSelectedSyndicationIdentifiers = [
-        ...selectedSyndicationIdentifiers,
+      const dragIdentifier = tempSelectedSyndicationIdentifiers[dragIndex];
+      const newTempSelectedSyndicationIdentifiers = [
+        ...tempSelectedSyndicationIdentifiers,
       ];
-      newSelectedSyndicationIdentifiers.splice(dragIndex, 1);
-      newSelectedSyndicationIdentifiers.splice(hoverIndex, 0, dragIdentifier);
-      onChange(newSelectedSyndicationIdentifiers);
+      newTempSelectedSyndicationIdentifiers.splice(dragIndex, 1);
+      newTempSelectedSyndicationIdentifiers.splice(
+        hoverIndex,
+        0,
+        dragIdentifier,
+      );
+      setTempSelectedSyndicationIdentifiers(
+        newTempSelectedSyndicationIdentifiers,
+      );
     },
-    [onChange, selectedSyndicationIdentifiers],
+    [setTempSelectedSyndicationIdentifiers, tempSelectedSyndicationIdentifiers],
+  );
+  const onDropCard = useCallback(
+    (didDrop: boolean) => {
+      if (didDrop) {
+        // Commit the changes.
+        onChange(tempSelectedSyndicationIdentifiers);
+      } else {
+        // Revert tempSelectedSyndicationIdentifiers back to
+        // selectedSyndicationIdentifiers.
+        setTempSelectedSyndicationIdentifiers(selectedSyndicationIdentifiers);
+      }
+    },
+    [
+      onChange,
+      selectedSyndicationIdentifiers,
+      tempSelectedSyndicationIdentifiers,
+    ],
   );
   // TODO(ecarrel): paginate server-side? Probably not necessary, number of comics
   //  and size of server-side blob per comic are both pretty small.
@@ -172,22 +206,22 @@ export const SyndicationGrid = (props: Props) => {
               }}
               isSelected={isSelected}
               onMoveCard={onMoveCard}
+              onDropCard={onDropCard}
               onClick={() => {
                 if (isSelected) {
                   // Delete it.
                   onChange(
-                    selectedSyndicationIdentifiers.filter(
+                    tempSelectedSyndicationIdentifiers.filter(
                       (otherIdentifier) => otherIdentifier !== identifier,
                     ),
                   );
                 } else {
                   // Add it.
-                  onChange([...selectedSyndicationIdentifiers, identifier]);
+                  onChange([...tempSelectedSyndicationIdentifiers, identifier]);
                 }
               }}
               key={identifier}
               index={index}
-              numSelectedSyndications={selectedSyndicationIdentifiers.length}
             />
           );
         })}
