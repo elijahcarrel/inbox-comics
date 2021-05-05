@@ -19,7 +19,7 @@ interface Props {
   email: string;
   publicId: string;
   emails: Email[] | undefined;
-  selectedSyndications: Set<string> | null;
+  selectedSyndications: string[] | null;
   isNewUser: boolean;
   hasJustChangedEmail: boolean;
 }
@@ -150,7 +150,7 @@ export const UserInfoBlock = (props: Props) => {
       </>
     );
   }
-  if (selectedSyndications.size === 0) {
+  if (selectedSyndications.length === 0) {
     return (
       <>
         {infoBlock}

@@ -1,40 +1,73 @@
 @import "../../common-components/colors";
 
+$drag-icon-diameter: 26px;
+$container-height: 200px;
+
 .syndicationContainer {
   background-color: $light-grey-color;
   width: 120px;
-  height: 200px;
+  height: $container-height;
   padding: 10px;
   margin: 10px;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: center;
-  align-content: flex-start;
   cursor: pointer;
   border-radius: 23px;
+  position: relative;
 
-  .syndicationLogo {
-    border-radius: 50px;
-    margin: 10px;
-    flex: 0 1 auto;
-  }
+  .syndicationContainerLogoAndText {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    align-content: flex-start;
+    height: $container-height - $drag-icon-diameter;
 
-  .syndicationTitleText {
-    flex: 0 1 auto;
-    border-radius: 13px;
-    width: 108px;
-    text-align: center;
-    background-color: white;
-    padding-left: 6px;
-    padding-right: 6px;
+    .syndicationLogo {
+      border-radius: 50px;
+      margin: 10px;
+      flex: 0 1 auto;
+    }
+
+    .syndicationTitleText {
+      flex: 0 1 auto;
+      border-radius: 13px;
+      width: 108px;
+      text-align: center;
+      background-color: white;
+      padding-left: 6px;
+      padding-right: 6px;
+    }
+
   }
 
   &.selected {
     background-color: $red-color;
     .syndicationTitleText {
       background-color: lighten($red-color, 55);
+    }
+    &.isDragging {
+      opacity: 0.5;
+    }
+  }
+
+  .dragIcon {
+    position: relative;
+    background-color: lighten($red-color, 55);
+    border-radius: 13px;
+    margin-left: 0;
+    margin-right: auto;
+    color: $dark-grey-color;
+    width: $drag-icon-diameter;
+    height: $drag-icon-diameter;
+    text-align: center;
+    cursor: grab;
+
+    // Disable selectivity (primarily for mobile devices, which start to select
+    // things when you try to do drag and drop).
+    user-select: none;
+
+    &:not(.isDragIconVisible) {
+      visibility: hidden;
     }
   }
 }

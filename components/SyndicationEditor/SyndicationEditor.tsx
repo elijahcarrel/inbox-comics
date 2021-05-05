@@ -16,8 +16,7 @@ interface Props {
   isNewUser: boolean;
   // TODO(ecarrel): kinda gross that these two things are handled internally
   //  and externally.
-  onChangeSelectedSyndications?: (selectedSyndications: Set<string>) => any;
-  // TODO(ecarrel): delete this since not being used?
+  onChangeSelectedSyndications?: (selectedSyndications: string[]) => void;
   onReceiveEmail?: (email: string) => any;
 }
 
@@ -32,7 +31,7 @@ export const SyndicationEditor = (props: Props) => {
     onReceiveEmail,
   } = props;
   const [selectedSyndications, setSelectedSyndications] = useState(
-    new Set<string>(),
+    [] as string[],
   );
   const [email, setEmail] = useState<string | null>(null);
 
@@ -56,7 +55,7 @@ export const SyndicationEditor = (props: Props) => {
     };
   }
 
-  const updateSyndications = async (newSelectedSyndications: Set<string>) => {
+  const updateSyndications = async (newSelectedSyndications: string[]) => {
     // Optimistically update UI.
     setSelectedSyndications(newSelectedSyndications);
     if (onChangeSelectedSyndications) {
@@ -69,7 +68,7 @@ export const SyndicationEditor = (props: Props) => {
           user: {
             email,
             publicId,
-            syndications: [...newSelectedSyndications],
+            syndications: newSelectedSyndications,
           },
         },
       }),
@@ -124,8 +123,8 @@ export const SyndicationEditor = (props: Props) => {
         userByPublicId: { syndications, email: emailFromQuery },
       } = userQueryResponse.data;
       if (syndications != null) {
-        const newSelectedSyndications = new Set(
-          syndications.map(({ identifier }) => identifier),
+        const newSelectedSyndications = syndications.map(
+          ({ identifier }) => identifier,
         );
         setSelectedSyndications(newSelectedSyndications);
         if (onChangeSelectedSyndications) {
@@ -166,7 +165,7 @@ export const SyndicationEditor = (props: Props) => {
       syndications={syndicationsQueryResponse.data.syndications}
       selectedSyndicationIdentifiers={selectedSyndications}
       onChange={async (newSelectedSyndications) => {
-        const oldSelectedSyndications = new Set(selectedSyndications);
+        const oldSelectedSyndications = [...selectedSyndications];
         const result = await updateSyndications(newSelectedSyndications);
         if (result.success) {
           if (!isNewUser) {
