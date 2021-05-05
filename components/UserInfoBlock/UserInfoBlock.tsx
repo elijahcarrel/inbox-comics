@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { H3 } from "../../common-components/H3/H3";
 import { DynamicText } from "../../common-components/DynamicText/DynamicText";
-import { formattedComicDeliveryTime } from "../../lib/utils";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { ResendTodaysEmailLink } from "../ResendEmailLink/ResendTodaysEmailLink";
 import { ResendVerificationEmailLink } from "../ResendEmailLink/ResendVerificationEmailLink";
 import { AccountEnabledSection } from "./AccountEnabledSection";
 import { AccountEmailBlock } from "./AccountEmailBlock";
+import { ComicDeliveryTimeSection } from "./ComicDeliveryTimeSection";
 
 export interface Email {
   messageId: string;
@@ -22,6 +22,8 @@ interface Props {
   selectedSyndications: string[] | null;
   isNewUser: boolean;
   hasJustChangedEmail: boolean;
+  comicDeliveryHoursInNewYork: number;
+  comicDeliveryMinutesInNewYork: number;
 }
 
 export const UserInfoBlock = (props: Props) => {
@@ -34,12 +36,30 @@ export const UserInfoBlock = (props: Props) => {
     selectedSyndications,
     isNewUser,
     hasJustChangedEmail,
+    comicDeliveryHoursInNewYork: currentHoursInNewYorkValue = 6,
+    comicDeliveryMinutesInNewYork: currentMinutesInNewYorkValue = 0,
   } = props;
 
   const [newEnabledValue, setNewEnabledValue] = useState<boolean | undefined>();
   // Optimistically update UI as soon as a new enabled value is set.
   const enabled =
     newEnabledValue != null ? newEnabledValue : currentEnabledValue;
+
+  const [newDeliveryTimeValue, setNewDeliveryTimeValue] = useState<
+    [
+      comicDeliveryHoursInNewYork: number | undefined,
+      comicDeliveryMinutesInNewYork: number | undefined,
+    ]
+  >([undefined, undefined]);
+  // Optimistically update UI as soon as a new delivery time value is set.
+  const comicDeliveryHoursInNewYork =
+    newDeliveryTimeValue[0] != null
+      ? newDeliveryTimeValue[0]
+      : currentHoursInNewYorkValue;
+  const comicDeliveryMinutesInNewYork =
+    newDeliveryTimeValue[1] != null
+      ? newDeliveryTimeValue[1]
+      : currentMinutesInNewYorkValue;
 
   let infoBlock = (
     <>
@@ -170,10 +190,15 @@ export const UserInfoBlock = (props: Props) => {
   return (
     <>
       {infoBlock}
-      <H3>
-        You will get an email at{" "}
-        <DynamicText>{formattedComicDeliveryTime()}</DynamicText> every day.
-      </H3>
+      <ComicDeliveryTimeSection
+        comicDeliveryHoursInNewYork={comicDeliveryHoursInNewYork}
+        comicDeliveryMinutesInNewYork={comicDeliveryMinutesInNewYork}
+        email={email}
+        publicId={publicId}
+        onSetNewDeliveryTime={(newHours, newMinutes) =>
+          setNewDeliveryTimeValue([newHours, newMinutes])
+        }
+      />
       {pastEmailsBlock}
       <H3>
         <ResendTodaysEmailLink

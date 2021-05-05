@@ -11,6 +11,8 @@ export interface IUser extends Document {
   lastEmailedComics?: IComic[];
   verificationHash: string;
   googleAnalyticsHash: string;
+  comicDeliveryHoursInNewYork?: number;
+  comicDeliveryMinutesInNewYork?: number;
   lastEmailCheck?: Date | null;
   lastEmailSent?: Date | null;
   emails?: IEmail[];
@@ -36,6 +38,9 @@ const userSchema = new Schema(
     ],
     verificationHash: String,
     googleAnalyticsHash: String,
+    comicDeliveryHoursInNewYork: Number,
+    comicDeliveryMinutesInNewYork: Number,
+    comicDeliveryTime: Date,
     lastEmailCheck: Date,
     lastEmailSent: Date,
     emails: [

@@ -1,5 +1,6 @@
 import { ApolloError } from "apollo-server-errors";
 import { Moment } from "moment";
+import { FilterQuery } from "mongoose";
 import { IUser, User } from "../../db-models/user";
 import {
   ComicForEmail,
@@ -145,18 +146,52 @@ export const emailAllUsers = async (
   options: EmailAllUsersOptions = {},
 ) => {
   const { onlyIfWeHaventCheckedToday = true, limit = 50 } = options;
-  let conditions: any = {
+  // We start sending comics one minute earlier than requested.
+  const deliveryDateStart = date.clone().subtract(1, "minute");
+  const deliveryHour = deliveryDateStart.hour();
+  const deliveryMinutes = deliveryDateStart.minutes();
+  let conditions: FilterQuery<IUser> = {
     verified: true,
     enabled: true,
     email: { $exists: true, $ne: null },
+    $or: [
+      {
+        $and: [
+          {
+            comicDeliveryHoursInNewYork: {
+              $gte: deliveryHour,
+            },
+          },
+          {
+            comicDeliveryMinutesInNewYork: {
+              $gte: deliveryMinutes,
+            },
+          },
+        ],
+      },
+      {
+        $or: [
+          {
+            comicDeliveryHoursInNewYork: undefined,
+          },
+          {
+            comicDeliveryMinutesInNewYork: undefined,
+          },
+        ],
+      },
+    ],
   };
   if (onlyIfWeHaventCheckedToday) {
     conditions = {
       ...conditions,
-      $or: [
-        { lastEmailCheck: { $lt: date.clone().startOf("day").toDate() } },
-        { lastEmailCheck: null },
-      ],
+      $and: {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore TODO(ecarrel): figure this out before go-live.
+        $or: [
+          { lastEmailCheck: { $lt: date.clone().startOf("day").toDate() } },
+          { lastEmailCheck: null },
+        ],
+      },
     };
   }
   let usersRequest = User.find(conditions);

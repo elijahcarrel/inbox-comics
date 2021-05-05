@@ -90,9 +90,14 @@ export const toastType: Record<string, Options> = {
   },
 };
 
-export const formattedComicDeliveryTime = () => {
+export const getFormattedComicDeliveryTime = (
+  comicDeliveryHoursInNewYork = 6,
+  comicDeliveryMinutesInNewYork = 0,
+) => {
   // Actual date doesn't matter, just time.
-  const comicDeliveryTime = new Date("January 1, 1980 06:00:00 EST");
+  const comicDeliveryTime = new Date(
+    `January 1, 1980 ${comicDeliveryHoursInNewYork}:${comicDeliveryMinutesInNewYork}:00 EST`,
+  );
   return format(comicDeliveryTime, "h:mm a z");
 };
 

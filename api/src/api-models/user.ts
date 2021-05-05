@@ -3,4 +3,6 @@ export interface InputUser {
   email: string;
   syndications?: string[];
   enabled?: boolean;
+  comicDeliveryHoursInNewYork?: number;
+  comicDeliveryMinutesInNewYork?: number;
 }

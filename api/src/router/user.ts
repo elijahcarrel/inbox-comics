@@ -11,6 +11,7 @@ import {
   invalidUserError,
 } from "../util/error";
 import { Syndication } from "../db-models/comic-syndication";
+import { validateComicDeliveryTime } from "../util/date";
 
 export const typeDefs = gql`
   input InputUser {
@@ -18,6 +19,8 @@ export const typeDefs = gql`
     email: String
     syndications: [String]
     enabled: Boolean
+    comicDeliveryHoursInNewYork: Int
+    comicDeliveryMinutesInNewYork: Int
   }
   type User {
     email: String
@@ -26,6 +29,8 @@ export const typeDefs = gql`
     syndications: [Syndication]!
     emails: [Email]!
     publicId: ID!
+    comicDeliveryHoursInNewYork: Int
+    comicDeliveryMinutesInNewYork: Int
   }
   extend type Query {
     userByEmail(email: String!): User
@@ -146,6 +151,20 @@ export const resolvers = {
         }
         user.email = inputEmail;
         user.verified = false;
+      }
+      if (
+        inputUser.comicDeliveryHoursInNewYork != null &&
+        inputUser.comicDeliveryMinutesInNewYork != null
+      ) {
+        const [
+          comicDeliveryHoursInNewYork,
+          comicDeliveryMinutesInNewYork,
+        ] = validateComicDeliveryTime(
+          inputUser.comicDeliveryHoursInNewYork,
+          inputUser.comicDeliveryMinutesInNewYork,
+        );
+        user.comicDeliveryHoursInNewYork = comicDeliveryHoursInNewYork;
+        user.comicDeliveryMinutesInNewYork = comicDeliveryMinutesInNewYork;
       }
       if (inputUser.enabled != null) {
         user.enabled = inputUser.enabled;

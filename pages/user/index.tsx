@@ -16,6 +16,8 @@ interface User {
   verified: boolean;
   enabled: boolean;
   emails?: Email[];
+  comicDeliveryHoursInNewYork: number;
+  comicDeliveryMinutesInNewYork: number;
 }
 
 interface UserByPublicIdResponse {
@@ -46,6 +48,8 @@ const UserPage: React.FunctionComponent = () => {
           publicId
           verified
           enabled
+          comicDeliveryHoursInNewYork
+          comicDeliveryMinutesInNewYork
           emails {
             messageId
           }
@@ -60,6 +64,8 @@ const UserPage: React.FunctionComponent = () => {
           publicId
           verified
           enabled
+          comicDeliveryHoursInNewYork
+          comicDeliveryMinutesInNewYork
           emails {
             messageId
           }
@@ -79,8 +85,15 @@ const UserPage: React.FunctionComponent = () => {
   if (loading || !data || (!data.userByPublicId && !data.userByEmail)) {
     return <Layout title="Loading..." isLoading />;
   }
-  const { verified, enabled, email, publicId, emails = [] } =
-    data.userByPublicId || data.userByEmail;
+  const {
+    verified,
+    enabled,
+    email,
+    publicId,
+    emails = [],
+    comicDeliveryHoursInNewYork,
+    comicDeliveryMinutesInNewYork,
+  } = data.userByPublicId || data.userByEmail;
 
   return (
     <Layout title="My Account">
@@ -94,6 +107,8 @@ const UserPage: React.FunctionComponent = () => {
           selectedSyndications={selectedSyndications}
           isNewUser={isNewUser}
           hasJustChangedEmail={hasJustChangedEmail}
+          comicDeliveryHoursInNewYork={comicDeliveryHoursInNewYork}
+          comicDeliveryMinutesInNewYork={comicDeliveryMinutesInNewYork}
         />
       </div>
       <SyndicationEditor

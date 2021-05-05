@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import { CommonLink } from "../common-components/CommonLink/CommonLink";
 import { DynamicText } from "../common-components/DynamicText/DynamicText";
 import { Layout } from "../common-components/Layout/Layout";
-import { formattedComicDeliveryTime } from "../lib/utils";
+import { getFormattedComicDeliveryTime } from "../lib/utils";
 import styles from "./faq.module.scss";
 
 type FaqEntry = {
@@ -30,8 +30,8 @@ const FAQPage: React.FunctionComponent = () => {
       answer: (
         <>
           Every daily email comes at{" "}
-          <DynamicText>{formattedComicDeliveryTime()}</DynamicText>. We decided
-          on that time because most dailies are posted before then, and
+          <DynamicText>{getFormattedComicDeliveryTime()}</DynamicText>. We
+          decided on that time because most dailies are posted before then, and
           it&apos;s still early enough that even the early risers on the east
           coast of the U.S. can enjoy the comics over their morning coffee.
         </>
