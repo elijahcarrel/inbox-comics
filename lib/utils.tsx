@@ -2,7 +2,6 @@ import { ApolloError, FetchResult } from "@apollo/client";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import React, { useEffect, useState } from "react";
-import { format } from "date-fns-tz";
 import { isEmpty } from "lodash";
 import { Options } from "react-toast-notifications";
 import { CommonLink } from "../common-components/CommonLink/CommonLink";
@@ -88,17 +87,6 @@ export const toastType: Record<string, Options> = {
     appearance: "info",
     ...commonToastOptions,
   },
-};
-
-export const getFormattedComicDeliveryTime = (
-  comicDeliveryHoursInNewYork = 6,
-  comicDeliveryMinutesInNewYork = 0,
-) => {
-  // Actual date doesn't matter, just time.
-  const comicDeliveryTime = new Date(
-    `January 1, 1980 ${comicDeliveryHoursInNewYork}:${comicDeliveryMinutesInNewYork}:00 EST`,
-  );
-  return format(comicDeliveryTime, "h:mm a z");
 };
 
 export const defaultErrorAction = (

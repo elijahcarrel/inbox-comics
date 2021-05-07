@@ -2,17 +2,20 @@ import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import React, { useState } from "react";
 import { useToasts } from "react-toast-notifications";
-import Timekeeper from "react-timekeeper";
 import * as yup from "yup";
-import { FormikConfig, FormikHelpers, useFormik } from "formik";
+import { FormikConfig, FormikHelpers, useFormik, FormikErrors } from "formik";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
-import {
-  getFormattedComicDeliveryTime,
-  handleGraphQlResponse,
-  toastType,
-} from "../../lib/utils";
+import { handleGraphQlResponse, toastType } from "../../lib/utils";
 import { H3 } from "../../common-components/H3/H3";
 import { DynamicText } from "../../common-components/DynamicText/DynamicText";
+import {
+  comicDeliveryTimeInLocalTimeZoneToNewYork,
+  comicDeliveryTimeInNewYorkToLocalTimeZone,
+  getFormattedComicDeliveryTime,
+} from "../../lib/time-utils";
+import { ComicDeliveryTimeChooser } from "./ComicDeliveryTimeChooser";
+import { LoadingOverlay } from "../../common-components/LoadingOverlay/LoadingOverlay";
+import styles from "./ComicDeliveryTimeSection.module.scss";
 
 interface Props {
   comicDeliveryHoursInNewYork: number;
@@ -31,8 +34,8 @@ type PutUserResult = {
 };
 
 interface ComicDeliveryTimeFormValues {
-  hoursInLocalTimeZone: number;
-  minutesInLocalTimeZone: number;
+  comicDeliveryHoursInLocalTimeZone: number;
+  comicDeliveryMinutesInLocalTimeZone: number;
 }
 
 export const ComicDeliveryTimeSection = (props: Props) => {
@@ -78,23 +81,67 @@ export const ComicDeliveryTimeSection = (props: Props) => {
     );
   };
 
+  const [
+    comicDeliveryHoursInLocalTimeZone,
+    comicDeliveryMinutesInLocalTimeZone,
+  ] = comicDeliveryTimeInNewYorkToLocalTimeZone(
+    comicDeliveryHoursInNewYork,
+    comicDeliveryMinutesInNewYork,
+  );
   const formikConfig: FormikConfig<ComicDeliveryTimeFormValues> = {
     initialValues: {
-      // TODO(ecarrel): reformat based on time zone.
-      hoursInLocalTimeZone: comicDeliveryHoursInNewYork,
-      minutesInLocalTimeZone: comicDeliveryMinutesInNewYork,
+      comicDeliveryHoursInLocalTimeZone,
+      comicDeliveryMinutesInLocalTimeZone,
     },
     validationSchema: yup.object().shape({
-      hoursInLocalTimeZone: yup.number().required("Hour is required."),
-      minutesInLocalTimeZone: yup.number().required("Minutes is required."),
+      comicDeliveryHoursInLocalTimeZone: yup
+        .number()
+        .required("Hour is required."),
+      comicDeliveryMinutesInLocalTimeZone: yup
+        .number()
+        .required("Minutes is required."),
     }),
+    validate: (
+      values: ComicDeliveryTimeFormValues,
+      // eslint-disable-next-line consistent-return
+    ): void | Promise<FormikErrors<ComicDeliveryTimeFormValues>> => {
+      const [
+        newHoursInNewYorkValue,
+        newMinutesInNewYorkValue,
+      ] = comicDeliveryTimeInLocalTimeZoneToNewYork(
+        values.comicDeliveryHoursInLocalTimeZone,
+        values.comicDeliveryMinutesInLocalTimeZone,
+      );
+      if (newHoursInNewYorkValue >= 0 && newHoursInNewYorkValue < 6) {
+        const newFormattedComicDeliveryTime = getFormattedComicDeliveryTime(
+          newHoursInNewYorkValue,
+          newMinutesInNewYorkValue,
+        );
+        const errorMessage = `Cannot set comic delivery time to ${newFormattedComicDeliveryTime} because the hours between ${getFormattedComicDeliveryTime(
+          0,
+          0,
+        )} and ${getFormattedComicDeliveryTime(
+          6,
+          0,
+        )} are reserved for comic collection and email generation.`;
+        addToast(errorMessage, toastType.error);
+        return Promise.resolve({
+          comicDeliveryHoursInLocalTimeZone: errorMessage,
+        });
+      }
+    },
     onSubmit: async (
-      newValues: ComicDeliveryTimeFormValues,
+      values: ComicDeliveryTimeFormValues,
       { setSubmitting }: FormikHelpers<ComicDeliveryTimeFormValues>,
     ) => {
-      // TODO(ecarrel): reformat based on time zone.
-      const newHoursInNewYorkValue = newValues.hoursInLocalTimeZone;
-      const newMinutesInNewYorkValue = newValues.minutesInLocalTimeZone;
+      setTimeChooserIsVisible(false);
+      const [
+        newHoursInNewYorkValue,
+        newMinutesInNewYorkValue,
+      ] = comicDeliveryTimeInLocalTimeZoneToNewYork(
+        values.comicDeliveryHoursInLocalTimeZone,
+        values.comicDeliveryMinutesInLocalTimeZone,
+      );
       const result = await updateComicDeliveryTime(
         newHoursInNewYorkValue,
         newMinutesInNewYorkValue,
@@ -109,7 +156,6 @@ export const ComicDeliveryTimeSection = (props: Props) => {
           `You'll now get emails at ${newFormattedComicDeliveryTime}.`,
           toastType.success,
         );
-        setTimeChooserIsVisible(false);
       } else {
         addToast(
           `Could not change comic delivery time: ${result.combinedErrorMessage}`,
@@ -118,10 +164,18 @@ export const ComicDeliveryTimeSection = (props: Props) => {
       }
       setSubmitting(false);
     },
+    validateOnChange: false,
+    validateOnBlur: false,
+    validateOnMount: false,
   };
 
-  const { handleSubmit, values, setFieldValue } = useFormik(formikConfig);
-  console.log("values", values);
+  const { handleSubmit, values, setFieldValue, isSubmitting } = useFormik(
+    formikConfig,
+  );
+
+  if (isSubmitting) {
+    return <LoadingOverlay className={styles.loadingOverlay} />;
+  }
 
   return (
     <H3>
@@ -131,17 +185,20 @@ export const ComicDeliveryTimeSection = (props: Props) => {
         Pick a different time.
       </CommonLink>
       {timeChooserIsVisible && (
-        <Timekeeper
-          time={`${values.hoursInLocalTimeZone}:${String(
-            values.minutesInLocalTimeZone,
-          ).padStart(2, "0")}`}
-          switchToMinuteOnHourSelect
-          closeOnMinuteSelect
-          onChange={(timeOutput) => {
-            setFieldValue("hoursInLocalTimeZone", timeOutput.hour);
-            setFieldValue("minutesInLocalTimeZone", timeOutput.minute);
+        <ComicDeliveryTimeChooser
+          comicDeliveryHours={values.comicDeliveryHoursInLocalTimeZone}
+          comicDeliveryMinutes={values.comicDeliveryMinutesInLocalTimeZone}
+          onSetTime={(comicDeliveryHours, comicDeliveryMinutes) => {
+            setFieldValue(
+              "comicDeliveryHoursInLocalTimeZone",
+              comicDeliveryHours,
+            );
+            setFieldValue(
+              "comicDeliveryMinutesInLocalTimeZone",
+              comicDeliveryMinutes,
+            );
           }}
-          onDoneClick={() => handleSubmit()}
+          onSubmit={() => handleSubmit()}
         />
       )}
     </H3>

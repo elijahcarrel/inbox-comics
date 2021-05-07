@@ -48,8 +48,8 @@ export const AccountEnabledSection = (props: Props) => {
   if (!enabled) {
     return (
       <H3>
-        However, your account is <DynamicText>disabled</DynamicText>, so you
-        won&apos;t receive any more emails from us.{" "}
+        However, your subscription is <DynamicText>disabled</DynamicText>, so
+        you won&apos;t receive any more emails from us.{" "}
         <CommonLink
           onClick={async () => {
             // Because this shouldn't fail, we optimistically call
@@ -57,10 +57,10 @@ export const AccountEnabledSection = (props: Props) => {
             onSetNewEnabledValue(true);
             const result = await updatedEnabledStatus(true);
             if (result.success) {
-              addToast(`Account is now enabled.`, toastType.success);
+              addToast(`Subscription is now enabled.`, toastType.success);
             } else {
               addToast(
-                `Could not enable account: ${result.combinedErrorMessage}`,
+                `Could not enable subscription: ${result.combinedErrorMessage}`,
                 toastType.error,
               );
             }
@@ -73,7 +73,7 @@ export const AccountEnabledSection = (props: Props) => {
   }
   return (
     <H3>
-      Your account is <DynamicText>enabled</DynamicText>.{" "}
+      Your subscription is <DynamicText>enabled</DynamicText>.{" "}
       <CommonLink
         onClick={async () => {
           // Because this shouldn't fail, we optimistically call
@@ -81,10 +81,10 @@ export const AccountEnabledSection = (props: Props) => {
           onSetNewEnabledValue(false);
           const result = await updatedEnabledStatus(false);
           if (result.success) {
-            addToast(`Account is now disabled.`, toastType.success);
+            addToast(`Subscription is now disabled.`, toastType.success);
           } else {
             addToast(
-              `Could not disable account: ${result.combinedErrorMessage}`,
+              `Could not disable subscription: ${result.combinedErrorMessage}`,
               toastType.error,
             );
           }

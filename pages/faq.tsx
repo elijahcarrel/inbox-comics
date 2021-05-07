@@ -2,8 +2,8 @@ import React, { ReactNode } from "react";
 import { CommonLink } from "../common-components/CommonLink/CommonLink";
 import { DynamicText } from "../common-components/DynamicText/DynamicText";
 import { Layout } from "../common-components/Layout/Layout";
-import { getFormattedComicDeliveryTime } from "../lib/utils";
 import styles from "./faq.module.scss";
+import { getFormattedComicDeliveryTime } from "../lib/time-utils";
 
 type FaqEntry = {
   question: ReactNode;

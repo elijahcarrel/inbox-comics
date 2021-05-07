@@ -1,0 +1,87 @@
+@use "sass:meta";
+@import "../../common-components/colors.scss";
+@import "../../common-components/fonts.scss";
+
+.comicDeliveryTimeChooser {
+  margin: 20px;
+
+  // The react-timekeeper library uses CSS variables to provide styling, which
+  // is a pattern that is both inconsistent with the rest of this package and
+  // ugly to the user since the default values show up in the generated CSS, but
+  // which we use here out of necessity, working with them the best we can, but
+  // still override using selectors as necessary. Note that using selectors is
+  // similarly inconvenient because we use SCSS with hashed class names and so
+  // can't access the predefined class names provided within react-timekeeper.
+  // Instead, we must use brittle CSS selectors.
+
+  // main wrapper
+  --main-box-shadow: 0;
+  --main-bg: #{$light-grey-color};
+  --main-font-family: #{meta.inspect($serif-font)};
+
+  // top bar
+  --top-bg: none;
+  --top-colon-color: #{$black-color};
+  --top-text-color: #{$black-color};
+  --top-selected-color: #{$red-color};
+  --top-meridiem-color: #{$black-color};
+
+  // time dropdown
+  --dropdown-border: #{1px solid #f4f4f4};
+  --dropdown-shadow: #{0};
+  --dropdown-text-color: #{$black-color};
+  --dropdown-hover-bg: none;
+
+  // clock wrapper
+  --clock-wrapper-bg: #{$light-grey-color};
+  --clock-bg: #{$light-grey-color};
+
+  // clock hand
+  --hand-line-color: #{$red-color};
+  --hand-circle-center: #{$red-color};
+  --hand-circle-outer: #{$red-color};
+  --hand-minute-circle: #{$red-color}; // minutes only: #{dot between intervals
+
+  // numbers
+  --numbers-text-color: #{$black-color};
+  --numbers-font-size-reg: #{18px}; // 12h mode only
+  --numbers-font-size-inner: #{15px}; // 24h mode only
+  --numbers-font-size-outer: #{13px}; // 24h mode only
+
+
+  // meridiem buttons
+  --meridiem-bg-color: #{$white-color};
+  --meridiem-text-color: #{$black-color};
+  --meridiem-selected-bg-color: #{$red-color};
+  --meridiem-selected-text-color: #{$white-color};
+
+  // done button
+  --done-bg-color: none;
+  --done-text-color: #{$black-color};
+  --done-border-top: #{1px solid $grey-color};
+  --done-font-size: #{16px};
+  --done-font-weight: bold;
+
+  button {
+    // Override the font, font size, and weight for the meridiem text in the top
+    // bar and in the buttons, which inexplicably don't have variables.
+    font-family: $serif-font;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  > div {
+    border-radius: 40px;
+    > div {
+      border-radius: 0;
+      > div {
+        // Make the numbers in the top bar bold...
+        font-weight: bold;
+        > div {
+          // .. but not the hour/minute numbers in the clock.
+          font-weight: normal;
+        }
+      }
+    }
+  }
+}
+
