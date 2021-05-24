@@ -4,11 +4,6 @@
     { "src": "package.json", "use": "@vercel/next" },
     { "src": "api/src/index.ts", "use": "@vercel/node" }
   ],
-  "env": {
-    "mongodb_url": "@mongodb_url",
-    "elasticemail_api_key": "@elasticemail_api_key",
-    "domain": "https://www.inboxcomics.com"
-  },
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/src/index.ts" }
   ]

@@ -131,6 +131,22 @@ const customMessages: Record<string, string> = {
     Without further ado, here are today's comics.
 </p>
 `,
+  "May 25th, 2021": `
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    Hi everyone,
+</p>
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    As many of you noted, several of our most popular comics (including Dilbert, Mutts, and others) weren't updating correctly since last Wednesday. Sorry about this! We have now fixed the issue and comics should be coming through as normal.
+</p>
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    Cheers,<br />
+    Gabe and Elijah<br />
+    Team Inbox Comics
+</p>
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    Without further ado, here are today's comics.
+</p>
+`,
 };
 
 export const sendComicEmail = async (
