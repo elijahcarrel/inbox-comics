@@ -55,17 +55,8 @@ course).
    mongodb-community`.
 
 ### Prerequisites to starting server locally
-1. Create a `.env` file in the root directory. This file is not tracked in git
-   because it contains secrets. Put the following there as contents:
-```bash
-mongodb_url="mongodb://127.0.0.1:27017/ic"
-elasticemail_api_key="<get this from @elijahcarrel>"
-domain="http://localhost:3000"
-```
-   The `elasticemail_api_key` parameter is empty because it is the same as
-   production and therefore secret-- ask @elijahcarrel directly what the API key
-   is. The other information is local-specific and do not match the (secret)
-   production values.
+1. `$ vercel login`.
+1. Enter username and password to log into the inboxcomics Vercel team.
 
 ### Starting the app locally
 1. `$ vercel dev`.
@@ -89,4 +80,5 @@ domain="http://localhost:3000"
 
 ### Opening a production database console.
 1. The URL and password for the production database are, of course, secret. Ask
-   @elijahcarrel.
+   @elijahcarrel or find them at [the Vercel environment variables
+   settings](https://vercel.com/inboxcomics/app/settings/environment-variables).
