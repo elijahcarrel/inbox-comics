@@ -196,7 +196,7 @@ export const scrapeComic = async (
         return scrapeFailure(failureModes.ARCAMAX_MISSING_IMAGE_ON_PAGE);
       }
       const imageUrl = comicImages.attr("src");
-      return scrapeSuccess(`https://www.arcamax.com${imageUrl}`);
+      return scrapeSuccess(imageUrl);
     }
     case sites.tundra.id: {
       const url = `http://www.tundracomicsftp.com/comicspub/daily_tundra/daily/${date.format(
