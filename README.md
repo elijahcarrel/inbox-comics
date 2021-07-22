@@ -47,7 +47,7 @@ course).
     1. Install Vercel CLI with `$ npm install -g vercel`
 1. Install client package dependencies with `$ npm install`.
 1. Install api package dependencies with `$ cd ./api` and `$ npm install`.
-1. Get a production database dump from the server by following the instructions
+1. Get a staging database dump from the server by following the instructions
    on <https://cloud.mongodb.com> after logging in with your credentials.
 1. Start the mongo daemon with `$ brew services start mongodb-community`. By
    default, homebrew will now keep this service alive at all times, even after a
@@ -66,7 +66,7 @@ course).
 ### Deploying the app to a preview deployment
 1. `$ vercel`
 1. App is now deployed to <https://app.inboxcomics.vercel.app>, using the
-   production database and production elasticemail credentials.
+   staging database and production elasticemail credentials.
 
 ### Deploying the app
 1. `$ vercel --prod`
@@ -79,6 +79,6 @@ course).
    `> db.syndications.findOne({ identifier: "calvinandhobbes" });`
 
 ### Opening a production database console.
-1. The URL and password for the production database are, of course, secret. Ask
-   @elijahcarrel or find them at [the Vercel environment variables
+1. The URL and password for the production and staging database are, of course,
+   secret. Ask @elijahcarrel or find them at [the Vercel environment variables
    settings](https://vercel.com/inboxcomics/app/settings/environment-variables).
