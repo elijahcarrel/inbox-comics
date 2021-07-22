@@ -27,6 +27,11 @@ export const Footer: React.FunctionComponent = () => (
             key: "about",
             content: "About",
           },
+          {
+            href: "/privacy",
+            key: "privacy",
+            content: "Privacy",
+          },
         ]}
         wrapWidth="wide"
       />
