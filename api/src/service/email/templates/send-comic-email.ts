@@ -1,6 +1,6 @@
 import { Moment } from "moment-timezone";
 import { v4 as uuidv4 } from "uuid";
-import { sendEmail } from "../send-email";
+import { sendElasticEmail } from "../send-elastic-email";
 
 export interface ComicForEmail {
   syndicationName: string;
@@ -230,7 +230,7 @@ export const sendComicEmail = async (
 </html>
 `;
   try {
-    return await sendEmail(email, subject, body);
+    return await sendElasticEmail(email, subject, body);
   } catch (e) {
     // eslint-disable-next-line no-console
     console.error(e);

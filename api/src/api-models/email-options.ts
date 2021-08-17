@@ -9,3 +9,8 @@ export interface EmailAllUsersOptions {
   // looked to see if they deserved an email and sent them one if they did). Default: true.
   onlyIfWeHaventCheckedToday?: boolean;
 }
+
+export interface CancelThrottledEmailsOptions {
+  // Limit to a max number of emails. 0 results in no limit. Default: 3.
+  limit?: number;
+}

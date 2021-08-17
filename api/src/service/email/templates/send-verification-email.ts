@@ -1,4 +1,4 @@
-import { sendEmail } from "../send-email";
+import { sendElasticEmail } from "../send-elastic-email";
 
 export const sendVerificationEmail = async (
   email: string,
@@ -54,5 +54,5 @@ export const sendVerificationEmail = async (
 </html>
 `;
 
-  return sendEmail(email, subject, body);
+  return sendElasticEmail(email, subject, body);
 };

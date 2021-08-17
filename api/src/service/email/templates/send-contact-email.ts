@@ -1,5 +1,5 @@
 import { now } from "../../../util/date";
-import { sendEmail } from "../send-email";
+import { sendElasticEmail } from "../send-elastic-email";
 
 export const sendContactEmail = async (
   name: string,
@@ -57,5 +57,5 @@ export const sendContactEmail = async (
 </html>
 `;
 
-  return sendEmail("support@inboxcomics.com", subject, body, fromEmail);
+  return sendElasticEmail("support@inboxcomics.com", subject, body, fromEmail);
 };
