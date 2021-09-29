@@ -32,6 +32,7 @@ export const sendAwsSesEmail = async (
         Data: subject,
       },
     },
+    ConfigurationSetName: "CommonMessageConfiguration",
   };
   const result = await sesClient.sendEmail(emailParams).promise();
   if (result.$response.error) {
