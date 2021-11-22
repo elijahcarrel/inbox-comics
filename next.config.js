@@ -4,7 +4,6 @@ module.exports = {
     importLoaders: 1,
     localIdentName: "[local]___[contenthash:base64:5]",
   },
-  target: "serverless",
   crossOrigin: "anonymous",
   future: {
     webpack5: true,
