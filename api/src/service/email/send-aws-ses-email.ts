@@ -1,12 +1,20 @@
-import { SES } from "aws-sdk";
+import {
+  SESv2Client,
+  SESv2ClientConfig,
+  SendEmailRequest,
+  SendEmailCommand,
+  SendEmailCommandOutput,
+} from "@aws-sdk/client-sesv2";
 
-const config: SES.Types.ClientConfiguration = {
-  accessKeyId: process.env.ses_access_key_id || "",
-  secretAccessKey: process.env.ses_secret_access_key || "",
+const config: SESv2ClientConfig = {
+  credentials: {
+    accessKeyId: process.env.ses_access_key_id || "",
+    secretAccessKey: process.env.ses_secret_access_key || "",
+  },
   region: "us-west-2",
 };
 
-const sesClient = new SES(config);
+const sesClient = new SESv2Client(config);
 
 export const sendAwsSesEmail = async (
   to: string,
@@ -14,37 +22,37 @@ export const sendAwsSesEmail = async (
   body: string,
   fromEmail = "comics@inboxcomics.com",
 ): Promise<string> => {
-  const emailParams: SES.Types.SendEmailRequest = {
-    Source: fromEmail,
+  const emailParams: SendEmailRequest = {
+    FromEmailAddress: fromEmail,
     Destination: {
       ToAddresses: [to],
     },
     ReplyToAddresses: [],
-    Message: {
-      Body: {
-        Html: {
-          Charset: "UTF-8",
-          Data: body,
+    Content: {
+      Simple: {
+        Body: {
+          Html: {
+            Charset: "UTF-8",
+            Data: body,
+          },
         },
-      },
-      Subject: {
-        Charset: "UTF-8",
-        Data: subject,
+        Subject: {
+          Charset: "UTF-8",
+          Data: subject,
+        },
       },
     },
     ConfigurationSetName: "CommonMessageConfiguration",
   };
-  const result = await sesClient.sendEmail(emailParams).promise();
-  if (result.$response.error) {
-    throw new Error(
-      `Error sending email: ${JSON.stringify(result.$response.error)}`,
-    );
+  const command = new SendEmailCommand(emailParams);
+  let result: SendEmailCommandOutput;
+  try {
+    result = await sesClient.send(command);
+  } catch (error) {
+    throw new Error(`Error sending email: ${JSON.stringify(error)}`);
   }
   if (!result) {
     throw new Error("Error sending email: empty result.");
-  }
-  if (!result.$response.data) {
-    throw new Error("Error sending email: empty response data.");
   }
   if (!result.MessageId) {
     throw new Error("Error sending email: no messageid was returned.");

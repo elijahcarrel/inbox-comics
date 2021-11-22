@@ -57,7 +57,7 @@ export const resolvers = {
       try {
         messageIds = await emailUsers([user], options, date);
       } catch (err) {
-        throw internalEmailSendError(err);
+        throw internalEmailSendError(String(err));
       }
       if (messageIds.length > 0 && messageIds[0] != null) {
         return messageIds[0];
@@ -70,7 +70,7 @@ export const resolvers = {
       try {
         return await emailAllUsers(date, options);
       } catch (err) {
-        throw internalEmailSendError(err);
+        throw internalEmailSendError(String(err));
       }
     },
     cancelThrottledEmailsAndSendThemWithAws: async (

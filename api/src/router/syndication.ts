@@ -27,7 +27,7 @@ export const resolvers = {
       try {
         return await Syndication.create(args);
       } catch (e) {
-        return e.message;
+        return (e as Error).message;
       }
     },
   },
