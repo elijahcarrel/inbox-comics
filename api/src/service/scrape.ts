@@ -288,11 +288,11 @@ export const scrapeComic = async (
       if ($ === null) {
         return scrapeFailure(failureModes.EXPLOSM_REJECTION);
       }
-      const comicImages = $("img#main-comic");
-      if (comicImages.length !== 1) {
+      const comicImages = $("#comic img");
+      if (comicImages.length === 0) {
         return scrapeFailure(failureModes.EXPLOSM_MISSING_IMAGE_ON_PAGE);
       }
-      const imageUrl = `http:${comicImages.attr("src")}`;
+      const imageUrl = comicImages.first().attr("src");
       return scrapeSuccess(imageUrl);
     }
     case sites.dinosaur.id: {
