@@ -86,6 +86,8 @@ const generateHtmlForComic = (
   return null;
 };
 
+// TODO(ecarrel): this is the worst. Replace this with a data-driven model,
+// connected to the "newsitems" table we already have.
 const customMessages: Record<string, string> = {
   "May 27th, 2020": `
 <p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
@@ -145,6 +147,31 @@ const customMessages: Record<string, string> = {
 </p>
 <p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
     Without further ado, here are today's comics.
+</p>
+`,
+  "August 9th, 2022": `
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    Hi all,
+</p>
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    It’s been a while since we shared an Inbox Comics update with you all— or more accurately, a while since we’ve had an issue to write about!
+</p>
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    We wanted to send a quick note to say that we know some of you received multiple (or 113…) emails from us yesterday, but the problem has been identified and should now be fixed. One of the services we use to send emails apparently failed to report the messages as “sent,” so our other service just kept them coming. But don’t worry, this should be the only email you receive from us today!! 😊
+</p>
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    Thanks to everyone who wrote us about the problem. For our newer subscribers, we’re a two-person team who work on Inbox Comics in our spare time, and fund the service and email delivery out of pocket (and we promise never to sell your data or put ads in our emails!).
+</p>
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    We don’t have any other updates to share at this time, except to say that we’re still excited about this passion project and will continue running the site for as long as we can! Thanks for your patience with us and for your continued support.
+</p>
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    Please let us know if you continue to have issues.
+</p>
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    All the best,<br />
+    Elijah and Gabe,<br />
+    Team Inbox Comics
 </p>
 `,
 };
