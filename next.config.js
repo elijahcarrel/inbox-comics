@@ -1,13 +1,5 @@
 module.exports = {
-  cssModules: true,
-  cssLoaderOptions: {
-    importLoaders: 1,
-    localIdentName: "[local]___[contenthash:base64:5]",
-  },
   crossOrigin: "anonymous",
-  future: {
-    webpack5: true,
-  },
   webpack: (config) => {
     if (!config.module.rules) {
       config.module.rules = [];
