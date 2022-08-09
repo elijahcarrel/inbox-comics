@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Script from "next/script";
 import React from "react";
 import { H1 } from "../H1/H1";
 import { LoadingOverlay } from "../LoadingOverlay/LoadingOverlay";
@@ -32,20 +33,18 @@ export const Layout: React.FunctionComponent<Props> = (props: Props) => {
     <>
       <Head>
         <title>{displayTitle}</title>
-        <script
-          async
+        <Script
           src="https://www.googletagmanager.com/gtag/js?id=UA-75894353-1"
+          strategy="afterInteractive"
         />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments)}
-            gtag('js', new Date());
-            gtag('config', 'UA-75894353-1');
-            `,
-          }}
-        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){window.dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'UA-75894353-1');
+        `}
+        </Script>
         <meta name="twitter:title" content={displayTitle} />
         <meta name="og:title" content={displayTitle} />
         <meta name="application-name" content={siteTitle} />
