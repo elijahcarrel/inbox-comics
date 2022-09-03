@@ -12,7 +12,7 @@
     "apollo-server-errors": "^2.5.0",
     "apollo-server-micro": "^2.23.0",
     "aws-sdk": "^2.969.0",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "btoa": "^1.2.1",
     "cheerio": "^1.0.0-rc.6",
     "graphql": "^15.5.0",
