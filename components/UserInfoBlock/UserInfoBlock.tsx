@@ -41,11 +41,7 @@ export const UserInfoBlock = (props: Props) => {
   const enabled =
     newEnabledValue != null ? newEnabledValue : currentEnabledValue;
 
-  let infoBlock = (
-    <>
-      <AccountEmailBlock email={email} publicId={publicId} />
-    </>
-  );
+  let infoBlock = <AccountEmailBlock email={email} publicId={publicId} />;
 
   const uriEncodedEmail = encodeURIComponent(email);
   const pastEmailsBlock = (

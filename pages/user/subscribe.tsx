@@ -106,14 +106,8 @@ const NewUserPage: React.FunctionComponent = () => {
       setSubmitting(false);
     },
   };
-  const {
-    handleSubmit,
-    values,
-    touched,
-    errors,
-    isSubmitting,
-    setFieldValue,
-  } = useFormik(formikConfig);
+  const { handleSubmit, values, touched, errors, isSubmitting, setFieldValue } =
+    useFormik(formikConfig);
 
   useEffect(() => {
     if (

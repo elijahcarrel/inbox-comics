@@ -53,9 +53,10 @@ export const ResendVerificationEmailLink = (props: Props) => {
   return (
     <CommonLink
       onClick={async () => {
-        const result = await handleGraphQlResponse<ResendVerificationEmailResult>(
-          resendVerificationEmailMutation(),
-        );
+        const result =
+          await handleGraphQlResponse<ResendVerificationEmailResult>(
+            resendVerificationEmailMutation(),
+          );
         if (result.success) {
           setSentEmail(true);
         } else {

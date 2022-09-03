@@ -79,8 +79,13 @@ const UserPage: React.FunctionComponent = () => {
   if (loading || !data || (!data.userByPublicId && !data.userByEmail)) {
     return <Layout title="Loading..." isLoading />;
   }
-  const { verified, enabled, email, publicId, emails = [] } =
-    data.userByPublicId || data.userByEmail;
+  const {
+    verified,
+    enabled,
+    email,
+    publicId,
+    emails = [],
+  } = data.userByPublicId || data.userByEmail;
 
   return (
     <Layout title="My Account">
