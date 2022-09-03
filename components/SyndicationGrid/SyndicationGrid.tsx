@@ -60,10 +60,11 @@ export const SyndicationGrid = (props: Props) => {
   const [searchText, setSearchText] = useState("");
   // TODO(ecarrel): callers should do this, not me. (I think.)
   const augmentedSyndications = syndications.map((syndication) => {
-    const selectedSyndicationIndex = tempSelectedSyndicationIdentifiers.findIndex(
-      (selectedSyndicationIdentifier) =>
-        selectedSyndicationIdentifier === syndication.identifier,
-    );
+    const selectedSyndicationIndex =
+      tempSelectedSyndicationIdentifiers.findIndex(
+        (selectedSyndicationIdentifier) =>
+          selectedSyndicationIdentifier === syndication.identifier,
+      );
     return {
       ...syndication,
       isSelected: selectedSyndicationIndex !== -1,

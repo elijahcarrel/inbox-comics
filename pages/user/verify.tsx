@@ -20,10 +20,8 @@ const VerifyUserPage: React.FunctionComponent = () => {
       verifyEmail(email: $email, verificationHash: $verificationHash)
     }
   `;
-  const [
-    verifyEmailMutation,
-    { loading: verificationIsLoading },
-  ] = useMutation<void>(mutation);
+  const [verifyEmailMutation, { loading: verificationIsLoading }] =
+    useMutation<void>(mutation);
 
   useEffect(() => {
     if (!isVerifying && urlQueryIsReady) {

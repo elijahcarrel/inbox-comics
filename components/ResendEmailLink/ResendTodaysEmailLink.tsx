@@ -45,19 +45,17 @@ export const ResendTodaysEmailLink = (props: Props) => {
     }, 1000);
     return () => clearInterval(interval);
   }, [secondsUntilCanViewMessageInBrowser]);
-  const [
-    emailUserMutation,
-    { loading: emailIsSending },
-  ] = useMutation<EmailUserMutationResult>(mutation, {
-    variables: {
-      email,
-      options: {
-        sendAllComics: true,
-        mentionNotUpdatedComics: true,
-        onlyIfWeHaventCheckedToday: false,
+  const [emailUserMutation, { loading: emailIsSending }] =
+    useMutation<EmailUserMutationResult>(mutation, {
+      variables: {
+        email,
+        options: {
+          sendAllComics: true,
+          mentionNotUpdatedComics: true,
+          onlyIfWeHaventCheckedToday: false,
+        },
       },
-    },
-  });
+    });
 
   if (messageId) {
     return (
@@ -95,13 +93,10 @@ export const ResendTodaysEmailLink = (props: Props) => {
   return (
     <CommonLink
       onClick={async () => {
-        const {
-          success,
-          result,
-          combinedErrorMessage,
-        } = await handleGraphQlResponse<EmailUserMutationResult>(
-          emailUserMutation(),
-        );
+        const { success, result, combinedErrorMessage } =
+          await handleGraphQlResponse<EmailUserMutationResult>(
+            emailUserMutation(),
+          );
         if (success && result && result.data) {
           setMessageId(result.data.emailUser);
           setSecondsUntilCanViewMessageInBrowser(5);

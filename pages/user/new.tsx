@@ -29,9 +29,8 @@ const UserSyndicationsPage = () => {
       publicId: string;
     };
   }
-  const [createUserWithoutEmailMutation] = useMutation<CreateUserResponse>(
-    mutation,
-  );
+  const [createUserWithoutEmailMutation] =
+    useMutation<CreateUserResponse>(mutation);
 
   let title = "Loading...";
   let helperText = (
@@ -41,14 +40,12 @@ const UserSyndicationsPage = () => {
     title = "Choose Comics";
     if (selectedSyndications && selectedSyndications.length > 0) {
       helperText = (
-        <>
-          <H3>
-            {selectedSyndications.length > 1 ? "These " : "This "}
-            <DynamicText>{selectedSyndications.length}</DynamicText>
-            {selectedSyndications.length > 1 ? " comics " : " comic "}
-            will be emailed to you every morning in a single email.
-          </H3>
-        </>
+        <H3>
+          {selectedSyndications.length > 1 ? "These " : "This "}
+          <DynamicText>{selectedSyndications.length}</DynamicText>
+          {selectedSyndications.length > 1 ? " comics " : " comic "}
+          will be emailed to you every morning in a single email.
+        </H3>
       );
     }
   }

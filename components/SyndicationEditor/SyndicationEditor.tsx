@@ -24,12 +24,8 @@ interface Props {
 //  in this whole file.
 export const SyndicationEditor = (props: Props) => {
   const { addToast, removeToast } = useToasts();
-  const {
-    publicId,
-    isNewUser,
-    onChangeSelectedSyndications,
-    onReceiveEmail,
-  } = props;
+  const { publicId, isNewUser, onChangeSelectedSyndications, onReceiveEmail } =
+    props;
   const [selectedSyndications, setSelectedSyndications] = useState(
     [] as string[],
   );
@@ -109,9 +105,8 @@ export const SyndicationEditor = (props: Props) => {
     syndications: Syndication[];
   }
 
-  const syndicationsQueryResponse = useQuery<SyndicationsResponse>(
-    syndicationsQuery,
-  );
+  const syndicationsQueryResponse =
+    useQuery<SyndicationsResponse>(syndicationsQuery);
 
   useEffect(() => {
     if (
