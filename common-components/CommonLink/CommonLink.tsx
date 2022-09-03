@@ -11,7 +11,7 @@ interface Props {
   underline?: boolean;
   className?: string;
   isExternal?: boolean;
-  InnerLinkComponent?: React.ComponentType;
+  InnerLinkComponent?: React.ComponentType<any>;
   isLink?: boolean;
 }
 

@@ -1,5 +1,5 @@
 module.exports = {
-  extends: "airbnb-typescript-prettier",
+  extends: ["airbnb-typescript-prettier", "plugin:@next/next/recommended"],
   rules: {
     "import/prefer-default-export": "off",
     "react/jsx-props-no-spreading": "off",

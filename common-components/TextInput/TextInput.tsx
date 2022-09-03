@@ -48,10 +48,9 @@ export const TextInput: React.FunctionComponent<Props> = (props: Props) => {
       className={classNames(styles.textInput, {
         [styles.hasError]: hasError,
       })}
+      defaultValue={value}
       {...otherProps}
-    >
-      {value}
-    </textarea>
+    />
   ) : (
     <input
       type="text"
