@@ -25,6 +25,7 @@ interface NewsItemContentProps {
 const NewsItemContent = (props: NewsItemContentProps) => {
   const { content, previewOnly } = props;
   const parsedNode = parse(content, {
+    // eslint-disable-next-line react/no-unstable-nested-components
     replace: (domNode) => {
       if (domNode instanceof Element && domNode.attribs) {
         if (domNode.type === "tag" && domNode.name === "a") {

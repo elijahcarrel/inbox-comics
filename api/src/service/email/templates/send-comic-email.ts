@@ -1,6 +1,7 @@
 import { Moment } from "moment-timezone";
 import { v4 as uuidv4 } from "uuid";
 import { sendElasticEmail } from "../send-elastic-email";
+import { now } from "../../../util/date";
 
 export interface ComicForEmail {
   syndicationName: string;
@@ -180,7 +181,7 @@ export const sendComicEmail = async (
   email: string,
   comics: ComicForEmail[],
   options: SendComicEmailOptions = {},
-  date: Moment,
+  date: Moment = now(),
   googleAnalyticsHash: string = uuidv4(),
 ) => {
   // eslint-disable-next-line  max-len

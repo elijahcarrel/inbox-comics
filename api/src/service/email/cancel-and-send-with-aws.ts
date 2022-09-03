@@ -34,6 +34,7 @@ type CancelInProgressResult = {
 export const cancelThrottledEmailsAndSendThemWithAws = async (
   options?: CancelThrottledEmailsOptions,
 ): Promise<boolean> => {
+  // eslint-disable-next-line  no-console
   console.log("cancelThrottledEmailsAndSendThemWithAws called");
   const { limit = 3 } = options || {};
   const actualEvents = await makeElasticEmailApiRequest<LoadLogResult>(
@@ -43,6 +44,7 @@ export const cancelThrottledEmailsAndSendThemWithAws = async (
       limit: String(limit),
     },
   );
+  // eslint-disable-next-line  no-console
   console.log(
     "got the following potential events to cancel: ",
     JSON.stringify(actualEvents?.result?.data?.recipients || []),
@@ -76,18 +78,20 @@ export const cancelThrottledEmailsAndSendThemWithAws = async (
       };
     }),
   );
+  // eslint-disable-next-line  no-console
   console.log(
     "cancelling the following messages: ",
     JSON.stringify(messagesToCancel),
   );
   await Promise.all(
     messagesToCancel.map(async ({ jobId }) => {
-      const cancelInProgressResult = await makeElasticEmailApiRequest<CancelInProgressResult>(
-        "log/cancelinprogress",
-        {
-          transactionID: jobId,
-        },
-      );
+      const cancelInProgressResult =
+        await makeElasticEmailApiRequest<CancelInProgressResult>(
+          "log/cancelinprogress",
+          {
+            transactionID: jobId,
+          },
+        );
       if (!cancelInProgressResult?.result?.success) {
         throw new Error(
           `Could not cancel email with job id ${jobId}: ${cancelInProgressResult?.result?.error}`,
