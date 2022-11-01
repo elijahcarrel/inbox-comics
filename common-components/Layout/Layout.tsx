@@ -31,20 +31,20 @@ export const Layout: React.FunctionComponent<Props> = (props: Props) => {
     "Get your selection of over 400 comics, including Calvin and Hobbes and xkcd, emailed to you every morning, completely free and never with any ads. Sign up now— it only takes a minute!";
   return (
     <>
-      <Head>
-        <title>{displayTitle}</title>
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=UA-75894353-1"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=UA-75894353-1"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){window.dataLayer.push(arguments);}
           gtag('js', new Date());
           gtag('config', 'UA-75894353-1');
         `}
-        </Script>
+      </Script>
+      <Head>
+        <title>{displayTitle}</title>
         <meta name="twitter:title" content={displayTitle} />
         <meta name="og:title" content={displayTitle} />
         <meta name="application-name" content={siteTitle} />

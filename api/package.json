@@ -5,7 +5,7 @@
     "build": "tsc",
     "type-check": "tsc",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
-    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --no-error-on-unmatched-pattern",
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --no-error-on-unmatched-pattern --resolve-plugins-relative-to .",
     "lint-fix": "npm run lint -- --fix"
   },
   "dependencies": {
