@@ -1,7 +1,6 @@
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import React, { useEffect, useState } from "react";
-import { useToasts } from "react-toast-notifications";
 import { mdiCheckCircle } from "@mdi/js";
 import Icon from "@mdi/react";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
@@ -21,7 +20,6 @@ type EmailUserMutationResult = {
 
 export const ResendTodaysEmailLink = (props: Props) => {
   const { email, isFirstEmail } = props;
-  const { addToast } = useToasts();
   const [messageId, setMessageId] = useState("");
   const [
     secondsUntilCanViewMessageInBrowser,
@@ -101,9 +99,8 @@ export const ResendTodaysEmailLink = (props: Props) => {
           setMessageId(result.data.emailUser);
           setSecondsUntilCanViewMessageInBrowser(5);
         } else {
-          addToast(
+          toast.error(
             `Could not send today's email: ${combinedErrorMessage}`,
-            toastType.error,
           );
         }
       }}

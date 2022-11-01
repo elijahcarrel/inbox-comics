@@ -4,7 +4,6 @@ import { ParsedUrlQuery } from "querystring";
 import React, { useEffect, useState } from "react";
 import { format } from "date-fns-tz";
 import { isEmpty } from "lodash";
-import { Options } from "react-toast-notifications";
 import { CommonLink } from "../common-components/CommonLink/CommonLink";
 import { H3 } from "../common-components/H3/H3";
 
@@ -65,29 +64,6 @@ export const useNonEmptyUrlQuery = (): [ParsedUrlQuery, boolean] => {
     }
   }, [query, queryIsReady]);
   return [query, queryIsReady];
-};
-
-const commonToastOptions: Partial<Options> = {
-  autoDismiss: true,
-};
-
-export const toastType: Record<string, Options> = {
-  error: {
-    appearance: "error",
-    ...commonToastOptions,
-  },
-  warning: {
-    appearance: "warning",
-    ...commonToastOptions,
-  },
-  success: {
-    appearance: "success",
-    ...commonToastOptions,
-  },
-  info: {
-    appearance: "info",
-    ...commonToastOptions,
-  },
 };
 
 export const formattedComicDeliveryTime = () => {

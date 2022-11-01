@@ -7,7 +7,6 @@ import {
 import fetch from "isomorphic-unfetch";
 import App from "next/app";
 import React from "react";
-import { ToastProvider } from "react-toast-notifications";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { TouchBackend } from "react-dnd-touch-backend";
 import {
@@ -17,7 +16,7 @@ import {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore types not provided :(.
 } from "react-dnd-multi-backend";
-import { Toast } from "../common-components/Toast/Toast";
+import { ToasterContainer } from "../common-components/ToasterContainer/ToasterContainer";
 import styles from "./app.module.scss";
 import { HTML5toTouch } from 'rdndmb-html5-to-touch'
 
@@ -61,15 +60,14 @@ class MyApp extends App {
     });
 
     return (
-      <ToastProvider components={{ Toast }}>
         <DndProvider options={HTML5toTouch}>
           <ApolloProvider client={client}>
             {/* We need to reference styles.nothing somewhere to fix
              https://github.com/zeit/next-plugins/issues/282. */}
             <Component fakeProp={styles.nothing} {...pageProps} />
+            <ToasterContainer />
           </ApolloProvider>
         </DndProvider>
-      </ToastProvider>
     );
   }
 }

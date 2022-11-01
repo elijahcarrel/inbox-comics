@@ -3,7 +3,6 @@ import { FormikHelpers, useFormik } from "formik";
 import gql from "graphql-tag";
 import Router from "next/router";
 import React from "react";
-import { useToasts } from "react-toast-notifications";
 import Reaptcha from "reaptcha";
 import * as yup from "yup";
 import { Button } from "../common-components/Button/Button";
@@ -13,6 +12,7 @@ import { TextInput } from "../common-components/TextInput/TextInput";
 import { handleGraphQlResponse, toastType } from "../lib/utils";
 import styles from "./contact.module.scss";
 import { H3 } from "../common-components/H3/H3";
+import toast from "react-hot-toast";
 
 interface ContactFormValues {
   email: string;
@@ -23,7 +23,6 @@ interface ContactFormValues {
 }
 
 const ContactPage: React.FunctionComponent = () => {
-  const { addToast } = useToasts();
   // TODO(ecarrel): put this in environment variables and secrets. Tried but couldn't get it to work.
   const recaptchaSiteKey =
     process.env.NODE_ENV === "production"
@@ -81,16 +80,15 @@ const ContactPage: React.FunctionComponent = () => {
       );
       const { success, combinedErrorMessage } = result;
       if (success) {
-        addToast(
+        toast.success(
           "Thank you! We'll get back to you in a jiffy.",
-          toastType.success,
         );
         await Router.push({
           pathname: "/",
           query: {},
         });
       } else {
-        addToast(combinedErrorMessage, toastType.error);
+        toast.error(combinedErrorMessage);
       }
       setSubmitting(false);
     },

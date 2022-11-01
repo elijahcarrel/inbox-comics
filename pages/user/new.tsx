@@ -2,7 +2,6 @@ import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
-import { useToasts } from "react-toast-notifications";
 import { CallToAction } from "../../common-components/CallToAction/CallToAction";
 import { DynamicText } from "../../common-components/DynamicText/DynamicText";
 import { H3 } from "../../common-components/H3/H3";
@@ -16,7 +15,6 @@ const UserSyndicationsPage = () => {
   const [selectedSyndications, setSelectedSyndications] = useState<
     string[] | null
   >(null);
-  const { addToast } = useToasts();
   const mutation = gql`
     mutation createUserWithoutEmail {
       createUserWithoutEmail {
@@ -65,11 +63,11 @@ const UserSyndicationsPage = () => {
           };
           await Router.push(url, url, { shallow: true });
         } else {
-          addToast(combinedErrorMessage, toastType.error);
+          toast.error(combinedErrorMessage);
         }
       });
     }
-  }, [urlQueryIsReady, publicId, addToast, createUserWithoutEmailMutation]);
+  }, [urlQueryIsReady, publicId, createUserWithoutEmailMutation]);
 
   if (publicId.length === 0) {
     return <Layout title={title} isLoading />;

@@ -1,0 +1,19 @@
+@import "../fonts";
+@import "../colors";
+
+.toastContainer {
+  .toast {
+    font-size: 1.2em;
+    font-family: $serif-font;
+
+    .successToast {
+      background-color: $success-color;
+      color: white;
+    }
+
+    .errorToast {
+      background-color: $error-color;
+      color: white,
+    }
+  }
+}

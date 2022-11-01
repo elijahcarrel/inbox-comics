@@ -1,7 +1,6 @@
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import React, { useState } from "react";
-import { useToasts } from "react-toast-notifications";
 import * as yup from "yup";
 import { FormikHelpers, useFormik } from "formik";
 import Router from "next/router";
@@ -13,6 +12,7 @@ import { TextInput } from "../../common-components/TextInput/TextInput";
 import { Button } from "../../common-components/Button/Button";
 import { LoadingOverlay } from "../../common-components/LoadingOverlay/LoadingOverlay";
 import styles from "./AccountEmailBlock.module.scss";
+import toast from "react-hot-toast";
 
 interface Props {
   email: string;
@@ -29,7 +29,6 @@ type PutUserResult = {
 
 export const AccountEmailBlock = (props: Props) => {
   const { publicId, email } = props;
-  const { addToast } = useToasts();
   const [isEditingEmail, setIsEditingEmail] = useState(false);
 
   const mutation = gql`
@@ -68,9 +67,8 @@ export const AccountEmailBlock = (props: Props) => {
       );
       const { success, combinedErrorMessage } = result;
       if (success) {
-        addToast(
+        toast.success(
           `Successfully updated email to ${newValues.email}.`,
-          toastType.success,
         );
         await Router.push({
           pathname: "/user",
@@ -80,7 +78,7 @@ export const AccountEmailBlock = (props: Props) => {
           },
         });
       } else {
-        addToast(combinedErrorMessage, toastType.error);
+        toast.success(combinedErrorMessage);
       }
       setSubmitting(false);
     },

@@ -3,7 +3,6 @@ import { FormikHelpers, useFormik } from "formik";
 import gql from "graphql-tag";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
-import { useToasts } from "react-toast-notifications";
 import * as yup from "yup";
 import { Button } from "../../common-components/Button/Button";
 import { DynamicText } from "../../common-components/DynamicText/DynamicText";
@@ -13,7 +12,6 @@ import { TextInput } from "../../common-components/TextInput/TextInput";
 import {
   handleGraphQlResponse,
   stringifyGraphQlError,
-  toastType,
   useUrlQuery,
 } from "../../lib/utils";
 import styles from "./subscribe.module.scss";
@@ -30,7 +28,6 @@ interface User {
 }
 
 const NewUserPage: React.FunctionComponent = () => {
-  const { addToast } = useToasts();
   const [urlQuery, urlQueryIsReady] = useUrlQuery();
   const publicId = `${urlQuery.publicId || ""}`;
   const [user, setUser] = useState<User | null>(null);
@@ -101,7 +98,7 @@ const NewUserPage: React.FunctionComponent = () => {
           },
         });
       } else {
-        addToast(combinedErrorMessage, toastType.error);
+        toast.error(combinedErrorMessage);
       }
       setSubmitting(false);
     },
