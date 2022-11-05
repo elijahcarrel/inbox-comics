@@ -9,6 +9,23 @@ import {
 import { Email, IEmail } from "../../db-models/email";
 import { EmailAllUsersOptions } from "../../api-models/email-options";
 import { ISyndication } from "../../db-models/comic-syndication";
+import { MergeType, ObjectId } from "mongoose";
+
+// TODO(ecarrel): clean up this type.
+type UserAndComic = {
+  email: string | null | undefined;
+  googleAnalyticsHash: string;
+  comics: {
+    syndicationName: string;
+    wasUpdated: boolean;
+    imageUrl: string | null;
+    imageCaption: string | null;
+  }[];
+}
+
+type PopulatedUser = IUser & { _id: ObjectId };
+
+type MessageId = string | null;
 
 const isWorthSendingEmail = (
   comics: ComicForEmail[],
@@ -23,24 +40,8 @@ const isWorthSendingEmail = (
   return comics.some(({ wasUpdated }) => wasUpdated);
 };
 
-export const emailUsers = async (
-  users: IUser[],
-  options: EmailAllUsersOptions,
-  date: Moment,
-) => {
-  const { sendAllComics = false, mentionNotUpdatedComics = true } = options;
-  const populatedUsers = await User.populate(users, [
-    {
-      path: "syndications",
-      populate: {
-        path: "lastSuccessfulComic",
-      },
-    },
-    {
-      path: "lastEmailedComics",
-    },
-  ]);
-  const usersAndTheirComics = populatedUsers.map((populatedUser: IUser) => {
+const parseComicsFromUsers = (populatedUsers: PopulatedUser[]): UserAndComic[] => {
+  return populatedUsers.map((populatedUser: IUser) => {
     const {
       email,
       googleAnalyticsHash,
@@ -77,8 +78,10 @@ export const emailUsers = async (
       comics,
     };
   });
-  const sendComicEmailOptions = { sendAllComics, mentionNotUpdatedComics };
-  const messageIds: (string | null)[] = await Promise.all(
+}
+
+const sendEmailsForUsersAndTheirComics = async (usersAndTheirComics: UserAndComic[], sendComicEmailOptions: SendComicEmailOptions, date: Moment): Promise<MessageId[]> => {
+  return await Promise.all(
     usersAndTheirComics.map(({ email, googleAnalyticsHash, comics }) => {
       if (
         !isWorthSendingEmail(comics, sendComicEmailOptions) ||
@@ -95,17 +98,10 @@ export const emailUsers = async (
       );
     }),
   );
+}
 
-  const dateAsDate = date.toDate();
-
-  const savedEmails = await Email.insertMany(
-    messageIds
-      .filter((messageId) => messageId)
-      .map((messageId) => ({
-        messageId: messageId as string,
-        sendTime: dateAsDate,
-      })),
-  );
+// TODO(ecarrel): we can use lodash functions to clean up these maps.
+const updateUserEntriesWithEmailedComics = async (savedEmails: IEmail[], messageIds: MessageId[], populatedUsers: PopulatedUser[], dateAsDate: Date) => {
   const messageIdToSavedEmail = savedEmails.reduce((memo, savedEmail) => {
     return {
       ...memo,
@@ -137,6 +133,44 @@ export const emailUsers = async (
     // TODO(ecarrel): batch this.
     await Promise.all(updatedUsers.map((updatedUser) => updatedUser.save()));
   }
+}
+
+export const emailUsers = async (
+  users: IUser[],
+  options: EmailAllUsersOptions,
+  date: Moment,
+) => {
+  const { sendAllComics = false, mentionNotUpdatedComics = true } = options;
+  const populatedUsers = await User.populate(users, [
+    {
+      path: "syndications",
+      populate: {
+        path: "lastSuccessfulComic",
+      },
+    },
+    {
+      path: "lastEmailedComics",
+    },
+  ]);
+
+  const usersAndTheirComics = parseComicsFromUsers(populatedUsers);
+
+  const sendComicEmailOptions: SendComicEmailOptions = { sendAllComics, mentionNotUpdatedComics };
+  const messageIds: MessageId[] = await sendEmailsForUsersAndTheirComics(usersAndTheirComics, sendComicEmailOptions, date);
+
+  const dateAsDate = date.toDate();
+
+  const savedEmails = await Email.insertMany(
+    messageIds
+      .filter((messageId) => messageId)
+      .map((messageId) => ({
+        messageId: messageId as string,
+        sendTime: dateAsDate,
+      })),
+  );
+
+  await updateUserEntriesWithEmailedComics(savedEmails, messageIds, populatedUsers, dateAsDate);
+  
   return messageIds;
 };
 
