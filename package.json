@@ -64,5 +64,8 @@
     "typescript": "^4.8.4",
     "webpack": "^5.74.0"
   },
+  "engines": {
+    "node": "16.16.0"
+  },
   "private": true
 }
