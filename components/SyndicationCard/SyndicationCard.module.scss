@@ -58,6 +58,7 @@ $container-height: 200px;
     height: $drag-icon-diameter;
     text-align: center;
     cursor: grab;
+    touch-action: manipulation;
 
     // Disable selectivity (primarily for mobile devices, which start to select
     // things when you try to do drag and drop).
