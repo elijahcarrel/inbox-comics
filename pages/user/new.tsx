@@ -2,13 +2,13 @@ import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
-import { useToasts } from "react-toast-notifications";
+import toast from "react-hot-toast";
 import { CallToAction } from "../../common-components/CallToAction/CallToAction";
 import { DynamicText } from "../../common-components/DynamicText/DynamicText";
 import { H3 } from "../../common-components/H3/H3";
 import { Layout } from "../../common-components/Layout/Layout";
 import { SyndicationEditor } from "../../components/SyndicationEditor/SyndicationEditor";
-import { handleGraphQlResponse, toastType, useUrlQuery } from "../../lib/utils";
+import { handleGraphQlResponse, useUrlQuery } from "../../lib/utils";
 
 const UserSyndicationsPage = () => {
   const [urlQuery, urlQueryIsReady] = useUrlQuery();
@@ -16,7 +16,6 @@ const UserSyndicationsPage = () => {
   const [selectedSyndications, setSelectedSyndications] = useState<
     string[] | null
   >(null);
-  const { addToast } = useToasts();
   const mutation = gql`
     mutation createUserWithoutEmail {
       createUserWithoutEmail {
@@ -29,9 +28,8 @@ const UserSyndicationsPage = () => {
       publicId: string;
     };
   }
-  const [createUserWithoutEmailMutation] = useMutation<CreateUserResponse>(
-    mutation,
-  );
+  const [createUserWithoutEmailMutation] =
+    useMutation<CreateUserResponse>(mutation);
 
   let title = "Loading...";
   let helperText = (
@@ -41,14 +39,12 @@ const UserSyndicationsPage = () => {
     title = "Choose Comics";
     if (selectedSyndications && selectedSyndications.length > 0) {
       helperText = (
-        <>
-          <H3>
-            {selectedSyndications.length > 1 ? "These " : "This "}
-            <DynamicText>{selectedSyndications.length}</DynamicText>
-            {selectedSyndications.length > 1 ? " comics " : " comic "}
-            will be emailed to you every morning in a single email.
-          </H3>
-        </>
+        <H3>
+          {selectedSyndications.length > 1 ? "These " : "This "}
+          <DynamicText>{selectedSyndications.length}</DynamicText>
+          {selectedSyndications.length > 1 ? " comics " : " comic "}
+          will be emailed to you every morning in a single email.
+        </H3>
       );
     }
   }
@@ -68,11 +64,11 @@ const UserSyndicationsPage = () => {
           };
           await Router.push(url, url, { shallow: true });
         } else {
-          addToast(combinedErrorMessage, toastType.error);
+          toast.error(combinedErrorMessage);
         }
       });
     }
-  }, [urlQueryIsReady, publicId, addToast, createUserWithoutEmailMutation]);
+  }, [urlQueryIsReady, publicId, createUserWithoutEmailMutation]);
 
   if (publicId.length === 0) {
     return <Layout title={title} isLoading />;

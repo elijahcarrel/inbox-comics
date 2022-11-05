@@ -1,12 +1,12 @@
 import fetch from "isomorphic-unfetch";
 
-type ElasticEmailResult<T extends any> = {
+type ElasticEmailResult<T> = {
   status: number;
   ok: boolean;
   result: T;
 };
 
-export const makeElasticEmailApiRequest = async <T extends any>(
+export const makeElasticEmailApiRequest = async <T>(
   endpoint: string,
   params: Record<string, string>,
   method = "GET",

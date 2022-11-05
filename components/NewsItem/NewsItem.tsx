@@ -25,14 +25,18 @@ interface NewsItemContentProps {
 const NewsItemContent = (props: NewsItemContentProps) => {
   const { content, previewOnly } = props;
   const parsedNode = parse(content, {
+    // eslint-disable-next-line react/no-unstable-nested-components
     replace: (domNode) => {
-      if (domNode instanceof Element && domNode.attribs) {
-        if (domNode.type === "tag" && domNode.name === "a") {
-          const { href } = domNode.attribs || {};
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore DOMNode is not assignable to Element.
+      const domNodeAsElement: Element = domNode;
+      if (domNodeAsElement && domNodeAsElement.attribs) {
+        if (domNodeAsElement.type === "tag" && domNodeAsElement.name === "a") {
+          const { href } = domNodeAsElement.attribs || {};
           const isExternal = !href.startsWith("/");
           return (
             <CommonLink href={href} isExternal={isExternal}>
-              {domToReact(domNode.children || [])}
+              {domToReact(domNodeAsElement.children || [])}
             </CommonLink>
           );
         }

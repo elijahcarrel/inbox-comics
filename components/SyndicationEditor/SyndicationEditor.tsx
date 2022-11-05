@@ -1,14 +1,10 @@
 import { useMutation, useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import React, { useEffect, useState } from "react";
-import { useToasts } from "react-toast-notifications";
+import toast from "react-hot-toast";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { LoadingOverlay } from "../../common-components/LoadingOverlay/LoadingOverlay";
-import {
-  handleGraphQlResponse,
-  stringifyGraphQlError,
-  toastType,
-} from "../../lib/utils";
+import { handleGraphQlResponse, stringifyGraphQlError } from "../../lib/utils";
 import { SyndicationGrid } from "../SyndicationGrid/SyndicationGrid";
 
 interface Props {
@@ -23,13 +19,8 @@ interface Props {
 // TODO(ecarrel): hooks logic and management of selectedSyndications is awful
 //  in this whole file.
 export const SyndicationEditor = (props: Props) => {
-  const { addToast, removeToast } = useToasts();
-  const {
-    publicId,
-    isNewUser,
-    onChangeSelectedSyndications,
-    onReceiveEmail,
-  } = props;
+  const { publicId, isNewUser, onChangeSelectedSyndications, onReceiveEmail } =
+    props;
   const [selectedSyndications, setSelectedSyndications] = useState(
     [] as string[],
   );
@@ -109,9 +100,8 @@ export const SyndicationEditor = (props: Props) => {
     syndications: Syndication[];
   }
 
-  const syndicationsQueryResponse = useQuery<SyndicationsResponse>(
-    syndicationsQuery,
-  );
+  const syndicationsQueryResponse =
+    useQuery<SyndicationsResponse>(syndicationsQuery);
 
   useEffect(() => {
     if (
@@ -169,12 +159,9 @@ export const SyndicationEditor = (props: Props) => {
         const result = await updateSyndications(newSelectedSyndications);
         if (result.success) {
           if (!isNewUser) {
-            let toastId: null | string;
-            const setToastId = (id: string) => {
-              toastId = id;
-            };
-            addToast(
-              <>
+            let toastId: null | string = null;
+            toastId = toast.success(
+              <span>
                 Subscriptions updated.{" "}
                 <CommonLink
                   onClick={async () => {
@@ -183,27 +170,23 @@ export const SyndicationEditor = (props: Props) => {
                     );
                     if (undoResult.success) {
                       if (toastId != null) {
-                        removeToast(toastId);
+                        toast.dismiss(toastId);
                       }
                     } else {
-                      addToast(
+                      toast.error(
                         `Could not undo update to subscriptions: ${result.combinedErrorMessage}`,
-                        toastType.error,
                       );
                     }
                   }}
                 >
                   Undo.
                 </CommonLink>
-              </>,
-              toastType.success,
-              setToastId,
+              </span>,
             );
           }
         } else {
-          addToast(
+          toast.error(
             `Could not update subscriptions: ${result.combinedErrorMessage}`,
-            toastType.error,
           );
         }
       }}

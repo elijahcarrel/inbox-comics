@@ -1,9 +1,9 @@
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import React from "react";
-import { useToasts } from "react-toast-notifications";
+import toast from "react-hot-toast";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
-import { handleGraphQlResponse, toastType } from "../../lib/utils";
+import { handleGraphQlResponse } from "../../lib/utils";
 import { H3 } from "../../common-components/H3/H3";
 import { DynamicText } from "../../common-components/DynamicText/DynamicText";
 
@@ -20,7 +20,6 @@ type PutUserResult = {
 
 export const AccountEnabledSection = (props: Props) => {
   const { enabled, publicId, onSetNewEnabledValue, email } = props;
-  const { addToast } = useToasts();
 
   const mutation = gql`
     mutation putUser($publicId: String!, $user: InputUser!) {
@@ -57,11 +56,10 @@ export const AccountEnabledSection = (props: Props) => {
             onSetNewEnabledValue(true);
             const result = await updatedEnabledStatus(true);
             if (result.success) {
-              addToast(`Account is now enabled.`, toastType.success);
+              toast.success(`Account is now enabled.`);
             } else {
-              addToast(
+              toast.error(
                 `Could not enable account: ${result.combinedErrorMessage}`,
-                toastType.error,
               );
             }
           }}
@@ -81,11 +79,10 @@ export const AccountEnabledSection = (props: Props) => {
           onSetNewEnabledValue(false);
           const result = await updatedEnabledStatus(false);
           if (result.success) {
-            addToast(`Account is now disabled.`, toastType.success);
+            toast.success(`Account is now disabled.`);
           } else {
-            addToast(
+            toast.error(
               `Could not disable account: ${result.combinedErrorMessage}`,
-              toastType.error,
             );
           }
         }}

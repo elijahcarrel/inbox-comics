@@ -56,7 +56,7 @@ export const resolvers = {
         throw invalidUserError(email);
       }
       // TODO(ecarrel): only populate syndications and emails if they're requested?
-      return user.populate("syndications").populate("emails").execPopulate();
+      return user.populate(["syndications", "emails"]);
     },
     userByPublicId: async (_: any, args: { publicId: string }) => {
       const { publicId } = args;
@@ -65,7 +65,7 @@ export const resolvers = {
         throw invalidUserByPublicIdError(publicId);
       }
       // TODO(ecarrel): only populate syndications and emails if they're requested?
-      return user.populate("syndications").populate("emails").execPopulate();
+      return user.populate(["syndications", "emails"]);
     },
   },
   Mutation: {
@@ -90,7 +90,7 @@ export const resolvers = {
       try {
         await sendVerificationEmail(email, user.verificationHash);
       } catch (err) {
-        throw internalEmailSendError(err);
+        throw internalEmailSendError(String(err));
       }
       return user;
     },
@@ -158,7 +158,7 @@ export const resolvers = {
           // @ts-ignore string | null | undefined is not assignable to type string.
           await sendVerificationEmail(email, user.verificationHash);
         } catch (err) {
-          throw internalEmailSendError(err);
+          throw internalEmailSendError(String(err));
         }
       }
       return user;
@@ -172,7 +172,7 @@ export const resolvers = {
       try {
         await sendVerificationEmail(email, user.verificationHash);
       } catch (err) {
-        throw internalEmailSendError(err);
+        throw internalEmailSendError(String(err));
       }
     },
     verifyEmail: async (
@@ -203,7 +203,7 @@ export const resolvers = {
       try {
         await sendContactEmail(name, email, subject, message);
       } catch (err) {
-        throw internalEmailSendError(err);
+        throw internalEmailSendError(String(err));
       }
     },
   },

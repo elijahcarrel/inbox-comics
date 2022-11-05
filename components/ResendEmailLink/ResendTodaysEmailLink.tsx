@@ -1,11 +1,11 @@
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import React, { useEffect, useState } from "react";
-import { useToasts } from "react-toast-notifications";
 import { mdiCheckCircle } from "@mdi/js";
 import Icon from "@mdi/react";
+import toast from "react-hot-toast";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
-import { handleGraphQlResponse, toastType } from "../../lib/utils";
+import { handleGraphQlResponse } from "../../lib/utils";
 import styles from "./ResendEmailLink.module.scss";
 import { ViewEmailLink } from "../ViewEmailLink/ViewEmailLink";
 import { LoadingOverlay } from "../../common-components/LoadingOverlay/LoadingOverlay";
@@ -21,7 +21,6 @@ type EmailUserMutationResult = {
 
 export const ResendTodaysEmailLink = (props: Props) => {
   const { email, isFirstEmail } = props;
-  const { addToast } = useToasts();
   const [messageId, setMessageId] = useState("");
   const [
     secondsUntilCanViewMessageInBrowser,
@@ -45,19 +44,17 @@ export const ResendTodaysEmailLink = (props: Props) => {
     }, 1000);
     return () => clearInterval(interval);
   }, [secondsUntilCanViewMessageInBrowser]);
-  const [
-    emailUserMutation,
-    { loading: emailIsSending },
-  ] = useMutation<EmailUserMutationResult>(mutation, {
-    variables: {
-      email,
-      options: {
-        sendAllComics: true,
-        mentionNotUpdatedComics: true,
-        onlyIfWeHaventCheckedToday: false,
+  const [emailUserMutation, { loading: emailIsSending }] =
+    useMutation<EmailUserMutationResult>(mutation, {
+      variables: {
+        email,
+        options: {
+          sendAllComics: true,
+          mentionNotUpdatedComics: true,
+          onlyIfWeHaventCheckedToday: false,
+        },
       },
-    },
-  });
+    });
 
   if (messageId) {
     return (
@@ -95,21 +92,15 @@ export const ResendTodaysEmailLink = (props: Props) => {
   return (
     <CommonLink
       onClick={async () => {
-        const {
-          success,
-          result,
-          combinedErrorMessage,
-        } = await handleGraphQlResponse<EmailUserMutationResult>(
-          emailUserMutation(),
-        );
+        const { success, result, combinedErrorMessage } =
+          await handleGraphQlResponse<EmailUserMutationResult>(
+            emailUserMutation(),
+          );
         if (success && result && result.data) {
           setMessageId(result.data.emailUser);
           setSecondsUntilCanViewMessageInBrowser(5);
         } else {
-          addToast(
-            `Could not send today's email: ${combinedErrorMessage}`,
-            toastType.error,
-          );
+          toast.error(`Could not send today's email: ${combinedErrorMessage}`);
         }
       }}
     >

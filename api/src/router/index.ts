@@ -32,11 +32,11 @@ const commonResolver = {
   Date: new GraphQLScalarType({
     name: "Date",
     description: "Date custom scalar type",
-    parseValue(value) {
-      return new Date(value); // value from the client
+    parseValue(inputValue: unknown) {
+      return new Date(inputValue as string | number); // value from the client
     },
-    serialize(value) {
-      return value.getTime(); // value sent to the client
+    serialize(outputValue) {
+      return (outputValue as Date).getTime(); // value sent to the client
     },
     parseLiteral(ast) {
       if (ast.kind === Kind.INT) {

@@ -11,7 +11,7 @@ interface Props {
   underline?: boolean;
   className?: string;
   isExternal?: boolean;
-  InnerLinkComponent?: React.ComponentType;
+  InnerLinkComponent?: React.ComponentType<any>;
   isLink?: boolean;
 }
 
@@ -56,5 +56,9 @@ export const CommonLink = (props: Props) => {
   if (!href || isExternal) {
     return innerLink;
   }
-  return <Link href={href}>{innerLink}</Link>;
+  return (
+    <Link href={href} legacyBehavior>
+      {innerLink}
+    </Link>
+  );
 };

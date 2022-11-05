@@ -45,9 +45,6 @@ $container-height: 200px;
     .syndicationTitleText {
       background-color: lighten($red-color, 55);
     }
-    &.isDragging {
-      opacity: 0.5;
-    }
   }
 
   .dragIcon {

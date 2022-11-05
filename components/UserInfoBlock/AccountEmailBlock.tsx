@@ -1,12 +1,12 @@
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import React, { useState } from "react";
-import { useToasts } from "react-toast-notifications";
 import * as yup from "yup";
 import { FormikHelpers, useFormik } from "formik";
 import Router from "next/router";
+import toast from "react-hot-toast";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
-import { handleGraphQlResponse, toastType } from "../../lib/utils";
+import { handleGraphQlResponse } from "../../lib/utils";
 import { H3 } from "../../common-components/H3/H3";
 import { DynamicText } from "../../common-components/DynamicText/DynamicText";
 import { TextInput } from "../../common-components/TextInput/TextInput";
@@ -29,7 +29,6 @@ type PutUserResult = {
 
 export const AccountEmailBlock = (props: Props) => {
   const { publicId, email } = props;
-  const { addToast } = useToasts();
   const [isEditingEmail, setIsEditingEmail] = useState(false);
 
   const mutation = gql`
@@ -68,10 +67,7 @@ export const AccountEmailBlock = (props: Props) => {
       );
       const { success, combinedErrorMessage } = result;
       if (success) {
-        addToast(
-          `Successfully updated email to ${newValues.email}.`,
-          toastType.success,
-        );
+        toast.success(`Successfully updated email to ${newValues.email}.`);
         await Router.push({
           pathname: "/user",
           query: {
@@ -80,7 +76,7 @@ export const AccountEmailBlock = (props: Props) => {
           },
         });
       } else {
-        addToast(combinedErrorMessage, toastType.error);
+        toast.success(combinedErrorMessage);
       }
       setSubmitting(false);
     },
@@ -132,7 +128,7 @@ export const AccountEmailBlock = (props: Props) => {
             }}
           >
             {" "}
-            Cancel Edit.
+            Cancel.
           </CommonLink>
         </H3>
         {(isSubmitting || loading) && <LoadingOverlay />}

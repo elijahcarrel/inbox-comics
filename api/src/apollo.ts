@@ -4,7 +4,7 @@ import { resolvers, typeDefs } from "./router";
 
 const endpoint = "/api/graphql";
 
-export const initApollo = (): ((req: any, res: any) => Promise<void>) => {
+export const initApollo = (): ((_req: any, _res: any) => Promise<void>) => {
   const defaultQuery = gql`
     query comics {
       syndications {
@@ -14,7 +14,7 @@ export const initApollo = (): ((req: any, res: any) => Promise<void>) => {
   `;
 
   const apolloServer = new ApolloServer({
-    introspection: true,
+    introspection: process.env.NODE_ENV !== "production",
     playground: {
       tabs: [
         {

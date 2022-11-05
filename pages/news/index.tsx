@@ -62,6 +62,7 @@ const NewsPage: React.FunctionComponent = () => {
             isLastItem={index === visibleNewsItems.length - 1}
             content={content}
             previewOnly
+            key={identifier}
           />
         ),
       )}

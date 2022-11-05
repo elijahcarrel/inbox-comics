@@ -1,11 +1,11 @@
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import React, { useState } from "react";
-import { useToasts } from "react-toast-notifications";
 import { mdiCheckCircle } from "@mdi/js";
 import Icon from "@mdi/react";
+import toast from "react-hot-toast";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
-import { handleGraphQlResponse, toastType } from "../../lib/utils";
+import { handleGraphQlResponse } from "../../lib/utils";
 import { LoadingOverlay } from "../../common-components/LoadingOverlay/LoadingOverlay";
 import styles from "./ResendEmailLink.module.scss";
 
@@ -19,7 +19,6 @@ type ResendVerificationEmailResult = {
 
 export const ResendVerificationEmailLink = (props: Props) => {
   const { email } = props;
-  const { addToast } = useToasts();
   const [sentEmail, setSentEmail] = useState(false);
 
   const mutation = gql`
@@ -53,15 +52,15 @@ export const ResendVerificationEmailLink = (props: Props) => {
   return (
     <CommonLink
       onClick={async () => {
-        const result = await handleGraphQlResponse<ResendVerificationEmailResult>(
-          resendVerificationEmailMutation(),
-        );
+        const result =
+          await handleGraphQlResponse<ResendVerificationEmailResult>(
+            resendVerificationEmailMutation(),
+          );
         if (result.success) {
           setSentEmail(true);
         } else {
-          addToast(
+          toast.error(
             `Could not send verification email: ${result.combinedErrorMessage}`,
-            toastType.error,
           );
         }
       }}
