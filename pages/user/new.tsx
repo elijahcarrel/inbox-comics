@@ -2,12 +2,13 @@ import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { CallToAction } from "../../common-components/CallToAction/CallToAction";
 import { DynamicText } from "../../common-components/DynamicText/DynamicText";
 import { H3 } from "../../common-components/H3/H3";
 import { Layout } from "../../common-components/Layout/Layout";
 import { SyndicationEditor } from "../../components/SyndicationEditor/SyndicationEditor";
-import { handleGraphQlResponse, toastType, useUrlQuery } from "../../lib/utils";
+import { handleGraphQlResponse, useUrlQuery } from "../../lib/utils";
 
 const UserSyndicationsPage = () => {
   const [urlQuery, urlQueryIsReady] = useUrlQuery();

@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import React from "react";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
-import { handleGraphQlResponse, toastType } from "../../lib/utils";
+import { handleGraphQlResponse } from "../../lib/utils";
 import { H3 } from "../../common-components/H3/H3";
 import { DynamicText } from "../../common-components/DynamicText/DynamicText";
 import toast from "react-hot-toast";

@@ -9,7 +9,7 @@ import { Button } from "../common-components/Button/Button";
 import { CommonLink } from "../common-components/CommonLink/CommonLink";
 import { Layout } from "../common-components/Layout/Layout";
 import { TextInput } from "../common-components/TextInput/TextInput";
-import { handleGraphQlResponse, toastType } from "../lib/utils";
+import { handleGraphQlResponse } from "../lib/utils";
 import styles from "./contact.module.scss";
 import { H3 } from "../common-components/H3/H3";
 import toast from "react-hot-toast";

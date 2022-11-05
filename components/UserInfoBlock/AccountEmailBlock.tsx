@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { FormikHelpers, useFormik } from "formik";
 import Router from "next/router";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
-import { handleGraphQlResponse, toastType } from "../../lib/utils";
+import { handleGraphQlResponse } from "../../lib/utils";
 import { H3 } from "../../common-components/H3/H3";
 import { DynamicText } from "../../common-components/DynamicText/DynamicText";
 import { TextInput } from "../../common-components/TextInput/TextInput";

@@ -4,10 +4,11 @@ import React, { useEffect, useState } from "react";
 import { mdiCheckCircle } from "@mdi/js";
 import Icon from "@mdi/react";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
-import { handleGraphQlResponse, toastType } from "../../lib/utils";
+import { handleGraphQlResponse } from "../../lib/utils";
 import styles from "./ResendEmailLink.module.scss";
 import { ViewEmailLink } from "../ViewEmailLink/ViewEmailLink";
 import { LoadingOverlay } from "../../common-components/LoadingOverlay/LoadingOverlay";
+import toast from "react-hot-toast";
 
 interface Props {
   email: string;
