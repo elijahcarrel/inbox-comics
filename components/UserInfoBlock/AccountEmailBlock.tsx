@@ -130,7 +130,7 @@ export const AccountEmailBlock = (props: Props) => {
             }}
           >
             {" "}
-            Cancel Edit.
+            Cancel.
           </CommonLink>
         </H3>
         {(isSubmitting || loading) && <LoadingOverlay />}
