@@ -2,13 +2,27 @@ import { mdiSortAscending, mdiSortAlphabeticalAscending } from "@mdi/js";
 import Icon from "@mdi/react";
 import Fuse from "fuse.js";
 import orderBy from "lodash/orderBy";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { Paginate } from "../../common-components/Paginate/Paginate";
 import { TextInput } from "../../common-components/TextInput/TextInput";
 import { SyndicationCard } from "../SyndicationCard/SyndicationCard";
 import styles from "./SyndicationGrid.module.scss";
 import { useUrlQuery } from "../../lib/utils";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  rectSortingStrategy,
+} from '@dnd-kit/sortable';
 
 const defaultNumComicsPerPage = 24;
 
@@ -32,17 +46,14 @@ interface Props {
 
 export const SyndicationGrid = (props: Props) => {
   const { syndications, selectedSyndicationIdentifiers, onChange } = props;
-  // tempSelectedSyndicationIdentifiers are the same as
-  // selectedSyndicationIdentifiers except that
-  // tempSelectedSyndicationIdentifiers change mid-drag-and-drop, but only get
-  // committed to selectedSyndicationIdentifiers upon a successful drop.
-  const [
-    tempSelectedSyndicationIdentifiers,
-    setTempSelectedSyndicationIdentifiers,
-  ] = useState(selectedSyndicationIdentifiers);
-  useEffect(() => {
-    setTempSelectedSyndicationIdentifiers(selectedSyndicationIdentifiers);
-  }, [setTempSelectedSyndicationIdentifiers, selectedSyndicationIdentifiers]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
   const [sortField, setSortField] = useState<"title" | "numSubscribers">(
     "numSubscribers",
   );
@@ -61,7 +72,7 @@ export const SyndicationGrid = (props: Props) => {
   // TODO(ecarrel): callers should do this, not me. (I think.)
   const augmentedSyndications = syndications.map((syndication) => {
     const selectedSyndicationIndex =
-      tempSelectedSyndicationIdentifiers.findIndex(
+      selectedSyndicationIdentifiers.findIndex(
         (selectedSyndicationIdentifier) =>
           selectedSyndicationIdentifier === syndication.identifier,
       );
@@ -72,41 +83,19 @@ export const SyndicationGrid = (props: Props) => {
     };
   });
   const [pageNumber, setPageNumber] = useState(0);
-  const onMoveCard = useCallback(
-    (dragIndex: number, hoverIndex: number) => {
-      const dragIdentifier = tempSelectedSyndicationIdentifiers[dragIndex];
-      const newTempSelectedSyndicationIdentifiers = [
-        ...tempSelectedSyndicationIdentifiers,
-      ];
-      newTempSelectedSyndicationIdentifiers.splice(dragIndex, 1);
-      newTempSelectedSyndicationIdentifiers.splice(
-        hoverIndex,
-        0,
-        dragIdentifier,
-      );
-      setTempSelectedSyndicationIdentifiers(
-        newTempSelectedSyndicationIdentifiers,
-      );
-    },
-    [setTempSelectedSyndicationIdentifiers, tempSelectedSyndicationIdentifiers],
-  );
-  const onDropCard = useCallback(
-    (didDrop: boolean) => {
-      if (didDrop) {
-        // Commit the changes.
-        onChange(tempSelectedSyndicationIdentifiers);
-      } else {
-        // Revert tempSelectedSyndicationIdentifiers back to
-        // selectedSyndicationIdentifiers.
-        setTempSelectedSyndicationIdentifiers(selectedSyndicationIdentifiers);
-      }
-    },
-    [
-      onChange,
-      selectedSyndicationIdentifiers,
-      tempSelectedSyndicationIdentifiers,
-    ],
-  );
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+
+    if (active && over && active.id !== over.id) {
+      const oldIndex = selectedSyndicationIdentifiers.indexOf(active.id);
+      const newIndex = selectedSyndicationIdentifiers.indexOf(over.id);
+
+      const newSelectedSyndicationIdentifiers = arrayMove(selectedSyndicationIdentifiers, oldIndex, newIndex);
+      onChange(newSelectedSyndicationIdentifiers);
+    }
+  }
+
   // TODO(ecarrel): paginate server-side? Probably not necessary, number of comics
   //  and size of server-side blob per comic are both pretty small.
   // All selected comics should go on the first page, otherwise dragging
@@ -144,7 +133,11 @@ export const SyndicationGrid = (props: Props) => {
   );
 
   return (
-    <>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
       <div className={styles.filteringSection}>
         <div className={styles.sortButtons}>
           <CommonLink
@@ -195,39 +188,43 @@ export const SyndicationGrid = (props: Props) => {
           />
         </div>
       </div>
-      <div className={styles.syndicationGridContainer}>
-        {filteredSyndicationsOnThisPage.map((syndication, index) => {
-          const { title, identifier, isSelected } = syndication;
-          return (
-            <SyndicationCard
-              title={title}
-              identifier={identifier}
-              classes={{
-                syndicationContainer: styles.syndicationContainer,
-              }}
-              isSelected={isSelected}
-              onMoveCard={onMoveCard}
-              onDropCard={onDropCard}
-              onClick={() => {
-                if (isSelected) {
-                  // Delete it.
-                  onChange(
-                    tempSelectedSyndicationIdentifiers.filter(
-                      (otherIdentifier) => otherIdentifier !== identifier,
-                    ),
-                  );
-                } else {
-                  // Add it.
-                  onChange([...tempSelectedSyndicationIdentifiers, identifier]);
-                }
-              }}
-              key={identifier}
-              index={index}
-            />
-          );
-        })}
-      </div>
+      <SortableContext
+        items={selectedSyndicationIdentifiers}
+        strategy={rectSortingStrategy}
+      >
+        <div className={styles.syndicationGridContainer}>
+          {filteredSyndicationsOnThisPage.map((syndication, index) => {
+            const { title, identifier, isSelected } = syndication;
+            return (
+              <SyndicationCard
+                title={title}
+                identifier={identifier}
+                classes={{
+                  syndicationContainer: styles.syndicationContainer,
+                }}
+                isSelected={isSelected}
+                onClick={() => {
+                  console.log("clicked", identifier)
+                  if (isSelected) {
+                    // Delete it.
+                    onChange(
+                      selectedSyndicationIdentifiers.filter(
+                        (otherIdentifier) => otherIdentifier !== identifier,
+                      ),
+                    );
+                  } else {
+                    // Add it.
+                    onChange([...selectedSyndicationIdentifiers, identifier]);
+                  }
+                }}
+                key={identifier}
+                index={index}
+              />
+            );
+          })}
+        </div>
+      </SortableContext>
       <Paginate numPages={numPages} onPageChange={setPageNumber} />
-    </>
+    </DndContext>
   );
 };
