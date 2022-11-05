@@ -163,8 +163,8 @@ export const SyndicationEditor = (props: Props) => {
         if (result.success) {
           if (!isNewUser) {
             let toastId: null | string = null;
-            toastId = toast.custom(
-              <>
+            toastId = toast.success(
+              <span>
                 Subscriptions updated.{" "}
                 <CommonLink
                   onClick={async () => {
@@ -184,7 +184,7 @@ export const SyndicationEditor = (props: Props) => {
                 >
                   Undo.
                 </CommonLink>
-              </>,
+              </span>,
             );
           }
         } else {

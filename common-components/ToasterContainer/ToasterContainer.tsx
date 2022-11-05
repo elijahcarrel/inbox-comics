@@ -16,6 +16,7 @@ export const ToasterContainer = () => {
         containerClassName={styles.toast}
         toastOptions={{
           className: styles.innerToast,
+          duration: 5000,
           success: {
             className: styles.successToast,
             iconTheme: {
