@@ -18,7 +18,7 @@ import {
 } from "react-dnd-multi-backend";
 import { ToasterContainer } from "../common-components/ToasterContainer/ToasterContainer";
 import styles from "./app.module.scss";
-import { HTML5toTouch } from 'rdndmb-html5-to-touch'
+// import { HTML5toTouch } from 'rdndmb-html5-to-touch'
 
 // TODO(ecarrel): for some reason, the HTML5toTouch provided by
 //  rdndmb-html5-to-touch doesn't work, and so we have to create it ourselves.
@@ -27,22 +27,22 @@ import { HTML5toTouch } from 'rdndmb-html5-to-touch'
 //  issue. The bug presents as:
 // Error: You must specify a valid 'transition' property (either undefined or
 // the return of 'createTransition') in your Backend entry: [object Object]
-// const HTML5toTouch2 = {
-//   backends: [
-//     {
-//       id: "html5",
-//       backend: HTML5Backend,
-//       transition: MouseTransition,
-//     },
-//     {
-//       id: "touch",
-//       backend: TouchBackend,
-//       options: { enableMouseEvents: true },
-//       preview: true,
-//       transition: TouchTransition,
-//     },
-//   ],
-// };
+const HTML5toTouch = {
+  backends: [
+    {
+      id: "html5",
+      backend: HTML5Backend,
+      transition: MouseTransition,
+    },
+    {
+      id: "touch",
+      backend: TouchBackend,
+      options: { enableMouseEvents: true },
+      preview: true,
+      transition: TouchTransition,
+    },
+  ],
+};
 
 const graphQLHttpEndpoint = "/api/graphql";
 
