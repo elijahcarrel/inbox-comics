@@ -70,7 +70,9 @@ const IndexPage: React.FunctionComponent = () => {
             className={styles.emailExample}
             width="608"
             height="834"
-            alt={"Screenshot of an email reading \"Inbox Comics - Good morning! Here are today's comics.\""}
+            alt={
+              'Screenshot of an email reading "Inbox Comics - Good morning! Here are today\'s comics."'
+            }
           />
         </div>
       </div>

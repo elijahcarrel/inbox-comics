@@ -6,6 +6,7 @@ import { formattedComicDeliveryTime } from "../lib/utils";
 import styles from "./faq.module.scss";
 
 type FaqEntry = {
+  key: number;
   question: ReactNode;
   answer: ReactNode;
 };
@@ -13,6 +14,7 @@ type FaqEntry = {
 const FAQPage: React.FunctionComponent = () => {
   const entries: FaqEntry[] = [
     {
+      key: 1,
       question: <>Do I get to choose which syndications to get?</>,
       answer: (
         <>
@@ -26,6 +28,7 @@ const FAQPage: React.FunctionComponent = () => {
       ),
     },
     {
+      key: 2,
       question: <>When do I get my emails?</>,
       answer: (
         <>
@@ -38,6 +41,7 @@ const FAQPage: React.FunctionComponent = () => {
       ),
     },
     {
+      key: 3,
       question: <>Why didn&apos;t I get an email today?</>,
       answer: (
         <>
@@ -52,6 +56,7 @@ const FAQPage: React.FunctionComponent = () => {
       ),
     },
     {
+      key: 4,
       question: <>Which syndications do you offer?</>,
       answer: (
         <>
@@ -63,6 +68,7 @@ const FAQPage: React.FunctionComponent = () => {
       ),
     },
     {
+      key: 5,
       question: <>Are all of the comics new?</>,
       answer: (
         <>
@@ -73,14 +79,17 @@ const FAQPage: React.FunctionComponent = () => {
       ),
     },
     {
+      key: 6,
       question: <>How much does this cost?</>,
       answer: <>Nothing. It&apos;s totally free.</>,
     },
     {
+      key: 7,
       question: <>Are there ads in the emails?</>,
       answer: <>Nope.</>,
     },
     {
+      key: 8,
       question: <>Do the artists make money?</>,
       answer: (
         <>
@@ -91,6 +100,7 @@ const FAQPage: React.FunctionComponent = () => {
       ),
     },
     {
+      key: 9,
       question: (
         <>
           I have another question not listed here, or I have feedback I&apos;d
@@ -106,8 +116,8 @@ const FAQPage: React.FunctionComponent = () => {
   ];
   return (
     <Layout title="FAQ">
-      {entries.map(({ question, answer }, i) => (
-        <Fragment key={i}>
+      {entries.map(({ question, answer, key }) => (
+        <Fragment key={key}>
           <p className={styles.question}>{question}</p>
           <p className={styles.answer}>{answer}</p>
         </Fragment>

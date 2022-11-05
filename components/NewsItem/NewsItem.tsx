@@ -27,8 +27,8 @@ const NewsItemContent = (props: NewsItemContentProps) => {
   const parsedNode = parse(content, {
     // eslint-disable-next-line react/no-unstable-nested-components
     replace: (domNode) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore DOMNode is not assignable to Element.
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore DOMNode is not assignable to Element.
       const domNodeAsElement: Element = domNode;
       if (domNodeAsElement && domNodeAsElement.attribs) {
         if (domNodeAsElement.type === "tag" && domNodeAsElement.name === "a") {

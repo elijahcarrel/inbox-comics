@@ -56,5 +56,9 @@ export const CommonLink = (props: Props) => {
   if (!href || isExternal) {
     return innerLink;
   }
-  return <Link href={href} legacyBehavior>{innerLink}</Link>;
+  return (
+    <Link href={href} legacyBehavior>
+      {innerLink}
+    </Link>
+  );
 };

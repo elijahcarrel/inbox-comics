@@ -3,9 +3,9 @@ import React from "react";
 import Image from "next/image";
 import { mdiDragHorizontalVariant } from "@mdi/js";
 import Icon from "@mdi/react";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import styles from "./SyndicationCard.module.scss";
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 
 interface Props {
   title: string;
@@ -20,21 +20,10 @@ interface Props {
 }
 
 export const SyndicationCard = (props: Props) => {
-  const {
-    title,
-    identifier,
-    classes = {},
-    isSelected,
-    onClick,
-  } = props;
+  const { title, identifier, classes = {}, isSelected, onClick } = props;
 
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({ id: identifier });
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: identifier });
 
   const style = {
     transform: CSS.Transform.toString(transform),

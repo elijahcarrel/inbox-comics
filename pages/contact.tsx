@@ -5,6 +5,7 @@ import Router from "next/router";
 import React from "react";
 import Reaptcha from "reaptcha";
 import * as yup from "yup";
+import toast from "react-hot-toast";
 import { Button } from "../common-components/Button/Button";
 import { CommonLink } from "../common-components/CommonLink/CommonLink";
 import { Layout } from "../common-components/Layout/Layout";
@@ -12,7 +13,6 @@ import { TextInput } from "../common-components/TextInput/TextInput";
 import { handleGraphQlResponse } from "../lib/utils";
 import styles from "./contact.module.scss";
 import { H3 } from "../common-components/H3/H3";
-import toast from "react-hot-toast";
 
 interface ContactFormValues {
   email: string;
@@ -80,9 +80,7 @@ const ContactPage: React.FunctionComponent = () => {
       );
       const { success, combinedErrorMessage } = result;
       if (success) {
-        toast.success(
-          "Thank you! We'll get back to you in a jiffy.",
-        );
+        toast.success("Thank you! We'll get back to you in a jiffy.");
         await Router.push({
           pathname: "/",
           query: {},

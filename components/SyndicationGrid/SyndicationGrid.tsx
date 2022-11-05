@@ -3,12 +3,6 @@ import Icon from "@mdi/react";
 import Fuse from "fuse.js";
 import orderBy from "lodash/orderBy";
 import React, { useState } from "react";
-import { CommonLink } from "../../common-components/CommonLink/CommonLink";
-import { Paginate } from "../../common-components/Paginate/Paginate";
-import { TextInput } from "../../common-components/TextInput/TextInput";
-import { SyndicationCard } from "../SyndicationCard/SyndicationCard";
-import styles from "./SyndicationGrid.module.scss";
-import { useUrlQuery } from "../../lib/utils";
 import {
   DndContext,
   closestCenter,
@@ -17,13 +11,19 @@ import {
   useSensor,
   useSensors,
   DragEndEvent,
-} from '@dnd-kit/core';
+} from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   rectSortingStrategy,
-} from '@dnd-kit/sortable';
+} from "@dnd-kit/sortable";
+import { CommonLink } from "../../common-components/CommonLink/CommonLink";
+import { Paginate } from "../../common-components/Paginate/Paginate";
+import { TextInput } from "../../common-components/TextInput/TextInput";
+import { SyndicationCard } from "../SyndicationCard/SyndicationCard";
+import styles from "./SyndicationGrid.module.scss";
+import { useUrlQuery } from "../../lib/utils";
 
 const defaultNumComicsPerPage = 24;
 
@@ -52,7 +52,7 @@ export const SyndicationGrid = (props: Props) => {
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   const [sortField, setSortField] = useState<"title" | "numSubscribers">(
@@ -72,11 +72,10 @@ export const SyndicationGrid = (props: Props) => {
   const [searchText, setSearchText] = useState("");
   // TODO(ecarrel): callers should do this, not me. (I think.)
   const augmentedSyndications = syndications.map((syndication) => {
-    const selectedSyndicationIndex =
-      selectedSyndicationIdentifiers.findIndex(
-        (selectedSyndicationIdentifier) =>
-          selectedSyndicationIdentifier === syndication.identifier,
-      );
+    const selectedSyndicationIndex = selectedSyndicationIdentifiers.findIndex(
+      (selectedSyndicationIdentifier) =>
+        selectedSyndicationIdentifier === syndication.identifier,
+    );
     return {
       ...syndication,
       isSelected: selectedSyndicationIndex !== -1,
@@ -89,13 +88,19 @@ export const SyndicationGrid = (props: Props) => {
     const { active, over } = event;
 
     if (active && over && active.id !== over.id) {
-      const oldIndex = selectedSyndicationIdentifiers.indexOf(String(active.id));
+      const oldIndex = selectedSyndicationIdentifiers.indexOf(
+        String(active.id),
+      );
       const newIndex = selectedSyndicationIdentifiers.indexOf(String(over.id));
 
-      const newSelectedSyndicationIdentifiers = arrayMove(selectedSyndicationIdentifiers, oldIndex, newIndex);
+      const newSelectedSyndicationIdentifiers = arrayMove(
+        selectedSyndicationIdentifiers,
+        oldIndex,
+        newIndex,
+      );
       onChange(newSelectedSyndicationIdentifiers);
     }
-  }
+  };
 
   // TODO(ecarrel): paginate server-side? Probably not necessary, number of comics
   //  and size of server-side blob per comic are both pretty small.
@@ -205,7 +210,7 @@ export const SyndicationGrid = (props: Props) => {
                 }}
                 isSelected={isSelected}
                 onClick={() => {
-                  console.log("clicked", identifier)
+                  console.log("clicked", identifier);
                   if (isSelected) {
                     // Delete it.
                     onChange(

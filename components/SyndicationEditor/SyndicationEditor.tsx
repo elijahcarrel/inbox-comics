@@ -4,10 +4,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { LoadingOverlay } from "../../common-components/LoadingOverlay/LoadingOverlay";
-import {
-  handleGraphQlResponse,
-  stringifyGraphQlError,
-} from "../../lib/utils";
+import { handleGraphQlResponse, stringifyGraphQlError } from "../../lib/utils";
 import { SyndicationGrid } from "../SyndicationGrid/SyndicationGrid";
 
 interface Props {

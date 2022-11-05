@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import * as yup from "yup";
 import { FormikHelpers, useFormik } from "formik";
 import Router from "next/router";
+import toast from "react-hot-toast";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { handleGraphQlResponse } from "../../lib/utils";
 import { H3 } from "../../common-components/H3/H3";
@@ -12,7 +13,6 @@ import { TextInput } from "../../common-components/TextInput/TextInput";
 import { Button } from "../../common-components/Button/Button";
 import { LoadingOverlay } from "../../common-components/LoadingOverlay/LoadingOverlay";
 import styles from "./AccountEmailBlock.module.scss";
-import toast from "react-hot-toast";
 
 interface Props {
   email: string;
@@ -67,9 +67,7 @@ export const AccountEmailBlock = (props: Props) => {
       );
       const { success, combinedErrorMessage } = result;
       if (success) {
-        toast.success(
-          `Successfully updated email to ${newValues.email}.`,
-        );
+        toast.success(`Successfully updated email to ${newValues.email}.`);
         await Router.push({
           pathname: "/user",
           query: {

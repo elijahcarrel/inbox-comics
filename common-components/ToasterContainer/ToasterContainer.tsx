@@ -12,7 +12,7 @@ export const ToasterContainer = () => {
           bottom: 20,
           right: 20,
         }}
-        position='top-right'
+        position="top-right"
         containerClassName={styles.toast}
         toastOptions={{
           className: styles.innerToast,
@@ -20,20 +20,20 @@ export const ToasterContainer = () => {
           success: {
             className: styles.successToast,
             iconTheme: {
-              primary: 'green',
-              secondary: 'white',
+              primary: "green",
+              secondary: "white",
             },
           },
           error: {
             className: styles.errorToast,
             iconTheme: {
-              primary: 'white',
+              primary: "white",
               // TODO(ecarrel): encode colors in either javascript or SCSS, but don't double-specify.
-              secondary: '#980106',
+              secondary: "#980106",
             },
           },
-        }} 
-       />
+        }}
+      />
     </div>
   );
 };

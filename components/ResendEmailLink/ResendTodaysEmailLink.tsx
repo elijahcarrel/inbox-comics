@@ -3,12 +3,12 @@ import gql from "graphql-tag";
 import React, { useEffect, useState } from "react";
 import { mdiCheckCircle } from "@mdi/js";
 import Icon from "@mdi/react";
+import toast from "react-hot-toast";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { handleGraphQlResponse } from "../../lib/utils";
 import styles from "./ResendEmailLink.module.scss";
 import { ViewEmailLink } from "../ViewEmailLink/ViewEmailLink";
 import { LoadingOverlay } from "../../common-components/LoadingOverlay/LoadingOverlay";
-import toast from "react-hot-toast";
 
 interface Props {
   email: string;
@@ -100,9 +100,7 @@ export const ResendTodaysEmailLink = (props: Props) => {
           setMessageId(result.data.emailUser);
           setSecondsUntilCanViewMessageInBrowser(5);
         } else {
-          toast.error(
-            `Could not send today's email: ${combinedErrorMessage}`,
-          );
+          toast.error(`Could not send today's email: ${combinedErrorMessage}`);
         }
       }}
     >

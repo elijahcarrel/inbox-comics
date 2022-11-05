@@ -3,11 +3,11 @@ import gql from "graphql-tag";
 import React, { useState } from "react";
 import { mdiCheckCircle } from "@mdi/js";
 import Icon from "@mdi/react";
+import toast from "react-hot-toast";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { handleGraphQlResponse } from "../../lib/utils";
 import { LoadingOverlay } from "../../common-components/LoadingOverlay/LoadingOverlay";
 import styles from "./ResendEmailLink.module.scss";
-import toast from "react-hot-toast";
 
 interface Props {
   email: string;
