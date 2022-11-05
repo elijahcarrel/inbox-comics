@@ -61,7 +61,7 @@
     "webpack": "^5.74.0"
   },
   "engines": {
-    "node": "16.16.0"
+    "node": "16"
   },
   "private": true
 }
