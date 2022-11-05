@@ -9,7 +9,7 @@ import {
 import { Email, IEmail } from "../../db-models/email";
 import { EmailAllUsersOptions } from "../../api-models/email-options";
 import { ISyndication } from "../../db-models/comic-syndication";
-import { MergeType, ObjectId } from "mongoose";
+import { FilterQuery, UpdateQuery } from "mongoose";
 
 // TODO(ecarrel): clean up this type.
 type UserAndComic = {
@@ -23,7 +23,8 @@ type UserAndComic = {
   }[];
 }
 
-type PopulatedUser = IUser & { _id: ObjectId };
+// TODO(ecarrel): upgrade mongoose and then use these nicer types.
+// type PopulatedUser = IUser & { _id: ObjectId };
 
 type MessageId = string | null;
 
@@ -40,7 +41,7 @@ const isWorthSendingEmail = (
   return comics.some(({ wasUpdated }) => wasUpdated);
 };
 
-const parseComicsFromUsers = (populatedUsers: PopulatedUser[]): UserAndComic[] => {
+const parseComicsFromUsers = (populatedUsers: IUser[]): UserAndComic[] => {
   return populatedUsers.map((populatedUser: IUser) => {
     const {
       email,
@@ -101,7 +102,7 @@ const sendEmailsForUsersAndTheirComics = async (usersAndTheirComics: UserAndComi
 }
 
 // TODO(ecarrel): we can use lodash functions to clean up these maps.
-const updateUserEntriesWithEmailedComics = async (savedEmails: IEmail[], messageIds: MessageId[], populatedUsers: PopulatedUser[], dateAsDate: Date) => {
+const updateUserEntriesWithEmailedComics = async (savedEmails: IEmail[], messageIds: MessageId[], populatedUsers: IUser[], dateAsDate: Date) => {
   const messageIdToSavedEmail = savedEmails.reduce((memo, savedEmail) => {
     return {
       ...memo,
@@ -135,13 +136,25 @@ const updateUserEntriesWithEmailedComics = async (savedEmails: IEmail[], message
   }
 }
 
+const markAllUsersAsChecked = async (users: IUser[], dateAsDate: Date) => {
+  const updateDoc: UpdateQuery<IUser> = {
+    $set: {
+      lastEmailCheck: dateAsDate,
+    }
+  };
+  const filter: FilterQuery<IUser> = {
+    _id: users.map(user => user._id),
+  };
+  await User.updateMany(filter, updateDoc);
+}
+
 export const emailUsers = async (
   users: IUser[],
   options: EmailAllUsersOptions,
   date: Moment,
 ) => {
   const { sendAllComics = false, mentionNotUpdatedComics = true } = options;
-  const populatedUsers = await User.populate(users, [
+  const populatedUsers: IUser[] = await User.populate(users, [
     {
       path: "syndications",
       populate: {
@@ -155,10 +168,17 @@ export const emailUsers = async (
 
   const usersAndTheirComics = parseComicsFromUsers(populatedUsers);
 
+  // Before attempting to send emails, we mark users as checked in the database.
+  // This helps us avoid a failure mode in which database reads are slow, causing
+  // timeouts which result in dozens/hundreds of emails sent to the same users.
+  // In effect, we are deciding that it's better to skip a user than to email them
+  // twice. Future engineering work could make it so that we don't have to decide
+  // between these two choices, but this is the best trade-off for now.
+  const dateAsDate = date.toDate();
+  await markAllUsersAsChecked(populatedUsers, dateAsDate);
+
   const sendComicEmailOptions: SendComicEmailOptions = { sendAllComics, mentionNotUpdatedComics };
   const messageIds: MessageId[] = await sendEmailsForUsersAndTheirComics(usersAndTheirComics, sendComicEmailOptions, date);
-
-  const dateAsDate = date.toDate();
 
   const savedEmails = await Email.insertMany(
     messageIds
