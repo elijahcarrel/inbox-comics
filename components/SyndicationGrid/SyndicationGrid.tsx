@@ -16,6 +16,7 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
+  DragEndEvent,
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -84,12 +85,12 @@ export const SyndicationGrid = (props: Props) => {
   });
   const [pageNumber, setPageNumber] = useState(0);
 
-  const handleDragEnd = (event) => {
+  const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
     if (active && over && active.id !== over.id) {
-      const oldIndex = selectedSyndicationIdentifiers.indexOf(active.id);
-      const newIndex = selectedSyndicationIdentifiers.indexOf(over.id);
+      const oldIndex = selectedSyndicationIdentifiers.indexOf(String(active.id));
+      const newIndex = selectedSyndicationIdentifiers.indexOf(String(over.id));
 
       const newSelectedSyndicationIdentifiers = arrayMove(selectedSyndicationIdentifiers, oldIndex, newIndex);
       onChange(newSelectedSyndicationIdentifiers);
