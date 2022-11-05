@@ -28,6 +28,7 @@ export const ToasterContainer = () => {
             className: styles.errorToast,
             iconTheme: {
               primary: 'white',
+              // TODO(ecarrel): encode colors in either javascript or SCSS, but don't double-specify.
               secondary: '#980106',
             },
           },

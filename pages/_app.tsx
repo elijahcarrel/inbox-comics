@@ -8,7 +8,6 @@ import fetch from "isomorphic-unfetch";
 import App from "next/app";
 import React from "react";
 import { ToasterContainer } from "../common-components/ToasterContainer/ToasterContainer";
-import styles from "./app.module.scss";
 
 const graphQLHttpEndpoint = "/api/graphql";
 
@@ -27,9 +26,7 @@ class MyApp extends App {
 
     return (
       <ApolloProvider client={client}>
-        {/* We need to reference styles.nothing somewhere to fix
-          https://github.com/zeit/next-plugins/issues/282. */}
-        <Component fakeProp={styles.nothing} {...pageProps} />
+        <Component {...pageProps} />
         <ToasterContainer />
       </ApolloProvider>
     );
