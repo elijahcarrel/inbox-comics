@@ -210,7 +210,6 @@ export const SyndicationGrid = (props: Props) => {
                 }}
                 isSelected={isSelected}
                 onClick={() => {
-                  console.log("clicked", identifier);
                   if (isSelected) {
                     // Delete it.
                     onChange(
