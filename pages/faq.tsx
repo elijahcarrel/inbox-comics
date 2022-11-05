@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { Fragment, ReactNode } from "react";
 import { CommonLink } from "../common-components/CommonLink/CommonLink";
 import { DynamicText } from "../common-components/DynamicText/DynamicText";
 import { Layout } from "../common-components/Layout/Layout";
@@ -106,11 +106,11 @@ const FAQPage: React.FunctionComponent = () => {
   ];
   return (
     <Layout title="FAQ">
-      {entries.map(({ question, answer }) => (
-        <>
+      {entries.map(({ question, answer }, i) => (
+        <Fragment key={i}>
           <p className={styles.question}>{question}</p>
           <p className={styles.answer}>{answer}</p>
-        </>
+        </Fragment>
       ))}
     </Layout>
   );
