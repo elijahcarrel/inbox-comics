@@ -26,7 +26,6 @@ const IndexPage: React.FunctionComponent = () => {
               "Garfield",
               "Pearls before Swine",
               "Pickles",
-              "Dilbert",
               "Cyanide and Happiness",
               "B.C.",
               "Hagar the Horrible",
