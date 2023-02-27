@@ -175,6 +175,22 @@ const customMessages: Record<string, string> = {
     Team Inbox Comics
 </p>
 `,
+  "February 27th, 2023": `
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    Hi all,
+</p>
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    We wanted to let you know that in light of deeply offensive comments recently made by Dilbert creator Scott Adams, we have decided to remove Dilbert from the Inbox Comics platform. We know Dilbert is a favorite comic for many of you as well as for us, and we do not make this decision lightly. We reached this decision with input from the Inbox Comics community, and we welcome all thoughts and concerns moving forward as well. Here's to hoping that the gap some of you will see in your morning emails makes way for a new favorite comic strip you can enjoy!
+</p>
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    All the best,<br />
+    Elijah and Gabe,<br />
+    Team Inbox Comics
+</p>
+<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
+    Without further ado, here are today's comics.
+</p>
+`,
 };
 
 export const sendComicEmail = async (
