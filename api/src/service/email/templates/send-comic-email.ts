@@ -175,7 +175,7 @@ const customMessages: Record<string, string> = {
     Team Inbox Comics
 </p>
 `,
-  "February 27th, 2023": `
+  "February 29th, 2023": `
 <p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
     Hi all,
 </p>
