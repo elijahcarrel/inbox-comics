@@ -4,15 +4,17 @@ import { FilterQuery, UpdateQuery } from "mongoose";
 import { IUser, User } from "../../db-models/user";
 import {
   ComicForEmail,
+  NewsItemForEmail,
   sendComicEmail,
   SendComicEmailOptions,
 } from "./templates/send-comic-email";
 import { Email, IEmail } from "../../db-models/email";
 import { EmailAllUsersOptions } from "../../api-models/email-options";
 import { ISyndication } from "../../db-models/comic-syndication";
+import { INewsItem, NewsItem } from "../../db-models/news-item";
 
 // TODO(ecarrel): clean up this type.
-type UserAndComic = {
+type UserInfoForEmail = {
   email: string | null | undefined;
   googleAnalyticsHash: string;
   comics: {
@@ -21,6 +23,10 @@ type UserAndComic = {
     imageUrl: string | null;
     imageCaption: string | null;
   }[];
+  newsItem: {
+    identifier: string;
+    emailContent: string;
+  } | null;
 };
 
 // TODO(ecarrel): upgrade mongoose and then use these nicer types.
@@ -41,13 +47,17 @@ const isWorthSendingEmail = (
   return comics.some(({ wasUpdated }) => wasUpdated);
 };
 
-const parseComicsFromUsers = (populatedUsers: IUser[]): UserAndComic[] => {
+const parseUsersInfoForEmail = (
+  populatedUsers: IUser[],
+  mostRecentNewsItem: INewsItem | null,
+): UserInfoForEmail[] => {
   return populatedUsers.map((populatedUser: IUser) => {
     const {
       email,
       googleAnalyticsHash,
       syndications = [],
       lastEmailedComics = [],
+      lastEmailedNewsItem = null,
     } = populatedUser;
     const comics = syndications.map((syndication: ISyndication) => {
       const { title, lastSuccessfulComic } = syndication;
@@ -73,35 +83,51 @@ const parseComicsFromUsers = (populatedUsers: IUser[]): UserAndComic[] => {
         imageCaption,
       };
     });
+    let newsItem: NewsItemForEmail | null = null;
+    if (mostRecentNewsItem !== null) {
+      if (
+        lastEmailedNewsItem == null ||
+        lastEmailedNewsItem.identifier !== mostRecentNewsItem.identifier
+      ) {
+        newsItem = {
+          identifier: mostRecentNewsItem.identifier,
+          emailContent: mostRecentNewsItem.emailContent,
+        };
+      }
+    }
     return {
       email,
       googleAnalyticsHash,
       comics,
+      newsItem,
     };
   });
 };
 
-const sendEmailsForUsersAndTheirComics = async (
-  usersAndTheirComics: UserAndComic[],
+const sendEmailsForUserInfos = async (
+  usersInfoForEmail: UserInfoForEmail[],
   sendComicEmailOptions: SendComicEmailOptions,
   date: Moment,
 ): Promise<MessageId[]> => {
   return Promise.all(
-    usersAndTheirComics.map(({ email, googleAnalyticsHash, comics }) => {
-      if (
-        !isWorthSendingEmail(comics, sendComicEmailOptions) ||
-        email == null
-      ) {
-        return Promise.resolve(null);
-      }
-      return sendComicEmail(
-        email,
-        comics,
-        sendComicEmailOptions,
-        date,
-        googleAnalyticsHash,
-      );
-    }),
+    usersInfoForEmail.map(
+      ({ email, googleAnalyticsHash, comics, newsItem }) => {
+        if (
+          !isWorthSendingEmail(comics, sendComicEmailOptions) ||
+          email == null
+        ) {
+          return Promise.resolve(null);
+        }
+        return sendComicEmail(
+          email,
+          comics,
+          newsItem,
+          sendComicEmailOptions,
+          date,
+          googleAnalyticsHash,
+        );
+      },
+    ),
   );
 };
 
@@ -110,6 +136,7 @@ const updateUserEntriesWithEmailedComics = async (
   savedEmails: IEmail[],
   messageIds: MessageId[],
   populatedUsers: IUser[],
+  mostRecentNewsItem: INewsItem | null,
   dateAsDate: Date,
 ) => {
   const messageIdToSavedEmail = savedEmails.reduce((memo, savedEmail) => {
@@ -136,6 +163,8 @@ const updateUserEntriesWithEmailedComics = async (
       user.lastEmailSent = dateAsDate;
       // eslint-disable-next-line no-param-reassign
       user.emails = [...(user.emails || []), savedEmail];
+      // eslint-disable-next-line no-param-reassign
+      user.lastEmailedNewsItem = mostRecentNewsItem;
     }
     return user;
   });
@@ -174,9 +203,26 @@ export const emailUsers = async (
     {
       path: "lastEmailedComics",
     },
+    {
+      path: "lastEmailedNewsItem",
+    },
   ]);
 
-  const usersAndTheirComics = parseComicsFromUsers(populatedUsers);
+  // Find the most recent news item, or null if there was nothing within the last seven days.
+  const mostRecentNewsItem = await NewsItem.findOne({
+    createTime: {
+      $gte: date.subtract(7, 'days').toDate(),
+    },
+    isPublished: true,
+    emailContent: { $exists: true, $ne: "" },
+  })
+    .sort({ createTime: -1 })
+    .exec();
+
+  const usersInfoForEmail = parseUsersInfoForEmail(
+    populatedUsers,
+    mostRecentNewsItem,
+  );
 
   // Before attempting to send emails, we mark users as checked in the database.
   // This helps us avoid a failure mode in which database reads are slow, causing
@@ -191,8 +237,8 @@ export const emailUsers = async (
     sendAllComics,
     mentionNotUpdatedComics,
   };
-  const messageIds: MessageId[] = await sendEmailsForUsersAndTheirComics(
-    usersAndTheirComics,
+  const messageIds: MessageId[] = await sendEmailsForUserInfos(
+    usersInfoForEmail,
     sendComicEmailOptions,
     date,
   );
@@ -210,6 +256,7 @@ export const emailUsers = async (
     savedEmails,
     messageIds,
     populatedUsers,
+    mostRecentNewsItem,
     dateAsDate,
   );
 
