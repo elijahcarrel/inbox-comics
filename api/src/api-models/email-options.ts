@@ -8,6 +8,8 @@ export interface EmailAllUsersOptions {
   // Only email each user if we haven't already tried to send them an email today ("tried" means that we
   // looked to see if they deserved an email and sent them one if they did). Default: true.
   onlyIfWeHaventCheckedToday?: boolean;
+  // If true, includes the latest news item even if it's already been sent to this user. Default: false.
+  includeLatestNewsItemEvenIfItsAlreadyBeenSent?: boolean;
 }
 
 export interface CancelThrottledEmailsOptions {

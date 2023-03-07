@@ -50,6 +50,7 @@ const isWorthSendingEmail = (
 const parseUsersInfoForEmail = (
   populatedUsers: IUser[],
   mostRecentNewsItem: INewsItem | null,
+  includeLatestNewsItemEvenIfItsAlreadyBeenSent: boolean,
 ): UserInfoForEmail[] => {
   return populatedUsers.map((populatedUser: IUser) => {
     const {
@@ -87,7 +88,8 @@ const parseUsersInfoForEmail = (
     if (mostRecentNewsItem !== null) {
       if (
         lastEmailedNewsItem == null ||
-        lastEmailedNewsItem.identifier !== mostRecentNewsItem.identifier
+        lastEmailedNewsItem.identifier !== mostRecentNewsItem.identifier ||
+        includeLatestNewsItemEvenIfItsAlreadyBeenSent
       ) {
         newsItem = {
           identifier: mostRecentNewsItem.identifier,
@@ -192,7 +194,7 @@ export const emailUsers = async (
   options: EmailAllUsersOptions,
   date: Moment,
 ) => {
-  const { sendAllComics = false, mentionNotUpdatedComics = true } = options;
+  const { sendAllComics = false, mentionNotUpdatedComics = true, includeLatestNewsItemEvenIfItsAlreadyBeenSent = false } = options;
   const populatedUsers: IUser[] = await User.populate(users, [
     {
       path: "syndications",
@@ -222,6 +224,7 @@ export const emailUsers = async (
   const usersInfoForEmail = parseUsersInfoForEmail(
     populatedUsers,
     mostRecentNewsItem,
+    includeLatestNewsItemEvenIfItsAlreadyBeenSent,
   );
 
   // Before attempting to send emails, we mark users as checked in the database.

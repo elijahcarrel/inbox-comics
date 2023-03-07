@@ -22,6 +22,7 @@ export const typeDefs = gql`
     limit: Int
     mentionNotUpdatedComics: Boolean
     onlyIfWeHaventCheckedToday: Boolean
+    includeLatestNewsItemEvenIfItsAlreadyBeenSent: Boolean
   }
   input CancelThrottledEmailsOptions {
     limit: Int

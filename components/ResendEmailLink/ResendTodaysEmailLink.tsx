@@ -52,6 +52,7 @@ export const ResendTodaysEmailLink = (props: Props) => {
           sendAllComics: true,
           mentionNotUpdatedComics: true,
           onlyIfWeHaventCheckedToday: false,
+          includeLatestNewsItemEvenIfItsAlreadyBeenSent: false,
         },
       },
     });
