@@ -23,11 +23,10 @@ interface ContactFormValues {
 }
 
 const ContactPage: React.FunctionComponent = () => {
-  // TODO(ecarrel): put this in environment variables and secrets. Tried but couldn't get it to work.
-  const recaptchaSiteKey =
-    process.env.NODE_ENV === "production"
-      ? "6Lf-IbYUAAAAACsBvqBlI2EPp3dRfGOtGmki0LVf"
-      : "6LdAIbYUAAAAAJSiFXndt3k3qFw83Jm7w7HnfP3A";
+  const recaptchaSiteKey = process.env.recaptcha_site_key;
+  if (recaptchaSiteKey == null) {
+    throw new Error("recaptcha_site_key environment variable is not defined.");
+  }
 
   const mutation = gql`
     mutation submitContactForm(

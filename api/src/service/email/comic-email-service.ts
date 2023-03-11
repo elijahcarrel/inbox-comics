@@ -1,6 +1,6 @@
 import { ApolloError } from "apollo-server-errors";
 import { Moment } from "moment";
-import { FilterQuery, UpdateQuery } from "mongoose";
+import { FilterQuery, ObjectId, UpdateQuery } from "mongoose";
 import { IUser, User } from "../../db-models/user";
 import {
   ComicForEmail,
@@ -29,8 +29,7 @@ type UserInfoForEmail = {
   } | null;
 };
 
-// TODO(ecarrel): upgrade mongoose and then use these nicer types.
-// type PopulatedUser = IUser & { _id: ObjectId };
+type PopulatedUser = IUser & { _id: ObjectId };
 
 type MessageId = string | null;
 
@@ -48,7 +47,7 @@ const isWorthSendingEmail = (
 };
 
 const parseUsersInfoForEmail = (
-  populatedUsers: IUser[],
+  populatedUsers: PopulatedUser[],
   mostRecentNewsItem: INewsItem | null,
   includeLatestNewsItemEvenIfItsAlreadyBeenSent: boolean,
 ): UserInfoForEmail[] => {
