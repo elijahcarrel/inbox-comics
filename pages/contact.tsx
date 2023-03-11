@@ -23,9 +23,9 @@ interface ContactFormValues {
 }
 
 const ContactPage: React.FunctionComponent = () => {
-  const recaptchaSiteKey = process.env.recaptcha_site_key;
+  const recaptchaSiteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
   if (recaptchaSiteKey == null) {
-    throw new Error("recaptcha_site_key environment variable is not defined.");
+    throw new Error("NEXT_PUBLIC_RECAPTCHA_SITE_KEY environment variable is not defined.");
   }
 
   const mutation = gql`
