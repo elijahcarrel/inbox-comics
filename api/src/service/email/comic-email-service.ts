@@ -51,7 +51,7 @@ const parseUsersInfoForEmail = (
   mostRecentNewsItem: INewsItem | null,
   includeLatestNewsItemEvenIfItsAlreadyBeenSent: boolean,
 ): UserInfoForEmail[] => {
-  return populatedUsers.map((populatedUser: IUser) => {
+  return populatedUsers.map((populatedUser: PopulatedUser) => {
     const {
       email,
       googleAnalyticsHash,
@@ -198,7 +198,7 @@ export const emailUsers = async (
     mentionNotUpdatedComics = true,
     includeLatestNewsItemEvenIfItsAlreadyBeenSent = false,
   } = options;
-  const populatedUsers: IUser[] = await User.populate(users, [
+  const populatedUsers: PopulatedUser[] = await User.populate(users, [
     {
       path: "syndications",
       populate: {
