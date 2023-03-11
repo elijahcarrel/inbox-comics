@@ -23,7 +23,9 @@ export const typeDefs = gql`
 export const resolvers = {
   Query: {
     getNews: async () => {
-      return NewsItem.find({ isPublished: true }).sort({ createTime: -1 }).exec();
+      return NewsItem.find({ isPublished: true })
+        .sort({ createTime: -1 })
+        .exec();
     },
     getNewsItem: async (_: any, args: { identifier: string }) => {
       const { identifier } = args;

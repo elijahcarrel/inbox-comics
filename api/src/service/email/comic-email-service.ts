@@ -194,7 +194,11 @@ export const emailUsers = async (
   options: EmailAllUsersOptions,
   date: Moment,
 ) => {
-  const { sendAllComics = false, mentionNotUpdatedComics = true, includeLatestNewsItemEvenIfItsAlreadyBeenSent = false } = options;
+  const {
+    sendAllComics = false,
+    mentionNotUpdatedComics = true,
+    includeLatestNewsItemEvenIfItsAlreadyBeenSent = false,
+  } = options;
   const populatedUsers: IUser[] = await User.populate(users, [
     {
       path: "syndications",
@@ -213,7 +217,7 @@ export const emailUsers = async (
   // Find the most recent news item, or null if there was nothing within the last seven days.
   const mostRecentNewsItem = await NewsItem.findOne({
     createTime: {
-      $gte: date.subtract(7, 'days').toDate(),
+      $gte: date.subtract(7, "days").toDate(),
     },
     isPublished: true,
     emailContent: { $exists: true, $ne: "" },
