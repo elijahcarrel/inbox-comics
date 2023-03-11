@@ -1,6 +1,7 @@
 import { Document, model, Schema } from "mongoose";
 import { IEmail } from "./email";
 import { ISyndication, IComic } from "./comic-syndication";
+import { INewsItem } from "./news-item";
 
 export interface IUser extends Document {
   publicId: string;
@@ -8,6 +9,7 @@ export interface IUser extends Document {
   verified: boolean;
   enabled: boolean;
   syndications: ISyndication[];
+  lastEmailedNewsItem?: INewsItem | null;
   lastEmailedComics?: IComic[];
   verificationHash: string;
   googleAnalyticsHash: string;
@@ -35,6 +37,10 @@ const userSchema = new Schema(
       },
     ],
     verificationHash: String,
+    lastEmailedNewsItem: {
+      type: Schema.Types.ObjectId,
+      ref: "newsitem",
+    },
     googleAnalyticsHash: String,
     lastEmailCheck: Date,
     lastEmailSent: Date,

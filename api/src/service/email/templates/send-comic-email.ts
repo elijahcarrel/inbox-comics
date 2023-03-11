@@ -10,6 +10,11 @@ export interface ComicForEmail {
   imageCaption: string | null;
 }
 
+export interface NewsItemForEmail {
+  identifier: string;
+  emailContent: string;
+}
+
 export interface SendComicEmailOptions {
   // Send all comics, regardless of if they were updated. Default: false.
   sendAllComics?: boolean;
@@ -87,115 +92,17 @@ const generateHtmlForComic = (
   return null;
 };
 
-// TODO(ecarrel): this is the worst. Replace this with a data-driven model,
-// connected to the "newsitems" table we already have.
-const customMessages: Record<string, string> = {
-  "May 27th, 2020": `
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    Hi everyone,
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    Thanks to those who wrote in to note that your comics weren't coming through yesterday or today! As comic fans ourselves, we recognize the small but substantial benefits a bit of humor can have first thing in the morning, especially considering these crazy times.
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    So, good news! We've found and fixed the problem (as you can see!). Note that the comics you're receiving in this email might be a couple days old while our system is still recuperating, but you should resume getting your comics as usual first thing tomorrow morning.
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    We greatly appreciated your patience as we figured this out. Your kind messages and thoughtful notes are inspiring, and remind us why we run this service, completely free and ad-free, in the first place!
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    Hope everyone is staying safe. Remember to wash your hands often, wear masks, and practice good social-distancing habits— it could save lives!
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    All the best,<br />
-    Gabe and Elijah<br />
-    Team Inbox Comics
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    Without further ado, here are today's comics.
-</p>
-`,
-  "March 23rd, 2021": `
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    Hi everyone,
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    As many of you noted, several of our most popular comics (including Zits, Hagar the Horrible, Beetle Bailey, and others) weren't updating since last Wednesday. We have now fixed the issue and comics should be coming through as normal. 
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    Enjoy your comics, stay safe, and (if and when it is available to you) be sure to get vaccinated!
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    All the best,<br />
-    Gabe and Elijah<br />
-    Team Inbox Comics
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    Without further ado, here are today's comics.
-</p>
-`,
-  "May 25th, 2021": `
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    Hi everyone,
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    As many of you noted, several of our most popular comics (including Dilbert, Mutts, and others) weren't updating correctly since last Wednesday. Sorry about this! We have now fixed the issue and comics should be coming through as normal.
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    Cheers,<br />
-    Gabe and Elijah<br />
-    Team Inbox Comics
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    Without further ado, here are today's comics.
-</p>
-`,
-  "August 9th, 2022": `
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    Hi all,
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    It’s been a while since we shared an Inbox Comics update with you all— or more accurately, a while since we’ve had an issue to write about!
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    We wanted to send a quick note to say that we know some of you received multiple (or 113…) emails from us yesterday, but the problem has been identified and should now be fixed. One of the services we use to send emails apparently failed to report the messages as “sent,” so our other service just kept them coming. But don’t worry, this should be the only email you receive from us today!! 😊
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    Thanks to everyone who wrote us about the problem. For our newer subscribers, we’re a two-person team who work on Inbox Comics in our spare time, and fund the service and email delivery out of pocket (and we promise never to sell your data or put ads in our emails!).
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    We don’t have any other updates to share at this time, except to say that we’re still excited about this passion project and will continue running the site for as long as we can! Thanks for your patience with us and for your continued support.
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    Please let us know if you continue to have issues.
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    All the best,<br />
-    Elijah and Gabe,<br />
-    Team Inbox Comics
-</p>
-`,
-  "March 2nd, 2023": `
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    Hi all,
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    We wanted to let you know that in light of deeply offensive comments recently made by Dilbert creator Scott Adams, we have decided to remove Dilbert from the Inbox Comics platform. We know Dilbert is a favorite comic for many of you as well as for us, and we do not make this decision lightly. We reached this decision with input from the Inbox Comics community, and we welcome all thoughts and concerns moving forward as well. Here's to hoping that the gap some of you will see in your morning emails makes way for a new favorite comic strip you can enjoy!
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    All the best,<br />
-    Elijah and Gabe,<br />
-    Team Inbox Comics
-</p>
-<p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
-    Without further ado, here are today's comics.
-</p>
-`,
+const formatEmailContentForNewsItem = (emailContent: string): string => {
+  return emailContent.replace(
+    /<p>/g,
+    "<p style=\"font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;\">",
+  );
 };
 
 export const sendComicEmail = async (
   email: string,
   comics: ComicForEmail[],
+  newsItem: NewsItemForEmail | null,
   options: SendComicEmailOptions = {},
   date: Moment = now(),
   googleAnalyticsHash: string = uuidv4(),
@@ -214,8 +121,8 @@ export const sendComicEmail = async (
   <p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
     Good morning! Here are today's comics.
   </p>`;
-  if (customMessages[formattedDate] != null) {
-    message = customMessages[formattedDate];
+  if (newsItem != null) {
+    message = formatEmailContentForNewsItem(newsItem.emailContent);
   }
   const body = `<html>
 <head>
