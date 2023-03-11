@@ -95,7 +95,7 @@ const generateHtmlForComic = (
 const formatEmailContentForNewsItem = (emailContent: string): string => {
   return emailContent.replace(
     /<p>/g,
-    "<p style=\"font - family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;\">",
+    "<p style=\"font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;\">",
   );
 };
 
