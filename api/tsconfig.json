@@ -16,6 +16,7 @@
     "preserveConstEnums": true,
     "sourceMap": true,
     "resolveJsonModule": true,
-    "incremental": true
+    "incremental": true,
+    "esModuleInterop": true
   }
 }
