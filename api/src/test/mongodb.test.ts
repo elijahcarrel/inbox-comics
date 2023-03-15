@@ -8,66 +8,71 @@ import { createUser, putUser } from "../router/user";
 import { computePopularity } from "../service/popularity";
 
 beforeAll(async () => {
-    mongoose.Promise = global.Promise;
-    mongoose.set("debug", Boolean(process.env?.DEBUG));
-    // @ts-ignore Property 'MONGO_URI' does not exist on type 'Global & typeof globalThis'.ts.
-    await mongoose.connect(global.MONGO_URI);
+  mongoose.Promise = global.Promise;
+  mongoose.set("debug", Boolean(process.env?.DEBUG));
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore Property 'MONGO_URI' does not exist on type 'Global & typeof globalThis'.ts.
+  await mongoose.connect(global.MONGO_URI);
 });
 
 afterAll(async () => {
-    await mongoose.disconnect();
+  await mongoose.disconnect();
 });
 
 beforeEach(async () => {
-    // Reset the database before each test
-    await mongoose.connection.db.dropDatabase();
+  // Reset the database before each test
+  await mongoose.connection.db.dropDatabase();
 });
 
 afterEach(() => {
-    jest.restoreAllMocks();
+  jest.restoreAllMocks();
 });
 
 function assertIsDefined<T>(value: T): asserts value is NonNullable<T> {
-    if (value === undefined || value === null) {
-        throw new Error(`${value} is not defined`)
-    }
+  if (value === undefined || value === null) {
+    throw new Error(`${value} is not defined`);
+  }
 }
 
 jest.mock("../service/email/send-elastic-email");
 
 it("should compute popularity", async () => {
-    const syndication1Identifier = "test-syndication"
-    const syndication1 = await Syndication.create({
-        site_id: 0,
-        title: syndication1Identifier,
-        identifier: syndication1Identifier,
-        theiridentifier: syndication1Identifier,
-        numSubscribers: 0,
-    });
+  const syndication1Identifier = "test-syndication";
+  const syndication1 = await Syndication.create({
+    site_id: 0,
+    title: syndication1Identifier,
+    identifier: syndication1Identifier,
+    theiridentifier: syndication1Identifier,
+    numSubscribers: 0,
+  });
 
-    const syndication2Identifier = "test-syndication-2"
-    await Syndication.create({
-        site_id: 0,
-        title: syndication2Identifier,
-        identifier: syndication2Identifier,
-        theiridentifier: syndication2Identifier,
-        numSubscribers: 0,
-    });
-    const user = await createUser("test@test.com");
-    assertIsDefined(user.email);
-    await putUser(user.publicId, {
-        publicId: user.publicId,
-        email: user.email || "",
-        syndications: [syndication1.identifier],
-        enabled: true,
-    })
-    await computePopularity();
+  const syndication2Identifier = "test-syndication-2";
+  await Syndication.create({
+    site_id: 0,
+    title: syndication2Identifier,
+    identifier: syndication2Identifier,
+    theiridentifier: syndication2Identifier,
+    numSubscribers: 0,
+  });
+  const user = await createUser("test@test.com");
+  assertIsDefined(user.email);
+  await putUser(user.publicId, {
+    publicId: user.publicId,
+    email: user.email || "",
+    syndications: [syndication1.identifier],
+    enabled: true,
+  });
+  await computePopularity();
 
-    const gotSyndication1 = await Syndication.findOne({ identifier: syndication1Identifier });
-    assertIsDefined(gotSyndication1);
-    expect(gotSyndication1.numSubscribers).toBe(1);
+  const gotSyndication1 = await Syndication.findOne({
+    identifier: syndication1Identifier,
+  });
+  assertIsDefined(gotSyndication1);
+  expect(gotSyndication1.numSubscribers).toBe(1);
 
-    const gotSyndication2 = await Syndication.findOne({ identifier: syndication2Identifier });
-    assertIsDefined(gotSyndication2);
-    expect(gotSyndication2.numSubscribers).toBe(0);
+  const gotSyndication2 = await Syndication.findOne({
+    identifier: syndication2Identifier,
+  });
+  assertIsDefined(gotSyndication2);
+  expect(gotSyndication2.numSubscribers).toBe(0);
 });

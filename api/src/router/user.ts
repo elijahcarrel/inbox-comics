@@ -69,7 +69,7 @@ export const createUser = async (email: string) => {
     throw internalEmailSendError(String(err));
   }
   return user;
-}
+};
 
 export const putUser = async (publicId: string, inputUser: InputUser) => {
   if (publicId !== inputUser.publicId) {
@@ -95,8 +95,7 @@ export const putUser = async (publicId: string, inputUser: InputUser) => {
     inputEmail = inputUser.email.toLowerCase();
   }
   const changedEmail =
-    user.email !== inputEmail &&
-    !(user.email == null && inputEmail == null);
+    user.email !== inputEmail && !(user.email == null && inputEmail == null);
   if (changedEmail) {
     const existingUserWithThatEmail = await User.findOne({
       email: inputEmail,
@@ -124,7 +123,7 @@ export const putUser = async (publicId: string, inputUser: InputUser) => {
     }
   }
   return user;
-}
+};
 
 export const resolvers = {
   Query: {
@@ -149,7 +148,8 @@ export const resolvers = {
     },
   },
   Mutation: {
-    createUser: async (_: any, args: { email: string }) => createUser(args.email),
+    createUser: async (_: any, args: { email: string }) =>
+      createUser(args.email),
     createUserWithoutEmail: async () => {
       const verificationHash = uuidv4();
       const googleAnalyticsHash = uuidv4();
@@ -164,7 +164,8 @@ export const resolvers = {
       });
     },
     // TODO(ecarrel): type of user is wrong; should be an api object type.
-    putUser: async (_: any, args: { publicId: string; user: InputUser }) => putUser(args.publicId, args.user),
+    putUser: async (_: any, args: { publicId: string; user: InputUser }) =>
+      putUser(args.publicId, args.user),
     resendVerificationEmail: async (_: any, args: { email: string }) => {
       const { email } = args;
       const user = await User.findOne({ email }).exec();
