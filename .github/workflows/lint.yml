@@ -21,33 +21,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
-
-  lint-api:
-    runs-on: ubuntu-latest
-    needs: build
-    defaults:
-      run:
+      - name: "lint-ui"
+        run: npm run lint
+      - name: "type-check-ui"
+        run: npm run type-check
+      - name: "lint-api"
+        run: npm run lint
         working-directory: ./api
-    steps:
-      - run: npm run lint
-
-  type-check-api:
-    runs-on: ubuntu-latest
-    needs: build
-    defaults:
-      run:
+      - name: "type-check-api"
+        run: npm run type-check
         working-directory: ./api
-    steps:
-      - run: npm run type-check
-
-  lint-ui:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - run: npm run lint
-
-  type-check-ui:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - run: npm run type-check
