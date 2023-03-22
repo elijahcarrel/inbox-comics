@@ -25,11 +25,12 @@
     "incremental": true
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "api/**"
   ],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
   ]
 }
