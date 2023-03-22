@@ -23,6 +23,7 @@ jobs:
       - run: npm ci
 
   lint-api:
+    runs-on: ubuntu-latest
     needs: build
     defaults:
       run:
@@ -31,6 +32,7 @@ jobs:
       - run: npm run lint
 
   type-check-api:
+    runs-on: ubuntu-latest
     needs: build
     defaults:
       run:
@@ -39,11 +41,13 @@ jobs:
       - run: npm run type-check
 
   lint-ui:
+    runs-on: ubuntu-latest
     needs: build
     steps:
       - run: npm run lint
 
   type-check-ui:
+    runs-on: ubuntu-latest
     needs: build
     steps:
       - run: npm run type-check
