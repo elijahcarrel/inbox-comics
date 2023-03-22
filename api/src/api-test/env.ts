@@ -2,10 +2,7 @@ import mongoose from "mongoose";
 import NodeEnvironment from "jest-environment-node";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { MongoMemoryServerOpts } from "mongodb-memory-server-core/lib/MongoMemoryServer";
-// import type { EnvironmentContext, JestEnvironmentConfig } from '@jest/environment';
-
-type EnvironmentContext = any;
-type JestEnvironmentConfig = any;
+import type { EnvironmentContext, JestEnvironmentConfig } from '@jest/environment';
 
 export type MongoDbEnvironmentConfig = JestEnvironmentConfig & {
   projectConfig: JestEnvironmentConfig["projectConfig"] & {

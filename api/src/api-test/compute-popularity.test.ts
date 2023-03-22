@@ -1,7 +1,3 @@
-/**
- * @jest-environment ./src/api-test/env.ts
- */
-
 import mongoose from "mongoose";
 import { Syndication } from "../db-models/comic-syndication";
 import { createUser, putUser } from "../router/user";

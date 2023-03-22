@@ -1,14 +1,14 @@
 import type { Config } from 'jest';
-import { log } from "console";
-
-log("executing top config");
 
 export default async (): Promise<Config> => {
-    log("loading top config");
-
     return {
         clearMocks: true,
         collectCoverage: true,
+        collectCoverageFrom: [
+            '**/*.ts',
+            '!**/node_modules/**',
+            '!**/jest.config.ts',
+        ],
         coverageProvider: "v8",
         coverageReporters: ['text'],
         preset: "ts-jest",
@@ -19,6 +19,8 @@ export default async (): Promise<Config> => {
                 transform: {
                     '^.+\\.ts?$': 'ts-jest'
                 },
+                testEnvironment: "./src/api-test/env.ts",
+
             },
         ],
         testEnvironment: "node",
