@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -22,6 +21,29 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
+
+  lint-api:
+    needs: build
+    defaults:
+      run:
+        working-directory: ./api
+    steps:
       - run: npm run lint
-      - run: npm run test
+
+  type-check-api:
+    needs: build
+    defaults:
+      run:
+        working-directory: ./api
+    steps:
+      - run: npm run type-check
+
+  lint-ui:
+    needs: build
+    steps:
+      - run: npm run lint
+
+  type-check-ui:
+    needs: build
+    steps:
       - run: npm run type-check
