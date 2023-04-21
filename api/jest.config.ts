@@ -20,7 +20,6 @@ export default async (): Promise<Config> => {
                     '^.+\\.ts?$': 'ts-jest'
                 },
                 testEnvironment: "./src/api-test/env.ts",
-
             },
         ],
         testEnvironment: "node",

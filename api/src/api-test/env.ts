@@ -44,7 +44,6 @@ export default class ApiTestEnvironment extends NodeEnvironment {
   }
 
   public async setup(): Promise<void> {
-    // this.global.MONGO_DB_NAME = await this.mongod.getDbName();
     this.global.MONGO_URI = await (await this.mongod).getUri();
 
     mongoose.Promise = global.Promise;
