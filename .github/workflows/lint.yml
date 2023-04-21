@@ -31,3 +31,6 @@ jobs:
       - name: "type-check-api"
         run: npm run type-check
         working-directory: ./api
+      - name: "test-api"
+        run: npm run test
+        working-directory: ./api
