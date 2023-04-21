@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2019",
+    "target": "esnext",
     "module": "esnext",
     "jsx": "preserve",
     "lib": ["dom", "es2017"],
@@ -16,6 +16,10 @@
     "preserveConstEnums": true,
     "sourceMap": true,
     "resolveJsonModule": true,
-    "incremental": true
-  }
+    "incremental": true,
+    "esModuleInterop": true,
+  },
+  "include": [
+      "src/api-test/env.ts"
+  ]
 }
