@@ -2,9 +2,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
@@ -21,16 +21,16 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
-      - name: "lint-ui"
+      - name: "Front-end linting"
         run: npm run lint
-      - name: "type-check-ui"
+      - name: "Front-end type-checking"
         run: npm run type-check
-      - name: "lint-api"
+      - name: "Back-end linting"
         run: npm run lint
         working-directory: ./api
-      - name: "type-check-api"
+      - name: "Back-end type-checking"
         run: npm run type-check
         working-directory: ./api
-      - name: "test-api"
+      - name: "Back-end testing"
         run: npm run test
         working-directory: ./api
