@@ -34,7 +34,6 @@ const PrivacyPage: React.FunctionComponent = () => {
         about you:
       </H2>
       <ul>
-        <li>Your IP address.</li>
         <li>Your password.</li>
         <li>
           Your name, location, gender, or any personal details of any kind.
@@ -42,12 +41,11 @@ const PrivacyPage: React.FunctionComponent = () => {
       </ul>
       <H2>We don&apos;t, and never will:</H2>
       <ul>
-        <li>Use trackers.</li>
         <li>Sell your data.</li>
         <li>Serve ads.</li>
         <li>Make any money.</li>
       </ul>
-      <H2>If any of this ever changes:</H2>
+      <H2>If any of this ever changes in a big way:</H2>
       <ul>
         <li>We&apos;ll email you.</li>
       </ul>
