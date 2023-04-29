@@ -1,8 +1,5 @@
 import { gql } from "apollo-server-micro";
-import {
-  getNews,
-  getNewsItem,
-} from "../validation/news-item";
+import { getNews, getNewsItem } from "../validation/news-item";
 
 export const typeDefs = gql`
   scalar Date

@@ -4,10 +4,6 @@ import {
   scrapeAndSaveComic,
   scrapeAndSaveAllComics,
 } from "../validation/scrape";
-import { now } from "../util/date";
-import { invalidSyndicationError } from "../util/error";
-import { ScrapeAndSaveAllComicsOptions } from "../api-models/scrape-options";
-import { Syndication } from "../db-models/comic-syndication";
 
 export const typeDefs = gql`
   input ScrapeAndSaveAllComicsOptions {
