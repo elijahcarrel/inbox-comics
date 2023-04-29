@@ -1,9 +1,9 @@
 import { gql } from "apollo-server-micro";
 import {
-  scrapeAndSaveAllComics,
-  scrapeAndSaveComic,
   scrapeComic,
-} from "../service/scrape";
+  scrapeAndSaveComic,
+  scrapeAndSaveAllComics,
+} from "../validation/scrape";
 import { now } from "../util/date";
 import { invalidSyndicationError } from "../util/error";
 import { ScrapeAndSaveAllComicsOptions } from "../api-models/scrape-options";
@@ -25,34 +25,8 @@ export const typeDefs = gql`
 
 export const resolvers = {
   Mutation: {
-    scrapeComic: async (_: any, args: { identifier: string }) => {
-      const { identifier } = args;
-      const syndication = await Syndication.findOne({ identifier }).exec();
-      if (syndication == null) {
-        throw invalidSyndicationError(identifier);
-      }
-      const date = now();
-      await scrapeComic(syndication, date);
-      return true;
-    },
-    scrapeAndSaveComic: async (_: any, args: { identifier: string }) => {
-      const { identifier } = args;
-      const syndication = await Syndication.findOne({ identifier }).exec();
-      if (syndication == null) {
-        throw invalidSyndicationError(identifier);
-      }
-      const date = now();
-      await scrapeAndSaveComic(syndication, date);
-      return true;
-    },
-    scrapeAndSaveAllComics: async (
-      _: any,
-      args: { options?: ScrapeAndSaveAllComicsOptions },
-    ) => {
-      const date = now();
-      const { options = {} } = args;
-      await scrapeAndSaveAllComics(date, options);
-      return true;
-    },
+    scrapeComic,
+    scrapeAndSaveComic,
+    scrapeAndSaveAllComics,
   },
 };

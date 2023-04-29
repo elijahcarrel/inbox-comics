@@ -1,5 +1,5 @@
 import { gql } from "apollo-server-micro";
-import { computePopularity } from "../service/popularity";
+import { computePopularity } from "../validation/popularity";
 
 export const typeDefs = gql`
   extend type Mutation {
@@ -9,8 +9,6 @@ export const typeDefs = gql`
 
 export const resolvers = {
   Mutation: {
-    computePopularity: async () => {
-      return computePopularity();
-    },
+    computePopularity,
   },
 };
