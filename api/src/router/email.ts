@@ -3,7 +3,7 @@ import {
   emailUser,
   emailAllUsers,
   cancelThrottledEmailsAndSendThemWithAws,
-} from "../validation/email";
+} from "../handler/email";
 
 export const typeDefs = gql`
   type Email {

@@ -3,7 +3,7 @@ import {
   scrapeComic,
   scrapeAndSaveComic,
   scrapeAndSaveAllComics,
-} from "../validation/scrape";
+} from "../handler/scrape";
 
 export const typeDefs = gql`
   input ScrapeAndSaveAllComicsOptions {

@@ -1,5 +1,5 @@
 import { gql } from "apollo-server-micro";
-import { syndications, addSyndication } from "../validation/syndication";
+import { syndications, addSyndication } from "../handler/syndication";
 
 export const typeDefs = gql`
   type Syndication {
