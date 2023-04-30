@@ -1,4 +1,6 @@
 import { Moment } from "moment";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import unescape from "unescape";
 import cheerio from "cheerio";
 import {
@@ -12,8 +14,6 @@ import {
   scrapeSuccess,
 } from "../common";
 import { Scraper } from "../scraper";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 
 export class PhdComicsScraper extends Scraper {
   // eslint-disable-next-line class-methods-use-this

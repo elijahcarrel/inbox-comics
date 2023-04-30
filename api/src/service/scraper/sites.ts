@@ -9,6 +9,7 @@ import { SmbcScraper } from "./scrapers/smbc";
 import { ThreeWordPhraseScraper } from "./scrapers/three-word-phrase";
 import { TundraScraper } from "./scrapers/tundra";
 import { XkcdScraper } from "./scrapers/xkcd";
+import { MockScraper } from "./scrapers/mock";
 
 type Site = {
   name: string;
@@ -16,6 +17,8 @@ type Site = {
   id: number;
   scraper: Scraper;
 };
+
+export const MOCK_SITE_ID = 1000;
 
 export const sites: Record<number, Site> = {
   0: {
@@ -84,5 +87,11 @@ export const sites: Record<number, Site> = {
     description: "Three Word Phrase",
     id: 10,
     scraper: new ThreeWordPhraseScraper(),
+  },
+  [MOCK_SITE_ID]: {
+    name: "MOCK",
+    description: "Mock",
+    id: MOCK_SITE_ID,
+    scraper: new MockScraper(),
   },
 };

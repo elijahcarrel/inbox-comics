@@ -19,7 +19,10 @@ export class ArcamaxScraper extends Scraper {
     this.directory = directory;
   }
 
-  async scrape(date: Moment, syndication: ISyndication): Promise<ScrapeResult> {
+  async scrape(
+    _date: Moment,
+    syndication: ISyndication,
+  ): Promise<ScrapeResult> {
     const { theiridentifier: theirIdentifier } = syndication;
     const url = `https://www.arcamax.com/${this.directory}/${theirIdentifier}/`;
     const $ = await cheerioRequest(url);

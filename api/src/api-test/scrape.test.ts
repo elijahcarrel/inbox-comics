@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
 import { Syndication } from "../db-models/comic-syndication";
 import { assertIsDefined } from "../util/ts";
-import {
-  scrapeComicForSyndication,
-} from "../service/scrape";
+import { scrapeComicForSyndication } from "../service/scrape";
 import { now } from "../util/date";
+import { MOCK_SITE_ID } from "../service/scraper/sites";
 
 // TODO(ecarrel): it feels like I shouldn't have to copy the below four functions (beforeAll, beforeEach, afterEach, afterAll) of code into every test, and could instead just define them once?
 beforeAll(async () => {
@@ -29,27 +28,23 @@ afterAll(async () => {
 jest.mock("../service/email/send-elastic-email");
 
 it("should scrape comic for syndication", async () => {
-  const syndication1Identifier = "test-syndication";
-  const syndication1 = await Syndication.create({
-    site_id: 0,
-    title: syndication1Identifier,
-    identifier: syndication1Identifier,
-    theiridentifier: syndication1Identifier,
+  const syndicationIdentifier = "test-syndication";
+  const syndication = await Syndication.create({
+    site_id: MOCK_SITE_ID,
+    title: syndicationIdentifier,
+    identifier: syndicationIdentifier,
+    theiridentifier: syndicationIdentifier,
     numSubscribers: 0,
   });
 
   const date = now();
-  const scrapedComic = await scrapeComicForSyndication(syndication1, date);
+  const scrapedComic = await scrapeComicForSyndication(syndication, date);
 
-  const gotSyndication1 = await Syndication.findOne({
-    identifier: syndication1Identifier,
+  assertIsDefined(scrapedComic);
+  expect(scrapedComic).toMatchObject({
+    success: true,
+    imageUrl: "mock-image-url",
+    failureMode: null,
+    imageCaption: null,
   });
-  assertIsDefined(gotSyndication1);
-  expect(gotSyndication1.numSubscribers).toBe(1);
-
-  const gotSyndication2 = await Syndication.findOne({
-    identifier: syndication2Identifier,
-  });
-  assertIsDefined(gotSyndication2);
-  expect(gotSyndication2.numSubscribers).toBe(0);
 });
