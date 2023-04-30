@@ -28,10 +28,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ NODE_VERSION }}
+      - name: Use Node.js $NODE_VERSION
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ NODE_VERSION }}
+          node-version: $NODE_VERSION
       - run: npm ci
       - name: lint ${{ matrix.package.name}}
         run: npm run lint
