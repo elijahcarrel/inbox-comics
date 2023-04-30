@@ -41,5 +41,5 @@ jobs:
         run: npm run type-check
         working-directory: ${{ matrix.package.directory }}
       - name: test ${{ matrix.package.name }}
-        run: npm run lint
+        run: npm run test
         working-directory: ${{ matrix.package.directory }}
