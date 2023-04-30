@@ -15,6 +15,7 @@ jobs:
 
     strategy:
       matrix:
+        node-version: [16.x]
         package: [
           {
             name: "front-end",
@@ -28,10 +29,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js $NODE_VERSION
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: $NODE_VERSION
+          node-version: ${{ matrix.node-version }}
       - run: npm ci
       - name: lint ${{ matrix.package.name}}
         run: npm run lint
