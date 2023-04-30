@@ -269,7 +269,7 @@ export const emailUsers = async (
   return messageIds;
 };
 
-export const emailAllUsers = async (
+export const emailAllUsersWithOptions = async (
   date: Moment,
   options: EmailAllUsersOptions = {},
 ) => {

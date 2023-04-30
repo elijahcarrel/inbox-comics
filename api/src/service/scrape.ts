@@ -146,7 +146,7 @@ const producesSuccessResponse = async (url: string) => {
   return response.status === 200;
 };
 
-export const scrapeComic = async (
+export const scrapeComicForSyndication = async (
   syndication: ISyndication,
   date: Moment,
 ): Promise<ScrapeResult> => {
@@ -345,12 +345,12 @@ const createComicDbObject = (
   };
 };
 
-// TODO(ecarrel): dedupe code that exists here and in scrapeAndSaveAllComics.
-export const scrapeAndSaveComic = async (
+// TODO(ecarrel): dedupe code that exists here and in scrapeAndSaveAllComicsWithOptions.
+export const scrapeAndSaveComicForSyndication = async (
   syndication: ISyndication,
   date: Moment,
 ) => {
-  const scrapeResult = await scrapeComic(syndication, date);
+  const scrapeResult = await scrapeComicForSyndication(syndication, date);
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore TS2615 see https://github.com/microsoft/TypeScript/issues/38279.
   const createdComic = await Comic.create(
@@ -367,7 +367,7 @@ export const scrapeAndSaveComic = async (
   await syndication.save();
 };
 
-export const scrapeAndSaveAllComics = async (
+export const scrapeAndSaveAllComicsWithOptions = async (
   date: Moment,
   options: ScrapeAndSaveAllComicsOptions = {},
 ) => {
@@ -412,7 +412,7 @@ export const scrapeAndSaveAllComics = async (
   const syndications = await syndicationsRequest.exec();
   const scrapeResults = await Promise.all(
     syndications.map((syndication: ISyndication) =>
-      scrapeComic(syndication, date),
+      scrapeComicForSyndication(syndication, date),
     ),
   );
   const augmentedScrapeResults = scrapeResults.map((scrapeResult, i) => ({

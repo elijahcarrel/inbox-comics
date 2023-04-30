@@ -1,6 +1,5 @@
 import { gql } from "apollo-server-micro";
-import { NewsItem } from "../db-models/news-item";
-import { invalidNewsItemError } from "../util/error";
+import { getNews, getNewsItem } from "../handler/news-item";
 
 export const typeDefs = gql`
   scalar Date
@@ -22,18 +21,7 @@ export const typeDefs = gql`
 
 export const resolvers = {
   Query: {
-    getNews: async () => {
-      return NewsItem.find({ isPublished: true })
-        .sort({ createTime: -1 })
-        .exec();
-    },
-    getNewsItem: async (_: any, args: { identifier: string }) => {
-      const { identifier } = args;
-      const newsItem = await NewsItem.findOne({ identifier }).exec();
-      if (newsItem == null) {
-        throw invalidNewsItemError(identifier);
-      }
-      return newsItem;
-    },
+    getNews,
+    getNewsItem,
   },
 };

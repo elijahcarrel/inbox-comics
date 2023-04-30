@@ -31,7 +31,7 @@ type CancelInProgressResult = {
   error?: string;
 };
 
-export const cancelThrottledEmailsAndSendThemWithAws = async (
+export const cancelThrottledEmailsAndSendThemWithAwsWithOptions = async (
   options?: CancelThrottledEmailsOptions,
 ): Promise<boolean> => {
   // eslint-disable-next-line  no-console
