@@ -8,6 +8,7 @@
     "format": "prettier --write \"{components,common-components,lib,pages}/{,**/}*.{js,jsx,ts,tsx}\"",
     "lint": "eslint \"{components,common-components,lib,pages}/{,**/}*.{js,jsx,ts,tsx}\" --no-error-on-unmatched-pattern",
     "lint-fix": "npm run lint -- --fix",
+    "test": "echo \"TODO(ecarrel): add front-end tests (#75)\"",
     "preview": "vercel",
     "deploy": "vercel --prod",
     "postinstall": "cd ./api && npm install"
