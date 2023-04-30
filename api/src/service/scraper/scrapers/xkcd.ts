@@ -1,19 +1,26 @@
 import { Moment } from "moment";
-import { ISyndication, failureModes } from "../../../db-models/comic-syndication";
-import { ScrapeResult, cheerioRequest, scrapeFailure, scrapeSuccess } from "../common";
-import { Scraper } from "../scraper";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import unescape from "unescape";
 import cheerio from "cheerio";
+import {
+  ISyndication,
+  failureModes,
+} from "../../../db-models/comic-syndication";
+import {
+  ScrapeResult,
+  cheerioRequest,
+  scrapeFailure,
+  scrapeSuccess,
+} from "../common";
+import { Scraper } from "../scraper";
 
 export class XkcdScraper extends Scraper {
-  constructor() {
-    super();
-  }
-
-  async scrape(date: Moment, syndication: ISyndication): Promise<ScrapeResult> {
-    const { site_id: siteId, theiridentifier: theirIdentifier } = syndication;
+  // eslint-disable-next-line class-methods-use-this
+  async scrape(
+    _date: Moment,
+    _syndication: ISyndication,
+  ): Promise<ScrapeResult> {
     const url = `https://xkcd.com/rss.xml`;
     const $ = await cheerioRequest(url);
     if ($ === null) {
@@ -27,9 +34,7 @@ export class XkcdScraper extends Scraper {
     if (firstItemDescriptions.length === 0) {
       return scrapeFailure(failureModes.XKCD_PARSE_ERROR);
     }
-    const firstItemDescription = unescape(
-      firstItemDescriptions.first().html(),
-    );
+    const firstItemDescription = unescape(firstItemDescriptions.first().html());
     const $$ = cheerio.load(firstItemDescription);
     const comicImages = $$("img");
     if (comicImages.length !== 1) {

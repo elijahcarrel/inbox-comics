@@ -8,7 +8,7 @@ import {
 } from "../db-models/comic-syndication";
 import { ScrapeAndSaveAllComicsOptions } from "../api-models/scrape-options";
 import { sites } from "./scraper/sites";
-import { scrapeFailure, ScrapeResult } from "./scraper/scraper";
+import { scrapeFailure, ScrapeResult } from "./scraper/common";
 
 export const scrapeComicForSyndication = async (
   syndication: ISyndication,
