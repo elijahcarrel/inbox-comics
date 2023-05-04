@@ -9,6 +9,6 @@ export class MockScraper extends Scraper {
     _date: Moment,
     _syndication: ISyndication,
   ): Promise<ScrapeResult> {
-    return scrapeSuccess("mock-image-url");
+    return scrapeSuccess("mock-image-url", "mock-image-caption");
   }
 }
