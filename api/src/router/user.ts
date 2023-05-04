@@ -1,5 +1,14 @@
 import { gql } from "apollo-server-micro";
-import { createUser, createUserWithoutEmail, putUser, resendVerificationEmail, submitContactForm, userByEmail, userByPublicId, verifyEmail } from "../handler/user";
+import {
+  createUser,
+  createUserWithoutEmail,
+  putUser,
+  resendVerificationEmail,
+  submitContactForm,
+  userByEmail,
+  userByPublicId,
+  verifyEmail,
+} from "../handler/user";
 
 export const typeDefs = gql`
   input InputUser {
