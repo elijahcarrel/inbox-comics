@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { Syndication } from "../db-models/comic-syndication";
-import { createUser, putUser } from "../router/user";
+import { createUser, putUser } from "../service/user";
 import { computePopularity } from "../service/popularity";
 import { assertIsDefined } from "../util/ts";
 
