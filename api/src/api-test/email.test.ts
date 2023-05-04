@@ -4,7 +4,7 @@ import { createUser, putUser } from "../service/user";
 import { assertIsDefined } from "../util/ts";
 import { scrapeAndSaveComicForSyndication } from "../service/scrape";
 import { now } from "../util/date";
-import { emailUsers } from "../service/email/comic-email-service";
+import { emailAllUsersWithOptions } from "../service/email/comic-email-service";
 import { MOCK_SITE_ID } from "../service/scraper/sites";
 import * as sendElasticEmailModule from "../service/email/send-elastic-email";
 import { User } from "../db-models/user";
@@ -47,6 +47,21 @@ it("should email comics to users", async () => {
   await scrapeAndSaveComicForSyndication(syndication, date);
 
   const user = await createUser("test@test.com");
+
+  const dbUser = await User.findOne({ email: "test@test.com" });
+  assertIsDefined(dbUser);
+
+  expect(sendElasticEmail).toBeCalledTimes(1);
+  expect(sendElasticEmail).toHaveBeenLastCalledWith(
+    "test@test.com", // recipient
+    expect.stringContaining("Verify your Inbox Comics Subscription"), // subject
+    expect.stringContaining(dbUser.verificationHash), // body
+  );
+
+  // Mock user as verified.
+  dbUser.verified = true;
+  await dbUser.save();
+
   assertIsDefined(user.email);
   await putUser(user.publicId, {
     publicId: user.publicId,
@@ -55,22 +70,35 @@ it("should email comics to users", async () => {
     enabled: true,
   });
 
-  expect(sendElasticEmail).toBeCalledTimes(1);
-
-  // Mock user as verified.
-  const dbUser = await User.findOne({ email: "test@test.com" });
-  assertIsDefined(dbUser);
-  dbUser.verified = true;
-  await dbUser.save();
-
   // Email comics to this user.
-  await emailUsers([dbUser], {}, date);
+  await emailAllUsersWithOptions(date, {});
+  console.log(JSON.stringify(sendElasticEmail.mock.calls));
 
   expect(sendElasticEmail).toBeCalledTimes(2);
-
   expect(sendElasticEmail).toHaveBeenLastCalledWith(
     "test@test.com", // recipient
     expect.stringContaining("Inbox Comics for"), // subject
     expect.stringContaining("mock-image-url"), // body
+  );
+
+  // Try to email comics to this user again.
+  // Expect no new email to be sent because they have no new comics.
+  await emailAllUsersWithOptions(date, {});
+  expect(sendElasticEmail).toBeCalledTimes(2);
+
+  // Try to email comics to this user again, this time with the "sendAllComics" flag set to true and the "onlyIfWeHaventCheckedToday" flag set to false to ensure the email is sent anyway.
+  await emailAllUsersWithOptions(date, {
+    sendAllComics: true,
+    onlyIfWeHaventCheckedToday: false,
+  });
+
+  // Expect an email to be sent.
+  expect(sendElasticEmail).toBeCalledTimes(3);
+  expect(sendElasticEmail).toHaveBeenLastCalledWith(
+    "test@test.com", // recipient
+    expect.stringContaining("Inbox Comics for"), // subject
+    expect.stringContaining(
+      "wasn't updated today, but here's the most recent comic",
+    ), // body
   );
 });
