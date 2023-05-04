@@ -33,7 +33,7 @@ jest.mock("../service/email/send-elastic-email");
 
 const sendElasticEmail = jest.spyOn(sendElasticEmailModule, "sendElasticEmail");
 
-it("should email comics to users", async () => {
+it("should send email verifications and comic emails to users", async () => {
   const syndicationIdentifier = "test-syndication";
   const syndication = await Syndication.create({
     site_id: MOCK_SITE_ID,
