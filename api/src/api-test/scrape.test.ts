@@ -28,8 +28,6 @@ afterAll(async () => {
   await mongoose.disconnect();
 });
 
-jest.mock("../service/email/send-elastic-email");
-
 it("should scrape comic for syndication", async () => {
   const syndicationIdentifier = "test-syndication";
   const syndication = await Syndication.create({
