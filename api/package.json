@@ -13,7 +13,7 @@
     "@aws-sdk/client-sesv2": "^3.328.0",
     "@aws-sdk/types": "^3.310.0",
     "@vercel/node": "^2.14.1",
-    "apollo-server-errors": "^2.5.0",
+    "apollo-server-errors": "^3.3.1",
     "apollo-server-micro": "^2.25.4",
     "axios": "^1.4.0",
     "btoa": "^1.2.1",
