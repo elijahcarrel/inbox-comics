@@ -33,7 +33,7 @@
     "eslint-config-next": "^13.4.1",
     "formik": "^2.2.9",
     "fuse.js": "^6.6.2",
-    "graphql": "^15.8.0",
+    "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
     "html-react-parser": "^3.0.16",
     "isomorphic-unfetch": "^4.0.2",

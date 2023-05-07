@@ -1,28 +1,10 @@
-import { ApolloServer } from "apollo-server-micro";
-import gql from "graphql-tag";
+import { ApolloServer } from "@apollo/server";
+import { startServerAndCreateNextHandler } from "@as-integrations/next";
 import { resolvers, typeDefs } from "./router";
 
-const endpoint = "/api/graphql";
-
-export const initApollo = (): ((_req: any, _res: any) => Promise<void>) => {
-  const defaultQuery = gql`
-    query comics {
-      syndications {
-        title
-      }
-    }
-  `;
-
+export const initApollo = (): ((_req: any, _res: any) => Promise<unknown>) => {
   const apolloServer = new ApolloServer({
     introspection: process.env.NODE_ENV !== "production",
-    playground: {
-      tabs: [
-        {
-          endpoint,
-          query: String(defaultQuery),
-        },
-      ],
-    },
     typeDefs,
     resolvers,
     formatError: (error: any) => {
@@ -30,12 +12,20 @@ export const initApollo = (): ((_req: any, _res: any) => Promise<void>) => {
       console.error(error);
       return error;
     },
-    formatResponse: (response: any) => {
-      // eslint-disable-next-line  no-console
-      console.log(response);
-      return response;
-    },
+    plugins: [
+      {
+        async requestDidStart() {
+          return {
+            async willSendResponse(requestContext) {
+              const { response } = requestContext;
+              // eslint-disable-next-line  no-console
+              console.log(response);
+            },
+          };
+        },
+      },
+    ],
   });
 
-  return apolloServer.createHandler({ path: endpoint });
+  return startServerAndCreateNextHandler(apolloServer);
 };
