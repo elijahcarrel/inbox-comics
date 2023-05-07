@@ -28,7 +28,7 @@
     "micro-cors": "^0.1.1",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
-    "mongoose": "^7.0.4",
+    "mongoose": "^7.1.0",
     "unescape": "^1.0.1",
     "uuid": "^9.0.0"
   },
