@@ -12,7 +12,7 @@ Your favorite comics emailed to you each morning.
 ### Server (Back-End)
 1. Typescript with ESLint
 1. Vercel CLI for deployment
-1. Vercel node for server
+1. Vercel-managed node.js server
 1. Apollo Server (GraphQL) for communication with client
 1. MongoDB Atlas for our database cluster
 1. Mongoose for interacting with MongoDB database
