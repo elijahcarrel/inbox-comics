@@ -14,7 +14,7 @@
     "postinstall": "cd ./api && npm install"
   },
   "dependencies": {
-    "@apollo/client": "^3.7.12",
+    "@apollo/client": "^3.7.14",
     "@dnd-kit/core": "^6.0.8",
     "@dnd-kit/sortable": "^7.0.2",
     "@dnd-kit/utilities": "^3.2.1",
@@ -23,7 +23,6 @@
     "@types/lodash": "^4.14.194",
     "@types/react-paginate": "^7.1.1",
     "@types/react-truncate": "^2.3.4",
-    "@types/yup": "^0.29.14",
     "@vercel/analytics": "^1.0.1",
     "classnames": "^2.3.2",
     "date-fns": "^2.30.0",
@@ -42,7 +41,7 @@
     "normalize-scss": "^7.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hot-toast": "^2.4.0",
+    "react-hot-toast": "^2.4.1",
     "react-paginate": "^8.2.0",
     "react-spinners": "^0.13.8",
     "react-truncate": "^2.4.0",
@@ -56,7 +55,7 @@
     "babel-plugin-add-module-exports": "^1.0.4",
     "eslint": "^8.40.0",
     "eslint-config-airbnb-typescript-prettier": "^5.0.0",
-    "prettier": "^2.8.7",
+    "prettier": "^2.8.8",
     "typescript": "^5.0.4",
     "webpack": "^5.82.0"
   },
