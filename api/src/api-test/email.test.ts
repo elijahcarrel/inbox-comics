@@ -124,7 +124,7 @@ it("should send comic emails to users with emailable news items embedded within"
   const newsItemIdentifier = "test-news-item";
   await NewsItem.create({
     identifier: newsItemIdentifier,
-    createTime: date.subtract(1, "day"),
+    createTime: date.clone().subtract(1, "day"),
     headline: newsItemIdentifier,
     content: newsItemIdentifier,
     emailContent: newsItemIdentifier,
@@ -149,7 +149,7 @@ it("should send comic emails to users ignoring non-emailable news items", async 
   const newsItemIdentifier = "test-news-item";
   await NewsItem.create({
     identifier: newsItemIdentifier,
-    createTime: date.subtract(1, "day"),
+    createTime: date.clone().subtract(1, "day"),
     headline: newsItemIdentifier,
     content: newsItemIdentifier,
     emailContent: null, // Since this is null, this should not get emailed out.
@@ -159,7 +159,7 @@ it("should send comic emails to users ignoring non-emailable news items", async 
   const newsItemIdentifier2 = "test-news-item-2";
   await NewsItem.create({
     identifier: newsItemIdentifier2,
-    createTime: date.subtract(2, "day"),
+    createTime: date.clone().subtract(2, "day"),
     headline: newsItemIdentifier2,
     content: newsItemIdentifier2,
     emailContent: "", // Since this is empty, this should also not get emailed out.

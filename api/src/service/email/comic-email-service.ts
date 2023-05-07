@@ -216,7 +216,7 @@ export const emailUsers = async (
   // Find the most recent news item, or null if there was nothing within the last seven days.
   const mostRecentNewsItem = await NewsItem.findOne({
     createTime: {
-      $gte: date.subtract(7, "days").toDate(),
+      $gte: date.clone().subtract(7, "days").toDate(),
     },
     isPublished: true,
     emailContent: { $exists: true, $nin: ["", null, undefined] },
