@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Moment } from "moment";
 import { Syndication } from "../db-models/comic-syndication";
 import { createUser, putUser } from "../service/user";
 import { assertIsDefined } from "../util/ts";
@@ -8,6 +9,11 @@ import { emailAllUsersWithOptions } from "../service/email/comic-email-service";
 import { MOCK_SITE_ID } from "../service/scraper/sites";
 import * as sendElasticEmailModule from "../service/email/send-elastic-email";
 import { User } from "../db-models/user";
+import { NewsItem } from "../db-models/news-item";
+
+// TODO(ecarrel): find a way to make sure this is always mocked.
+jest.mock("../service/email/send-elastic-email");
+const sendElasticEmail = jest.spyOn(sendElasticEmailModule, "sendElasticEmail");
 
 // TODO(ecarrel): it feels like I shouldn't have to copy the below four functions (beforeAll, beforeEach, afterEach, afterAll) of code into every test, and could instead just define them once?
 beforeAll(async () => {
@@ -22,18 +28,14 @@ beforeEach(async () => {
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  sendElasticEmail.mockReset();
 });
 
 afterAll(async () => {
   await mongoose.disconnect();
 });
 
-jest.mock("../service/email/send-elastic-email");
-
-const sendElasticEmail = jest.spyOn(sendElasticEmailModule, "sendElasticEmail");
-
-it("should send email verifications and comic emails to users", async () => {
+const createSyndicationAndVerifiedUserSubscribedToIt = async (date: Moment) => {
   const syndicationIdentifier = "test-syndication";
   const syndication = await Syndication.create({
     site_id: MOCK_SITE_ID,
@@ -43,7 +45,6 @@ it("should send email verifications and comic emails to users", async () => {
     numSubscribers: 0,
   });
 
-  const date = now();
   await scrapeAndSaveComicForSyndication(syndication, date);
 
   const user = await createUser("test@test.com");
@@ -69,10 +70,14 @@ it("should send email verifications and comic emails to users", async () => {
     syndications: [syndication.identifier],
     enabled: true,
   });
+};
+
+it("should send email verifications and comic emails to users", async () => {
+  const date = now();
+  await createSyndicationAndVerifiedUserSubscribedToIt(date);
 
   // Email comics to this user.
   await emailAllUsersWithOptions(date, {});
-  console.log(JSON.stringify(sendElasticEmail.mock.calls));
 
   expect(sendElasticEmail).toBeCalledTimes(2);
   expect(sendElasticEmail).toHaveBeenLastCalledWith(
@@ -100,5 +105,65 @@ it("should send email verifications and comic emails to users", async () => {
     expect.stringContaining(
       "wasn't updated today, but here's the most recent comic",
     ), // body
+  );
+});
+
+it("should send comic emails to users with emailable news items embedded within", async () => {
+  const date = now();
+  await createSyndicationAndVerifiedUserSubscribedToIt(date);
+
+  const newsItemIdentifier = "test-news-item";
+  await NewsItem.create({
+    identifier: newsItemIdentifier,
+    createTime: date.subtract(1, "day"),
+    headline: newsItemIdentifier,
+    content: newsItemIdentifier,
+    emailContent: newsItemIdentifier,
+    isPublished: true,
+  });
+
+  // Email comics to this user.
+  await emailAllUsersWithOptions(date, {});
+
+  expect(sendElasticEmail).toBeCalledTimes(2);
+  expect(sendElasticEmail).toHaveBeenLastCalledWith(
+    "test@test.com", // recipient
+    expect.stringContaining("Inbox Comics for"), // subject
+    expect.stringContaining(newsItemIdentifier), // body
+  );
+});
+
+it("should send comic emails to users ignoring non-emailable news items", async () => {
+  const date = now();
+  await createSyndicationAndVerifiedUserSubscribedToIt(date);
+
+  const newsItemIdentifier = "test-news-item";
+  await NewsItem.create({
+    identifier: newsItemIdentifier,
+    createTime: date.subtract(1, "day"),
+    headline: newsItemIdentifier,
+    content: newsItemIdentifier,
+    emailContent: null, // Since this is null, this should not get emailed out.
+    isPublished: true,
+  });
+
+  const newsItemIdentifier2 = "test-news-item-2";
+  await NewsItem.create({
+    identifier: newsItemIdentifier2,
+    createTime: date.subtract(2, "day"),
+    headline: newsItemIdentifier2,
+    content: newsItemIdentifier2,
+    emailContent: "", // Since this is empty, this should also not get emailed out.
+    isPublished: true,
+  });
+
+  // Email comics to this user.
+  await emailAllUsersWithOptions(date, {});
+
+  expect(sendElasticEmail).toBeCalledTimes(2);
+  expect(sendElasticEmail).toHaveBeenLastCalledWith(
+    "test@test.com", // recipient
+    expect.stringContaining("Inbox Comics for"), // subject
+    expect.not.stringContaining(newsItemIdentifier), // body
   );
 });
