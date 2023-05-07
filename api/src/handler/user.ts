@@ -1,10 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
-import { UserInputError } from "apollo-server-errors";
+import { GraphQLError } from "graphql";
 import { User } from "../db-models/user";
 import {
   internalEmailSendError,
   invalidUserByPublicIdError,
   invalidUserError,
+  userInputErrorOptions,
 } from "../util/error";
 import {
   createUser as serviceCreateUser,
@@ -92,7 +93,10 @@ export const verifyEmail = async (
     await user.save();
     return true;
   }
-  throw new UserInputError("Incorrect verification string.");
+  throw new GraphQLError(
+    "Incorrect verification string.",
+    userInputErrorOptions,
+  );
 };
 
 export const submitContactForm = async (

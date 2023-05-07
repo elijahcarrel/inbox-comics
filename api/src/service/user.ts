@@ -1,19 +1,23 @@
-import { UserInputError } from "apollo-server-errors";
 import { v4 as uuidv4 } from "uuid";
 import { sortBy } from "lodash";
+import { GraphQLError } from "graphql";
 import { Syndication } from "../db-models/comic-syndication";
 import { User } from "../db-models/user";
 import { sendVerificationEmail } from "./email/templates/send-verification-email";
 import {
   internalEmailSendError,
   invalidUserByPublicIdError,
+  userInputErrorOptions,
 } from "../util/error";
 import { InputUser } from "../api-models/user";
 
 export const createUser = async (email: string) => {
   const existingUser = await User.findOne({ email }).exec();
   if (existingUser != null) {
-    throw new UserInputError(`User with email "${email}" already exists.`);
+    throw new GraphQLError(
+      `User with email "${email}" already exists.`,
+      userInputErrorOptions,
+    );
   }
   const publicId = uuidv4();
   const verificationHash = uuidv4();
@@ -37,8 +41,9 @@ export const createUser = async (email: string) => {
 
 export const putUser = async (publicId: string, inputUser: InputUser) => {
   if (publicId !== inputUser.publicId) {
-    throw new UserInputError(
+    throw new GraphQLError(
       `Mismatched public ids: ${publicId} and ${inputUser.publicId}.`,
+      userInputErrorOptions,
     );
   }
   const user = await User.findOne({ publicId }).exec();
@@ -65,8 +70,9 @@ export const putUser = async (publicId: string, inputUser: InputUser) => {
       email: inputEmail,
     }).exec();
     if (existingUserWithThatEmail != null) {
-      throw new UserInputError(
+      throw new GraphQLError(
         `User with email "${inputEmail}" already exists.`,
+        userInputErrorOptions,
       );
     }
     user.email = inputEmail;
