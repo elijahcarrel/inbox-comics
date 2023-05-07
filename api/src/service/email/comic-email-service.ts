@@ -219,7 +219,7 @@ export const emailUsers = async (
       $gte: date.subtract(7, "days").toDate(),
     },
     isPublished: true,
-    emailContent: { $exists: true, $ne: "" },
+    emailContent: { $exists: true, $nin: ["", null, undefined] },
   })
     .sort({ createTime: -1 })
     .exec();
