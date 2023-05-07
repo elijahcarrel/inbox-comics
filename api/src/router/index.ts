@@ -1,4 +1,4 @@
-import { gql } from "apollo-server-micro";
+import { gql } from "graphql-tag";
 import { GraphQLScalarType } from "graphql";
 import { Kind } from "graphql/language";
 import merge from "lodash/merge";

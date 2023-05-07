@@ -1,4 +1,9 @@
-import { UserInputError, ApolloError } from "apollo-server-micro";
+import { GraphQLError } from "graphql";
+import {
+  userInputErrorOptions,
+  internalEmailSendError,
+  invalidUserError,
+} from "../util/error";
 import { User } from "../db-models/user";
 import {
   emailAllUsersWithOptions,
@@ -6,7 +11,6 @@ import {
 } from "../service/email/comic-email-service";
 import { cancelThrottledEmailsAndSendThemWithAwsWithOptions } from "../service/email/cancel-and-send-with-aws";
 import { now } from "../util/date";
-import { internalEmailSendError, invalidUserError } from "../util/error";
 import {
   CancelThrottledEmailsOptions,
   EmailAllUsersOptions,
@@ -23,10 +27,16 @@ export const emailUser = async (
     throw invalidUserError(email);
   }
   if (!user.verified) {
-    throw new UserInputError(`User "${email}" is not verified.`);
+    throw new GraphQLError(
+      `User "${email}" is not verified.`,
+      userInputErrorOptions,
+    );
   }
   if (!user.enabled) {
-    throw new UserInputError(`User "${email}" is disabled.`);
+    throw new GraphQLError(
+      `User "${email}" is disabled.`,
+      userInputErrorOptions,
+    );
   }
   let messageIds: (string | null)[] = [];
   try {
@@ -61,6 +71,6 @@ export const cancelThrottledEmailsAndSendThemWithAws = async (
   try {
     return await cancelThrottledEmailsAndSendThemWithAwsWithOptions(options);
   } catch (err) {
-    throw new ApolloError(`Error cancelling throttled emails: ${err}.`);
+    throw new GraphQLError(`Error cancelling throttled emails: ${err}.`);
   }
 };

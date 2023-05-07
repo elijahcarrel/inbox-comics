@@ -1,6 +1,6 @@
-import { ApolloError } from "apollo-server-errors";
 import { Moment } from "moment";
 import { FilterQuery, ObjectId, UpdateQuery } from "mongoose";
+import { GraphQLError } from "graphql";
 import { IUser, User } from "../../db-models/user";
 import {
   ComicForEmail,
@@ -294,7 +294,7 @@ export const emailAllUsersWithOptions = async (
   }
   const users = await usersRequest.exec();
   if (users == null) {
-    throw new ApolloError("Could not find users");
+    throw new GraphQLError("Could not find users");
   }
   return emailUsers(users, options, date);
 };
