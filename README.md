@@ -3,35 +3,20 @@ Your favorite comics emailed to you each morning.
 
 ## Services & Frameworks used
 ### Client (UI)
-1. ES6 Typescript with ESLint & Prettier
+1. Typescript with ESLint
 1. Vercel CLI for deployment
 1. Vercel Next.js for SSR (server-side-rendered) React framework and routing
 1. Apollo Client (GraphQL) library for communication with server
 1. SCSS modules
 
 ### Server (Back-End)
-1. ES6 Typescript with ESLint & Prettier
+1. Typescript with ESLint
 1. Vercel CLI for deployment
+1. Vercel node for server
 1. Apollo Server (GraphQL) for communication with client
 1. MongoDB Atlas for our database cluster
 1. Mongoose for interacting with MongoDB database
 1. ElasticEmail for sending emails
-
-### Tech Stack History
-We started Inbox Comics in the summer of 2014 as a hacky website built in MySQL
-and PHP-interspersed-with-HTML-and-some-CSS, hosted on the first Google result
-for "free web hosting provider." It floundered along for a few years, during
-which we made minor upgrades such as switching away from PHP sendmail on our
-free web hosting provider to other services (we experimented with Mailgun and
-AWS before settling on ElasticEmail.) In the fall of 2019 we rebuilt it from
-scratch with the more modern technologies described above and threw out all the
-old code (it was hosted on Dropbox or something awful like that; we hadn't yet
-learned about version control).
-
-## Why this project is open-sourced
-Simply because it's a decent template for creating modern web apps. Feel free to
-fork this as a template for your own project (deleting all the business logic of
-course).
 
 ## Developer Instructions
 ### Getting environment set up.
