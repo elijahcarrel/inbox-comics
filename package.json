@@ -47,7 +47,7 @@
     "react-spinners": "^0.13.8",
     "react-truncate": "^2.4.0",
     "reaptcha": "^1.12.1",
-    "sass": "^1.62.0",
+    "sass": "^1.62.1",
     "yup": "^1.1.1"
   },
   "devDependencies": {
