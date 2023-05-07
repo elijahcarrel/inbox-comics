@@ -28,19 +28,25 @@ export const Layout: React.FunctionComponent<Props> = (props: Props) => {
   const siteTitle = "Inbox Comics";
   const displayTitle = title ? `${siteTitle} | ${title}` : siteTitle;
   const description =
-    "Get your selection of over 400 comics, including Calvin and Hobbes and xkcd, emailed to you every morning, completely free and never with any ads. Sign up now— it only takes a minute!";
+    "Get your selection of over 400 comics, including Calvin and Hobbes and Peanuts, emailed to you every morning, completely free and never with any ads. Sign up now— it only takes a minute!";
+  const googleTagId = process.env.NEXT_PUBLIC_GOOGLE_TAG_ID;
+  if (googleTagId == null) {
+    throw new Error(
+      "NEXT_PUBLIC_GOOGLE_TAG_ID environment variable is not defined.",
+    );
+  }
   return (
     <>
       <Script
-        src="https://www.googletagmanager.com/gtag/js?id=UA-75894353-1"
+        src={`https://www.googletagmanager.com/gtag/js?id=${googleTagId}`}
         strategy="afterInteractive"
       />
       <Script id="google-analytics" strategy="afterInteractive">
         {`
           window.dataLayer = window.dataLayer || [];
-          function gtag(){window.dataLayer.push(arguments);}
+          function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', 'UA-75894353-1');
+          gtag('config', '${googleTagId}');
         `}
       </Script>
       <Head>
