@@ -22,6 +22,14 @@ interface Props {
 export const SyndicationCard = (props: Props) => {
   const { title, identifier, classes = {}, isSelected, onClick } = props;
 
+  const syndicationImagesDomain =
+    process.env.NEXT_PUBLIC_SYNDICATION_IMAGES_DOMAIN;
+  if (syndicationImagesDomain == null) {
+    throw new Error(
+      "NEXT_PUBLIC_SYNDICATION_IMAGES_DOMAIN environment variable is not defined.",
+    );
+  }
+
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: identifier });
 
@@ -59,7 +67,7 @@ export const SyndicationCard = (props: Props) => {
             styles.syndicationLogo,
             classes.syndicationLogo,
           )}
-          src={`/static/images/logos/${identifier}.jpg`}
+          src={`${syndicationImagesDomain}/logos/${identifier}.jpg`}
           alt=""
           width="100"
           height="100"
