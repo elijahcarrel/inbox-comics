@@ -5,7 +5,7 @@ export interface INewsItem extends Document {
   createTime: Date;
   headline: string;
   content: string;
-  emailContent: string;
+  emailContent?: string;
   isPublished: boolean;
 }
 
@@ -15,6 +15,7 @@ const newsItemSchema = new Schema({
   headline: String,
   content: String,
   emailContent: String,
+  shouldSendEmail: Boolean,
   isPublished: Boolean,
 });
 

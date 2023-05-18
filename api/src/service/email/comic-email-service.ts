@@ -92,7 +92,7 @@ const parseUsersInfoForEmail = (
       ) {
         newsItem = {
           identifier: mostRecentNewsItem.identifier,
-          emailContent: mostRecentNewsItem.emailContent,
+          emailContent: mostRecentNewsItem.emailContent || "",
         };
       }
     }
@@ -219,7 +219,7 @@ export const emailUsers = async (
       $gte: date.clone().subtract(7, "days").toDate(),
     },
     isPublished: true,
-    emailContent: { $exists: true, $nin: ["", null, undefined] },
+    shouldSendEmail: true,
   })
     .sort({ createTime: -1 })
     .exec();

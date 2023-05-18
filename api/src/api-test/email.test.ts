@@ -128,6 +128,7 @@ it("should send comic emails to users with emailable news items embedded within"
     headline: newsItemIdentifier,
     content: newsItemIdentifier,
     emailContent: newsItemIdentifier,
+    shouldSendEmail: true,
     isPublished: true,
   });
 
@@ -152,7 +153,8 @@ it("should send comic emails to users ignoring non-emailable news items", async 
     createTime: date.clone().subtract(1, "day"),
     headline: newsItemIdentifier,
     content: newsItemIdentifier,
-    emailContent: null, // Since this is null, this should not get emailed out.
+    emailContent: null,
+    shouldSendEmail: false,
     isPublished: true,
   });
 
@@ -162,7 +164,8 @@ it("should send comic emails to users ignoring non-emailable news items", async 
     createTime: date.clone().subtract(2, "day"),
     headline: newsItemIdentifier2,
     content: newsItemIdentifier2,
-    emailContent: "", // Since this is empty, this should also not get emailed out.
+    emailContent: "",
+    shouldSendEmail: false,
     isPublished: true,
   });
 
