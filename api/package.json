@@ -32,7 +32,7 @@
     "@jest/globals": "^29.5.0",
     "@jest/types": "^29.5.0",
     "@types/cheerio": "^0.22.31",
-    "@types/lodash": "^4.14.194",
+    "@types/lodash": "^4.14.195",
     "@types/uuid": "^9.0.1",
     "babel-plugin-add-module-exports": "^1.0.4",
     "eslint": "^8.40.0",
