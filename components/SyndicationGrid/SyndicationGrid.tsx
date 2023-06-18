@@ -18,6 +18,7 @@ import {
   sortableKeyboardCoordinates,
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
+import { get } from "lodash";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { Paginate } from "../../common-components/Paginate/Paginate";
 import { TextInput } from "../../common-components/TextInput/TextInput";
@@ -116,7 +117,12 @@ export const SyndicationGrid = (props: Props) => {
     : numComicsOnFirstPage + (pageNumber - 1) * numComicsPerPage;
   let filteredSyndications = orderBy(
     augmentedSyndications,
-    ["isSelected", "selectedIndex", sortField, "title"],
+    (syndication) => [
+      syndication.isSelected,
+      syndication.selectedIndex,
+      get(syndication, sortField) || 0, // numSubscribers might be null instead of 0 if this the syndication was just added to the database.
+      syndication.title,
+    ],
     ["desc", "asc", sortFieldOrder, "asc"],
   );
   if (searchText !== "") {
