@@ -155,7 +155,7 @@ export const SyndicationGrid = (props: Props) => {
           <CommonLink
             onClick={() => {
               setSortField("title");
-              setSortFieldOrder("asc");
+              setSortFieldOrder("desc");
             }}
             isLink={sortField !== "title"}
             className={styles.sortButton}
@@ -170,7 +170,7 @@ export const SyndicationGrid = (props: Props) => {
           <CommonLink
             onClick={() => {
               setSortField("numSubscribers");
-              setSortFieldOrder("desc");
+              setSortFieldOrder("asc");
             }}
             isLink={sortField !== "numSubscribers"}
             className={styles.sortButton}
