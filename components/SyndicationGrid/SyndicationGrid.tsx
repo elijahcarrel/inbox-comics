@@ -69,7 +69,7 @@ export const SyndicationGrid = (props: Props) => {
     numComicsPerPageParam > 100
       ? defaultNumComicsPerPage
       : numComicsPerPageParam;
-  const [sortFieldOrder, setSortFieldOrder] = useState<"asc" | "desc">("desc");
+  const [sortFieldOrder, setSortFieldOrder] = useState<"asc" | "desc">("asc");
   const [searchText, setSearchText] = useState("");
   // TODO(ecarrel): callers should do this, not me. (I think.)
   const augmentedSyndications = syndications.map((syndication) => {
