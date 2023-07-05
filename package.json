@@ -47,7 +47,7 @@
     "react-truncate": "^2.4.0",
     "reaptcha": "^1.12.1",
     "sass": "^1.63.6",
-    "yup": "^1.1.1"
+    "yup": "^1.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.7",
