@@ -10,7 +10,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "dependencies": {
-    "@apollo/server": "^4.7.5",
+    "@apollo/server": "^4.9.3",
     "@as-integrations/next": "^2.0.0",
     "@aws-sdk/client-sesv2": "^3.379.1",
     "@vercel/node": "^2.14.1",
