@@ -140,12 +140,15 @@ const updateUserEntriesWithEmailedComics = async (
   mostRecentNewsItem: INewsItem | null,
   dateAsDate: Date,
 ) => {
-  const messageIdToSavedEmail = savedEmails.reduce((memo, savedEmail) => {
-    return {
-      ...memo,
-      [savedEmail.messageId]: savedEmail,
-    };
-  }, {} as Record<string, IEmail>);
+  const messageIdToSavedEmail = savedEmails.reduce(
+    (memo, savedEmail) => {
+      return {
+        ...memo,
+        [savedEmail.messageId]: savedEmail,
+      };
+    },
+    {} as Record<string, IEmail>,
+  );
 
   const augmentedEmailResults = messageIds.map((messageId, i) => ({
     user: populatedUsers[i],
