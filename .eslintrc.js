@@ -1,6 +1,13 @@
 module.exports = {
-  extends: ["airbnb-typescript-prettier", "next"],
+  extends: [
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "next",
+    "plugin:prettier/recommended",
+  ],
+  plugins: ["prettier"],
   rules: {
+    "prettier/prettier": "error",
     "import/prefer-default-export": "off",
     "react/jsx-props-no-spreading": "off",
     "react/require-default-props": "off",
@@ -12,6 +19,7 @@ module.exports = {
       },
     ],
     "no-use-before-define": "off",
+    "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/no-use-before-define": ["error"],
     "import/extensions": "off",
     "no-unused-vars": "off",
