@@ -9,3 +9,4 @@ bundle
 tsconfig.tsbuildinfo
 next-env.d.ts
 .vscode
+.env*.local
