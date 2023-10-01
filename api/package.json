@@ -28,7 +28,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@aws-sdk/types": "^3.413.0",
+    "@aws-sdk/types": "^3.418.0",
     "@jest/globals": "^29.7.0",
     "@jest/types": "^29.6.3",
     "@types/cheerio": "^0.22.32",
