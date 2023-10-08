@@ -48,9 +48,23 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "syndication_image
   }
 }
 
+resource "aws_s3_bucket_public_access_block" "syndication_images" {
+  bucket = "${aws_s3_bucket.syndication_images.id}"
+
+  block_public_acls   = false
+  block_public_policy = false
+}
+
+
 resource "aws_s3_bucket_policy" "syndication_images_general_policy" {
   bucket = aws_s3_bucket.syndication_images.id
   policy = data.aws_iam_policy_document.syndication_images_general_policy.json
+
+  # We need to disable the public access block before applying the policy, otherwise
+  # applying the policy will fail with a 403.
+  depends_on = [
+    aws_s3_bucket_public_access_block.syndication_images
+  ]
 }
 
 data "aws_iam_policy_document" "syndication_images_general_policy" {
@@ -73,11 +87,4 @@ data "aws_iam_policy_document" "syndication_images_general_policy" {
     ]
 
   }
-}
-
-resource "aws_s3_bucket_public_access_block" "syndication_images" {
-  bucket = "${aws_s3_bucket.syndication_images.id}"
-
-  block_public_acls   = false
-  block_public_policy = false
 }
