@@ -60,6 +60,8 @@ resource "aws_s3_bucket_policy" "syndication_images_general_policy" {
   bucket = aws_s3_bucket.syndication_images.id
   policy = data.aws_iam_policy_document.syndication_images_general_policy.json
 
+  # We need to disable the public access block before applying the policy, otherwise
+  # applying the policy will fail with a 403.
   depends_on = [
     aws_s3_bucket_public_access_block.syndication_images
   ]
