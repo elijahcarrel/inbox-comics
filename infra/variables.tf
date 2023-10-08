@@ -5,9 +5,14 @@ locals {
     inbox-comics-prod    = "syndication-images"
   }
 
-  mongodb_project_id = {
+  mongodb_project_name = {
     inbox-comics-staging = "inbox-comics-staging"
     inbox-comics-prod    = "inbox-comics-prod"
+  }
+
+  mongodb_project_id = {
+    inbox-comics-staging = "60ab381325b394796a209bc0"
+    inbox-comics-prod    = "5cbd40165538551eecc23003"
   }
 
   mongodb_cluster_name = {
