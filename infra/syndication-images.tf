@@ -74,3 +74,10 @@ data "aws_iam_policy_document" "syndication_images_general_policy" {
 
   }
 }
+
+resource "aws_s3_bucket_public_access_block" "syndication_images" {
+  bucket = "${aws_s3_bucket.syndication_images.id}"
+
+  block_public_acls   = false
+  block_public_policy = false
+}
