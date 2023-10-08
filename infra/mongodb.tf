@@ -7,4 +7,6 @@ resource "mongodbatlas_cluster" "inbox_comics" {
   backing_provider_name = "AWS"
   provider_region_name = "US_WEST_2"
   provider_instance_size_name = "M0"
+
+  auto_scaling_disk_gb_enabled = false
 }
