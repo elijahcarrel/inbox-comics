@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "syndication_images" {
-  bucket = "syndication-images"
+  bucket = local.syndication_images_bucket_name[terraform.workspace]
 }
 
 resource "aws_s3_bucket_cors_configuration" "syndication_images" {
