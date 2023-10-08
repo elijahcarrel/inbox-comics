@@ -5,7 +5,7 @@ locals {
     inbox-comics-prod    = "syndication-images"
   }
 
-  mongodb_project_name = {
+  mongodb_project_id = {
     inbox-comics-staging = "inbox-comics-staging"
     inbox-comics-prod    = "inbox-comics-prod"
   }

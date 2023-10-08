@@ -1,5 +1,5 @@
 resource "mongodbatlas_cluster" "inbox_comics" {
-  project_id = local.mongodb_project_name[terraform.workspace]
+  project_id = local.mongodb_project_id[terraform.workspace]
   name = local.mongodb_cluster_name[terraform.workspace]
   cluster_type = "REPLICASET"
 
