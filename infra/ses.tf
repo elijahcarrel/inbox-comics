@@ -12,4 +12,8 @@ resource "aws_ses_domain_identity" "example" {
 
 resource "aws_ses_configuration_set" "common_message_configuration" {
   name = "CommonMessageConfiguration"
+  reputation_metrics_enabled = true
+  delivery_options {
+    tls_policy = "Optional"
+  }
 }
