@@ -42,7 +42,7 @@ export const sendAwsSesEmail = async (
         },
       },
     },
-    ConfigurationSetName: "CommonMessageConfiguration",
+    ConfigurationSetName: process.env.ses_common_message_configuration_name || "",
   };
   const command = new SendEmailCommand(emailParams);
   let result: SendEmailCommandOutput;
