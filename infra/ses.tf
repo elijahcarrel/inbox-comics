@@ -1,17 +1,17 @@
 resource "aws_ses_email_identity" "sender" {
-  email = "comics@inboxcomics.com"
+  email = local.comics_email_sender[terraform.workspace]
 }
 
 resource "aws_ses_email_identity" "bounces" {
-  email = "inboxcomics+bounces@gmail.com"
+  email = local.bounce_email_recipient[terraform.workspace]
 }
 
 resource "aws_ses_domain_identity" "example" {
-  domain = "inboxcomics.com"
+  domain = local.domain[terraform.workspace]
 }
 
 resource "aws_ses_configuration_set" "common_message_configuration" {
-  name = "CommonMessageConfiguration"
+  name = "common-message-configuration-${local.environment[terraform.workspace]}"
   reputation_metrics_enabled = true
   delivery_options {
     tls_policy = "Optional"
