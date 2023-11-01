@@ -23,7 +23,7 @@
     "@types/lodash": "^4.14.198",
     "@types/react-paginate": "^7.1.2",
     "@types/react-truncate": "^2.3.4",
-    "@vercel/analytics": "^1.0.2",
+    "@vercel/analytics": "^1.1.1",
     "classnames": "^2.3.2",
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
