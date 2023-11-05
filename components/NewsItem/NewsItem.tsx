@@ -36,6 +36,8 @@ const NewsItemContent = (props: NewsItemContentProps) => {
           const isExternal = !href.startsWith("/");
           return (
             <CommonLink href={href} isExternal={isExternal}>
+              {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+              {/* @ts-ignore Argument of type 'ChildNode[]' is not assignable to parameter of type 'DOMNode[]'. */}
               {domToReact(domNodeAsElement.children || [])}
             </CommonLink>
           );
