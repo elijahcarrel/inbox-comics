@@ -1,4 +1,6 @@
 terraform {
+  required_version = ">= 1.5.7"
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -9,9 +11,12 @@ terraform {
       source = "mongodb/mongodbatlas"
       version = ">= 1.12.1"
     }
-  }
 
-  required_version = ">= 1.5.7"
+    improvmx = {
+      source  = "issyl0/improvmx"
+      version = ">= 0.6.0"
+    }
+  }
 }
 
 provider "aws" {
@@ -19,3 +24,5 @@ provider "aws" {
 }
 
 provider "mongodbatlas" {}
+
+provider "improvmx" {}
