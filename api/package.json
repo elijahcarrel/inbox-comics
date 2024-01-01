@@ -23,7 +23,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
-    "mongoose": "^8.0.2",
+    "mongoose": "^8.0.3",
     "unescape": "^1.0.1",
     "uuid": "^9.0.1"
   },
