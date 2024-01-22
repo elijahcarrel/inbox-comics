@@ -7,6 +7,7 @@ import { sendVerificationEmail } from "./email/templates/send-verification-email
 import {
   internalEmailSendError,
   invalidUserByPublicIdError,
+  invalidUserError,
   userInputErrorOptions,
 } from "../util/error";
 import { InputUser } from "../api-models/user";
@@ -92,5 +93,16 @@ export const putUser = async (publicId: string, inputUser: InputUser) => {
       throw internalEmailSendError(String(err));
     }
   }
+  return user;
+};
+
+export const unsubscribeUser = async (email: string) => {
+  const user = await User.findOne({ email: email?.toLowerCase() || "" }).exec();
+  if (user == null) {
+    throw invalidUserError(email);
+  }
+
+  user.enabled = false;
+  await user.save();
   return user;
 };

@@ -9,6 +9,7 @@ import {
 } from "../util/error";
 import {
   createUser as serviceCreateUser,
+  unsubscribeUser as serviceUnsubscribeUser,
   putUser as servicePutUser,
 } from "../service/user";
 import { InputUser } from "../api-models/user";
@@ -58,6 +59,10 @@ export const putUser = async (
   _: any,
   args: { publicId: string; user: InputUser },
 ) => servicePutUser(args.publicId, args.user);
+
+// TODO(ecarrel): type of user is wrong; should be an api object type.
+export const unsubscribeUser = async (_: any, args: { email: string }) =>
+  serviceUnsubscribeUser(args.email);
 
 export const resendVerificationEmail = async (
   _: any,

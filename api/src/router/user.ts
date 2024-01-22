@@ -2,6 +2,7 @@ import { gql } from "graphql-tag";
 import {
   createUser,
   createUserWithoutEmail,
+  unsubscribeUser,
   putUser,
   resendVerificationEmail,
   submitContactForm,
@@ -33,6 +34,7 @@ export const typeDefs = gql`
     createUser(email: String!): User
     createUserWithoutEmail: User
     putUser(publicId: String!, user: InputUser): User
+    unsubscribeUser(email: String!): User
     resendVerificationEmail(email: String!): Boolean
     verifyEmail(email: String!, verificationHash: String!): Boolean
     submitContactForm(
@@ -52,6 +54,7 @@ export const resolvers = {
   Mutation: {
     createUser,
     createUserWithoutEmail,
+    unsubscribeUser,
     putUser,
     resendVerificationEmail,
     verifyEmail,
