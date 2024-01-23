@@ -34,6 +34,7 @@ const UnsubscribeUserPage = () => {
         unsubscribeUserMutation(),
       ).then(async ({ success, combinedErrorMessage, result }) => {
         if (success) {
+          toast.success("Account is now disabled.");
           const url = {
             pathname: "/user",
             query: {
