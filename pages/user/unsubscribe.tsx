@@ -27,7 +27,7 @@ const UnsubscribeUserPage = () => {
       email: string;
     };
   }
-  const [unsubscribeUserMutation, { error }] =
+  const [unsubscribeUserMutation, { error, loading }] =
     useMutation<UnsubscribeUserResponse>(mutation, { variables: { email } });
 
   const title = "Unsubscribing...";
@@ -64,7 +64,7 @@ const UnsubscribeUserPage = () => {
     );
   }
 
-  if (urlQueryIsReady && email?.length === 0) {
+  if (urlQueryIsReady && !loading && email?.length === 0) {
     return (
       <Layout
         error={"No email was found in the URL."}
