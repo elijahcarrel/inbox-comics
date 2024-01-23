@@ -4,7 +4,11 @@ import Router from "next/router";
 import React, { useEffect } from "react";
 import toast from "react-hot-toast";
 import { Layout } from "../../common-components/Layout/Layout";
-import { handleGraphQlResponse, useUrlQuery } from "../../lib/utils";
+import {
+  handleGraphQlResponse,
+  stringifyGraphQlError,
+  useUrlQuery,
+} from "../../lib/utils";
 
 const UnsubscribeUserPage = () => {
   const [urlQuery, urlQueryIsReady] = useUrlQuery();
@@ -21,10 +25,8 @@ const UnsubscribeUserPage = () => {
       email: string;
     };
   }
-  const [unsubscribeUserMutation] = useMutation<UnsubscribeUserResponse>(
-    mutation,
-    { variables: { email } },
-  );
+  const [unsubscribeUserMutation, { error }] =
+    useMutation<UnsubscribeUserResponse>(mutation, { variables: { email } });
 
   const title = "Unsubscribing...";
 
@@ -49,15 +51,11 @@ const UnsubscribeUserPage = () => {
     }
   }, [urlQueryIsReady, email, unsubscribeUserMutation]);
 
-  return <Layout title={title} isLoading />;
+  if (error) {
+    return <Layout error={stringifyGraphQlError(error)} />;
+  }
 
-  //     return (
-  //         <Layout title={title}>
-  //             Unable to unsubscribe. Please go to your{" "}
-  //             <CommonLink href="/user/edit">account page</CommonLink>{" "}
-  //             and unsubscribe from there.
-  //         </Layout>
-  //     );
+  return <Layout title={title} isLoading />;
 };
 
 export default UnsubscribeUserPage;

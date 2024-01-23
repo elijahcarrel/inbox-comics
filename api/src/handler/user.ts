@@ -60,7 +60,6 @@ export const putUser = async (
   args: { publicId: string; user: InputUser },
 ) => servicePutUser(args.publicId, args.user);
 
-// TODO(ecarrel): type of user is wrong; should be an api object type.
 export const unsubscribeUser = async (_: any, args: { email: string }) =>
   serviceUnsubscribeUser(args.email);
 
