@@ -5,10 +5,13 @@ import React, { useEffect } from "react";
 import toast from "react-hot-toast";
 import { Layout } from "../../common-components/Layout/Layout";
 import {
+  defaultErrorAction,
   handleGraphQlResponse,
   stringifyGraphQlError,
   useUrlQuery,
 } from "../../lib/utils";
+import { H3 } from "../../common-components/H3/H3";
+import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 
 const UnsubscribeUserPage = () => {
   const [urlQuery, urlQueryIsReady] = useUrlQuery();
@@ -34,7 +37,7 @@ const UnsubscribeUserPage = () => {
     if (urlQueryIsReady && email.length > 0) {
       handleGraphQlResponse<UnsubscribeUserResponse>(
         unsubscribeUserMutation(),
-      ).then(async ({ success, combinedErrorMessage, result }) => {
+      ).then(async ({ success, result }) => {
         if (success) {
           toast.success("Account is now disabled.");
           const url = {
@@ -44,15 +47,31 @@ const UnsubscribeUserPage = () => {
             },
           };
           await Router.push(url, url, { shallow: true });
-        } else {
-          toast.error(combinedErrorMessage);
         }
       });
     }
   }, [urlQueryIsReady, email, unsubscribeUserMutation]);
 
+  const errorAction = (
+    <H3>
+      Try heading over to your{" "}
+      <CommonLink href="/user/edit">account page</CommonLink> to unsubscribe.
+    </H3>
+  );
+
   if (error) {
-    return <Layout error={stringifyGraphQlError(error)} />;
+    return (
+      <Layout error={stringifyGraphQlError(error)} errorAction={errorAction} />
+    );
+  }
+
+  if (urlQueryIsReady && email?.length === 0) {
+    return (
+      <Layout
+        error={"No email was found in the URL."}
+        errorAction={errorAction}
+      />
+    );
   }
 
   return <Layout title={title} isLoading />;
