@@ -5,7 +5,6 @@ import React, { useEffect } from "react";
 import toast from "react-hot-toast";
 import { Layout } from "../../common-components/Layout/Layout";
 import {
-  defaultErrorAction,
   handleGraphQlResponse,
   stringifyGraphQlError,
   useUrlQuery,
