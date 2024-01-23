@@ -10,10 +10,8 @@ const UnsubscribeUserPage = () => {
   const [urlQuery, urlQueryIsReady] = useUrlQuery();
   const email = `${urlQuery.email || ""}`;
   const mutation = gql`
-    mutation unsubscribeUser {
-      unsubscribeUser {
-        email
-      }
+    mutation unsubscribeUser($email: String!) {
+      unsubscribeUser(email: $email)
     }
   `;
   interface UnsubscribeUserResponse {
@@ -23,9 +21,7 @@ const UnsubscribeUserPage = () => {
   }
   const [unsubscribeUserMutation] = useMutation<UnsubscribeUserResponse>(
     mutation,
-    {
-      variables: { email },
-    },
+    { variables: { email } },
   );
 
   const title = "Unsubscribing...";
