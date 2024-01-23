@@ -29,7 +29,11 @@ const UnsubscribeUserPage = () => {
   useEffect(() => {
     if (urlQueryIsReady && email.length > 0) {
       handleGraphQlResponse<UnsubscribeUserResponse>(
-        unsubscribeUserMutation(),
+        unsubscribeUserMutation({
+          variables: {
+            email,
+          },
+        }),
       ).then(async ({ success, combinedErrorMessage, result }) => {
         if (success) {
           const url = {
