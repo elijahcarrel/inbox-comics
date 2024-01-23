@@ -11,7 +11,9 @@ const UnsubscribeUserPage = () => {
   const email = `${urlQuery.email || ""}`;
   const mutation = gql`
     mutation unsubscribeUser($email: String!) {
-      unsubscribeUser(email: $email)
+      unsubscribeUser(email: $email) {
+        email
+      }
     }
   `;
   interface UnsubscribeUserResponse {
