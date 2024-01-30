@@ -34,8 +34,8 @@ export const sendElasticEmail = async (
   if (includeUnsubscribeHeader) {
     params["headers_List-Unsubscribe-Post"] =
       "List-Unsubscribe-Post: List-Unsubscribe=One-Click";
-    params["headers_List-Unsubscribe"] =
-      `List-Unsubscribe: <${encodeURIComponent(unsubscribeUrl)}>`;
+    // params["headers_List-Unsubscribe"] =
+    //   `List-Unsubscribe: <${encodeURIComponent(unsubscribeUrl)}>`;
   }
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore ElasticEmail type definitions are wrong.
