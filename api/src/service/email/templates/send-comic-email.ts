@@ -2,6 +2,10 @@ import { Moment } from "moment-timezone";
 import { v4 as uuidv4 } from "uuid";
 import { sendElasticEmail } from "../send-elastic-email";
 import { now } from "../../../util/date";
+import {
+  getUnsubscribeUrl,
+  getUpdateSubscriptionsUrl,
+} from "../../../util/url";
 
 export interface ComicForEmail {
   syndicationName: string;
@@ -108,14 +112,14 @@ export const sendComicEmail = async (
   googleAnalyticsHash: string = uuidv4(),
 ) => {
   // eslint-disable-next-line  max-len
-  const updateSubscriptionsUrl = `${
-    process.env.domain
-  }/user?email=${encodeURIComponent(
-    email,
-  )}&utm_source=dailycomics&utm_medium=email&utm_term=$dateanalytics&utm_campaign=dailycomics`;
+  const updateSubscriptionsUrl = `${getUpdateSubscriptionsUrl(email)}&utm_source=dailycomics&utm_medium=email&utm_term=$dateanalytics&utm_campaign=dailycomics`;
+
   // eslint-disable-next-line  max-len
+  const unsubscribeUrl = `${getUnsubscribeUrl(email)}&utm_source=dailycomics&utm_medium=email&utm_term=$dateanalytics&utm_campaign=dailycomics`;
+
   const formattedDate = date.format("MMMM Do, YYYY");
   const subject = `Inbox Comics for ${formattedDate}`;
+  // eslint-disable-next-line  max-len
   const googleAnalyticsUrl = `https://www.google-analytics.com/collect?v=1&tid=UA-75894353-1&cid=${googleAnalyticsHash}&t=event&ec=email&ea=open&dp=/email/dailycomics&dt=${subject}&cn=dailycomics&cm=email`;
   let message = `
   <p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
@@ -163,10 +167,14 @@ export const sendComicEmail = async (
           <h3 style="border-bottom: 1px solid #ddd; font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia,
            serif;" class="appleLinksBlack">That's all for today!</h3>
           <p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">If you would rather get
-           more comics, less comics, different comics, or none at all, you can
+           more comics, less comics, or different comics, you can
           <a href="${updateSubscriptionsUrl}"
           style="color: rgb(186,1,6); font-weight: bold; font-family: Palatino, 'Palatino Linotype', 'Book Antiqua',
           Georgia, serif;">change your subscription settings</a> at any time.
+          <p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">Or, you can simply
+          <a href="${unsubscribeUrl}"
+          style="color: rgb(186,1,6); font-weight: bold; font-family: Palatino, 'Palatino Linotype', 'Book Antiqua',
+          Georgia, serif;">unsubscribe in one click</a>.
           If you have any other questions, hit the reply button and let us know!</p>
           <p style="color: #AAAAAA; font-style: italic; font-style: italic; font-family: Palatino,
           'Palatino Linotype', 'Book Antiqua', Georgia, serif;">Brought to you with ♥ from Team Inbox Comics.</p>
