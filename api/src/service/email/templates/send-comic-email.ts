@@ -170,8 +170,7 @@ export const sendComicEmail = async (
            more comics, less comics, or different comics, you can
           <a href="${updateSubscriptionsUrl}"
           style="color: rgb(186,1,6); font-weight: bold; font-family: Palatino, 'Palatino Linotype', 'Book Antiqua',
-          Georgia, serif;">change your subscription settings</a> at any time.
-          <p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">Or, you can simply
+          Georgia, serif;">change your subscription settings</a> at any time. Or, you can simply
           <a href="${unsubscribeUrl}"
           style="color: rgb(186,1,6); font-weight: bold; font-family: Palatino, 'Palatino Linotype', 'Book Antiqua',
           Georgia, serif;">unsubscribe in one click</a>.
