@@ -32,6 +32,7 @@ export const sendElasticEmail = async (
     bodyType: "HTML",
   };
   if (includeUnsubscribeHeader) {
+    params["allowCustomHeaders"] = "true";
     params["headers_List-Unsubscribe-Post"] =
       "List-Unsubscribe-Post: List-Unsubscribe=One-Click";
     // params["headers_List-Unsubscribe"] =
