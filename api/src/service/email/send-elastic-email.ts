@@ -21,7 +21,7 @@ export const sendElasticEmail = async (
   const $ = cheerio.load(body);
   const unsubscribeUrl = getUnsubscribeUrl(to);
   $("body").append(`<a href="{unsubscribe:${unsubscribeUrl}}"></a>`);
-  const params = {
+  const params: Record<string, string> = {
     subject,
     to,
     // eslint-disable-next-line  quote-props
@@ -35,13 +35,13 @@ export const sendElasticEmail = async (
     params["headers_List-Unsubscribe-Post"] =
       "List-Unsubscribe-Post: List-Unsubscribe=One-Click";
     params["headers_List-Unsubscribe"] =
-      `List-Unsubscribe: <${unsubscribeUrl}>`;
+      `List-Unsubscribe: <${encodeURIComponent(unsubscribeUrl)}>`;
   }
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore ElasticEmail type definitions are wrong.
   const result = await makeElasticEmailApiRequest<SendEmailResult>(
     "email/send",
-    URLSearchParams,
+    params,
     "POST",
   );
   if (!result) {
