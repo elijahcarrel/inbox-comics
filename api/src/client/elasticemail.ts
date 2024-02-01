@@ -23,6 +23,10 @@ export const makeElasticEmailApiRequest = async <T>(
     requestUrl = baseUrl;
     body = url.searchParams;
   }
+  // eslint-disable-next-line  no-console
+  console.log(
+    `Making ElasticEmail API request to URL "${requestUrl}" with method "${method}". Body not shown.`,
+  );
   const fetchResponse = await fetch(requestUrl, {
     method,
     body,

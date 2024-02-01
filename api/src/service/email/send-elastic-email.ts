@@ -1,5 +1,6 @@
 import cheerio from "cheerio";
 import { makeElasticEmailApiRequest } from "../../client/elasticemail";
+import { getUnsubscribeUrl } from "../../util/url";
 
 type SendEmailResult = {
   success: boolean;
@@ -15,26 +16,33 @@ export const sendElasticEmail = async (
   subject: string,
   body: string,
   fromEmail = "comics@inboxcomics.com",
+  includeUnsubscribeHeader = true,
 ) => {
   const $ = cheerio.load(body);
-  const updateSubscriptionsUrl = `${
-    process.env.domain
-  }/user?email=${encodeURIComponent(to)}`;
-  $("body").append(`<a href="{unsubscribe:${updateSubscriptionsUrl}}"></a>`);
+  const unsubscribeUrl = getUnsubscribeUrl(to);
+  $("body").append(`<a href="{unsubscribe:${unsubscribeUrl}}"></a>`);
+  const params: Record<string, string> = {
+    subject,
+    to,
+    // eslint-disable-next-line  quote-props
+    from: "comics@inboxcomics.com",
+    replyTo: fromEmail,
+    bodyHtml: $.html(),
+    fromName: "Inbox Comics",
+    bodyType: "HTML",
+  };
+  if (includeUnsubscribeHeader) {
+    params["allowCustomHeaders"] = "true";
+    params["headers_List-Unsubscribe-Post"] =
+      "List-Unsubscribe-Post: List-Unsubscribe=One-Click";
+    // params["headers_List-Unsubscribe"] =
+    //   `List-Unsubscribe: <${encodeURIComponent(unsubscribeUrl)}>`;
+  }
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore ElasticEmail type definitions are wrong.
   const result = await makeElasticEmailApiRequest<SendEmailResult>(
     "email/send",
-    {
-      subject,
-      to,
-      // eslint-disable-next-line  quote-props
-      from: "comics@inboxcomics.com",
-      replyTo: fromEmail,
-      bodyHtml: $.html(),
-      fromName: "Inbox Comics",
-      bodyType: "HTML",
-    },
+    params,
     "POST",
   );
   if (!result) {
