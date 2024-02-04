@@ -2,7 +2,7 @@ import classNames from "classnames";
 import parse, { domToReact } from "html-react-parser";
 import React from "react";
 import Truncate from "react-truncate";
-import { format } from "date-fns";
+import { format } from "date-fns/format";
 import { Element } from "domhandler";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { H2 } from "../../common-components/H2/H2";
