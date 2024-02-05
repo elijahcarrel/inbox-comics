@@ -2,7 +2,7 @@ import { ApolloError, FetchResult } from "@apollo/client";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import React, { useEffect, useState } from "react";
-import format from "date-fns/format";
+import { format } from "date-fns/format";
 import { isEmpty } from "lodash";
 import { CommonLink } from "../common-components/CommonLink/CommonLink";
 import { H3 } from "../common-components/H3/H3";
