@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import React, { useState } from "react";
-import { format } from "date-fns/format";
+import { format } from "date-fns";
 import { orderBy } from "lodash";
 import { Layout } from "../../common-components/Layout/Layout";
 import { Paginate } from "../../common-components/Paginate/Paginate";
