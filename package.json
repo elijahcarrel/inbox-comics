@@ -34,7 +34,7 @@
     "fuse.js": "^7.0.0",
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
-    "html-react-parser": "^5.1.7",
+    "html-react-parser": "^5.1.8",
     "isomorphic-unfetch": "^4.0.2",
     "lodash": "^4.17.21",
     "next": "^14.1.0",
