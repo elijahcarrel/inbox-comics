@@ -25,7 +25,7 @@
     "@types/react-truncate": "^2.3.7",
     "@vercel/analytics": "^1.2.2",
     "classnames": "^2.5.1",
-    "date-fns": "^2.30.0",
+    "date-fns": "^3.3.1",
     "date-fns-tz": "^2.0.0",
     "domhandler": "^5.0.3",
     "dotenv": "^16.4.5",
