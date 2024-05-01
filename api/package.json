@@ -34,7 +34,7 @@
     "@types/cheerio": "^0.22.35",
     "@types/lodash": "^4.17.0",
     "@types/uuid": "^9.0.8",
-    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
     "babel-plugin-add-module-exports": "^1.0.4",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
