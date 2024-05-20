@@ -30,10 +30,10 @@ export class ArcamaxScraper extends Scraper {
       return scrapeFailure(failureModes.ARCAMAX_REJECTION);
     }
     const comicImages = $("img#comic-zoom");
-    if (comicImages.length !== 1) {
+    if (comicImages.length < 1) {
       return scrapeFailure(failureModes.ARCAMAX_MISSING_IMAGE_ON_PAGE);
     }
-    const imageUrl = comicImages.attr("src");
+    const imageUrl = comicImages.first().attr("src");
     return scrapeSuccess(imageUrl);
   }
 }
