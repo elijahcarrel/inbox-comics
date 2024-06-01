@@ -40,7 +40,7 @@
     "next": "^14.1.4",
     "normalize-scss": "^8.0.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react-dom": "^18.3.1",
     "react-hot-toast": "^2.4.1",
     "react-paginate": "^8.2.0",
     "react-spinners": "^0.13.8",
@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@types/react": "^18.2.73",
-    "@types/react-dom": "^18.2.23",
+    "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^6.20.0",
     "babel-plugin-add-module-exports": "^1.0.4",
     "eslint": "^8.57.0",
