@@ -22,7 +22,7 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-  await mongoose.connection.db.dropDatabase();
+  await mongoose.connection?.db?.dropDatabase();
 });
 
 afterEach(() => {
