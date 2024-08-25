@@ -1,6 +1,6 @@
 import axios from "axios";
 import https from "https";
-import cheerio from "cheerio";
+import * as cheerio from "cheerio";
 import {
   ComicFailureMode,
   failureModes,

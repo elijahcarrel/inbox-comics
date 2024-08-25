@@ -201,6 +201,8 @@ export const emailUsers = async (
     mentionNotUpdatedComics = true,
     includeLatestNewsItemEvenIfItsAlreadyBeenSent = false,
   } = options;
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore for some reason mongoose wants the type of _id to be unknown rather than ObjectId.
   const populatedUsers: PopulatedUser[] = await User.populate(users, [
     {
       path: "syndications",

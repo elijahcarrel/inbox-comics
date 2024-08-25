@@ -2,7 +2,7 @@ import { Moment } from "moment";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import unescape from "unescape";
-import cheerio from "cheerio";
+import * as cheerio from "cheerio";
 import {
   ISyndication,
   failureModes,

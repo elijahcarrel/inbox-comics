@@ -1,4 +1,4 @@
-import cheerio from "cheerio";
+import * as cheerio from "cheerio";
 import { makeElasticEmailApiRequest } from "../../client/elasticemail";
 import { getUnsubscribeUrl } from "../../util/url";
 
