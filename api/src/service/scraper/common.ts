@@ -17,6 +17,7 @@ export const cheerioRequest = async (url: string) => {
     // TODO(ecarrel): check if response.request.res.responseUrl !== url to detect redirects.
     return cheerio.load(response.data);
   } catch (err) {
+    console.error(`Error making cheerio request: ${String(err)}`);
     return null;
   }
 };
