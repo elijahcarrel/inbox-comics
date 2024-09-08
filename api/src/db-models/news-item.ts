@@ -6,6 +6,7 @@ export interface INewsItem extends Document {
   headline: string;
   content: string;
   emailContent?: string;
+  shouldSendEmail: boolean;
   isPublished: boolean;
 }
 
