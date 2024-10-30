@@ -13,7 +13,7 @@
     "@apollo/server": "^4.11.0",
     "@as-integrations/next": "^3.1.0",
     "@aws-sdk/client-sesv2": "^3.645.0",
-    "@vercel/node": "^3.2.12",
+    "@vercel/node": "^3.2.17",
     "axios": "^1.7.7",
     "cheerio": "^1.0.0",
     "graphql": "^16.9.0",
