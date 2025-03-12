@@ -30,7 +30,7 @@
   "devDependencies": {
     "@aws-sdk/types": "^3.714.0",
     "@eslint/compat": "^1.2.2",
-    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/eslintrc": "^3.3.0",
     "@eslint/js": "^9.13.0",
     "@jest/globals": "^29.7.0",
     "@jest/types": "^29.6.3",
