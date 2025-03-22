@@ -67,6 +67,14 @@
   "private": true,
   "overrides": {
     "@types/react": "19.0.12",
-    "@types/react-dom": "19.0.4"
+    "@types/react-dom": "19.0.4",
+    "react-truncate": {
+      "react": "19.0.0",
+      "react-dom": "19.0.0"
+    },
+    "reaptcha": {
+      "react": "19.0.0",
+      "react-dom": "19.0.0"
+    }
   }
 }
