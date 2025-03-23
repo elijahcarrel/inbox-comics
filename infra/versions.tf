@@ -9,6 +9,11 @@ terraform {
       source = "mongodb/mongodbatlas"
       version = ">= 1.12.1"
     }
+
+    checkly = {
+      source = "checkly/checkly"
+      version = "~> 1.0"
+    }
   }
 
   required_version = ">= 1.5.7"
