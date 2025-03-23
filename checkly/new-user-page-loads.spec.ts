@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { expect, test } = require("@playwright/test");
+import { expect, test } from "@playwright/test";
 
 test.setTimeout(210000);
 test.use({ actionTimeout: 10000 });
