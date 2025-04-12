@@ -10,6 +10,7 @@ import { ThreeWordPhraseScraper } from "./scrapers/three-word-phrase";
 import { TundraScraper } from "./scrapers/tundra";
 import { XkcdScraper } from "./scrapers/xkcd";
 import { MockScraper } from "./scrapers/mock";
+import { PoorlyDrawnLinesScraper } from "./scrapers/poorly-drawn-lines";
 
 type Site = {
   name: string;
@@ -87,6 +88,12 @@ export const sites: Record<number, Site> = {
     description: "Three Word Phrase",
     id: 10,
     scraper: new ThreeWordPhraseScraper(),
+  },
+  11: {
+    name: "POORLY_DRAWN_LINES",
+    description: "Poorly Drawn Lines",
+    id: 11,
+    scraper: new PoorlyDrawnLinesScraper(),
   },
   [MOCK_SITE_ID]: {
     name: "MOCK",
