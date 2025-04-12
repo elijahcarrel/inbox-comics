@@ -21,7 +21,9 @@ export type ComicFailureMode =
   | "EXPLOSM_REJECTION"
   | "EXPLOSM_MISSING_IMAGE_ON_PAGE"
   | "THREE_WORD_PHRASE_REJECTION"
-  | "THREE_WORD_PHRASE_MISSING_IMAGE_ON_PAGE";
+  | "THREE_WORD_PHRASE_MISSING_IMAGE_ON_PAGE"
+  | "POORLY_DRAWN_LINES_REJECTION"
+  | "POORLY_DRAWN_LINES_MISSING_IMAGE_ON_PAGE";
 
 export const failureModes: { [key: string]: ComicFailureMode } = {
   UNKNOWN: "UNKNOWN",
@@ -46,10 +48,12 @@ export const failureModes: { [key: string]: ComicFailureMode } = {
   THREE_WORD_PHRASE_REJECTION: "THREE_WORD_PHRASE_REJECTION",
   THREE_WORD_PHRASE_MISSING_IMAGE_ON_PAGE:
     "THREE_WORD_PHRASE_MISSING_IMAGE_ON_PAGE",
+  POORLY_DRAWN_LINES_REJECTION: "POORLY_DRAWN_LINES_REJECTION",
+  POORLY_DRAWN_LINES_MISSING_IMAGE_ON_PAGE:
+    "POORLY_DRAWN_LINES_MISSING_IMAGE_ON_PAGE",
 };
 
 export interface ISyndication extends Document {
-  // eslint-disable-next-line camelcase
   site_id: number;
   title: string;
   identifier: string;
