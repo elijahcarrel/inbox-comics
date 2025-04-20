@@ -20,7 +20,7 @@ export class GoComicsScraper extends Scraper {
       return scrapeFailure(failureModes.GOCOMICS_REJECTION);
     }
     const comicImages = $(
-      "section[data-sentry-component='ShowComicViewer'] button[aria-label='Expand comic'] img",
+      "div[class*='ComicViewer'] button[aria-label='Expand comic'] img",
     );
     if (comicImages.length !== 1) {
       return scrapeFailure(failureModes.GOCOMICS_MISSING_IMAGE_ON_PAGE);
