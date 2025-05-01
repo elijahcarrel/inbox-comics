@@ -37,7 +37,7 @@
     "html-react-parser": "^5.2.2",
     "isomorphic-unfetch": "^4.0.2",
     "lodash": "^4.17.21",
-    "next": "15.2.3",
+    "next": "15.3.1",
     "normalize-scss": "^8.0.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
