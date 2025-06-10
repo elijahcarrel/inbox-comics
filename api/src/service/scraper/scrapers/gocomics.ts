@@ -54,7 +54,7 @@ export class GoComicsScraper extends Scraper {
     if (!entry) {
       return scrapeFailure(failureModes.GOCOMICS_MISSING_IMAGE_ON_PAGE);
     }
-    const imageUrl = entry?.contentUrl;
+    const imageUrl = (entry as Record<string, any>)?.contentUrl;
     if (!imageUrl) {
       return scrapeFailure(failureModes.GOCOMICS_MISSING_IMAGE_ON_PAGE);
     }
