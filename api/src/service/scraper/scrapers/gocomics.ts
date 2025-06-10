@@ -27,9 +27,11 @@ export class GoComicsScraper extends Scraper {
         if (!jsonText) {
           return [];
         }
-        let data = {};
         try {
-          data = JSON.parse(jsonText);
+          const data = JSON.parse(jsonText);
+          // Some pages use an array of objects in a single script tag
+          const entries = Array.isArray(data) ? data : [data];
+          return entries;
         } catch (err) {
           console.log(
             "got error parsing this script as json: ",
@@ -39,10 +41,6 @@ export class GoComicsScraper extends Scraper {
           );
           return [];
         }
-
-        // Some pages use an array of objects in a single script tag
-        const entries = Array.isArray(data) ? data : [data];
-        return entries;
       })
       .toArray()
       .flat();
