@@ -14,7 +14,7 @@
     "@as-integrations/next": "^3.2.0",
     "@aws-sdk/client-sesv2": "^3.772.0",
     "@vercel/node": "^5.1.14",
-    "axios": "^1.8.4",
+    "axios": "^1.12.2",
     "cheerio": "^1.0.0",
     "graphql": "^16.10.0",
     "graphql-tag": "^2.12.6",
