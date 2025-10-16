@@ -5,7 +5,7 @@ import {
 } from "../../../db-models/comic-syndication";
 import {
   ScrapeResult,
-  cheerioRequest,
+  cheerioRequestWithOptions,
   scrapeFailure,
   scrapeSuccess,
 } from "../common";
@@ -15,7 +15,9 @@ export class GoComicsScraper extends Scraper {
   async scrape(date: Moment, syndication: ISyndication): Promise<ScrapeResult> {
     const { theiridentifier: theirIdentifier } = syndication;
     const url = `https://www.gocomics.com/${theirIdentifier}`;
-    const $ = await cheerioRequest(url);
+    const $ = await cheerioRequestWithOptions(url, {
+      useChromeFingerprint: true,
+    });
     if ($ === null) {
       return scrapeFailure(failureModes.GOCOMICS_REJECTION);
     }
