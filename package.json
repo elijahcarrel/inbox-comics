@@ -60,7 +60,7 @@
     "eslint-plugin-prettier": "^5.2.3",
     "prettier": "^3.5.3",
     "typescript": "^5.8.2",
-    "webpack": "^5.98.0"
+    "webpack": "^5.104.1"
   },
   "engines": {
     "node": "20.x"
