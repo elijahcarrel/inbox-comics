@@ -1,4 +1,5 @@
 import { Moment } from "moment";
+import moment from "moment-timezone";
 import {
   ISyndication,
   failureModes,
@@ -10,9 +11,13 @@ import {
   scrapeSuccess,
 } from "../common";
 import { Scraper } from "../scraper";
+import sortBy from "lodash/sortBy";
 
 export class GoComicsScraper extends Scraper {
-  async scrape(date: Moment, syndication: ISyndication): Promise<ScrapeResult> {
+  async scrape(
+    _date: Moment,
+    syndication: ISyndication,
+  ): Promise<ScrapeResult> {
     const { theiridentifier: theirIdentifier } = syndication;
     const url = `https://www.gocomics.com/${theirIdentifier}`;
     const $ = await cheerioRequestWithOptions(url, {
@@ -22,7 +27,6 @@ export class GoComicsScraper extends Scraper {
       return scrapeFailure(failureModes.GOCOMICS_REJECTION);
     }
     const scripts = $('script[type="application/ld+json"]');
-    const desiredDatePublished = date.format("MMMM D, YYYY");
     const allScriptObjects = scripts
       .map((_, el): Record<string, any>[] => {
         const jsonText = $(el).html();
@@ -46,13 +50,22 @@ export class GoComicsScraper extends Scraper {
       })
       .toArray()
       .flat();
-    const entry = allScriptObjects.find((entry: Record<string, any>) => {
-      return (
-        entry.representativeOfPage === true &&
-        entry.datePublished === desiredDatePublished &&
-        entry["@type"] === "ImageObject"
-      );
-    });
+    const representativeEntries = allScriptObjects.filter(
+      (entry: Record<string, any>) => {
+        return (
+          entry.representativeOfPage === true &&
+          entry["@type"] === "ImageObject"
+        );
+      },
+    );
+    const sortedRepresentativeEntries = sortBy(
+      representativeEntries,
+      (entry: Record<string, any>) => {
+        return moment(entry.datePublished, "MMMM D, YYYY").unix();
+      },
+    );
+    const entry =
+      sortedRepresentativeEntries?.[sortedRepresentativeEntries.length - 1];
     if (!entry) {
       return scrapeFailure(failureModes.GOCOMICS_MISSING_IMAGE_ON_PAGE);
     }
