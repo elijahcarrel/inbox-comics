@@ -12,7 +12,6 @@ import {
 import { Scraper } from "../scraper";
 
 export class DinosaurScraper extends Scraper {
-  // eslint-disable-next-line class-methods-use-this
   async scrape(
     _date: Moment,
     _syndication: ISyndication,

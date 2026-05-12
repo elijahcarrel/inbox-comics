@@ -49,12 +49,11 @@ export const scrapeAndSaveComicForSyndication = async (
   const createdComic = await Comic.create(
     createComicDbObject(syndication, date, scrapeResult),
   );
-  // eslint-disable-next-line no-param-reassign
+
   syndication.lastAttemptedComicScrapeDate = date.toDate();
   if (scrapeResult.success) {
-    // eslint-disable-next-line no-param-reassign
     syndication.lastSuccessfulComicScrapeDate = date.toDate();
-    // eslint-disable-next-line no-param-reassign
+
     syndication.lastSuccessfulComic = createdComic;
   }
   await syndication.save();
@@ -121,10 +120,8 @@ export const scrapeAndSaveAllComicsWithOptions = async (
   }
   const updatedSyndications = augmentedScrapeResults.map(
     ({ syndication, scrapeResult }) => {
-      // eslint-disable-next-line no-param-reassign
       syndication.lastAttemptedComicScrapeDate = date.toDate();
       if (scrapeResult.success) {
-        // eslint-disable-next-line no-param-reassign
         syndication.lastSuccessfulComicScrapeDate = date.toDate();
         // TODO(ecarrel): there's gotta be a better way to do this.
         const createdComic = createdComics.find(
@@ -132,7 +129,6 @@ export const scrapeAndSaveAllComicsWithOptions = async (
             comic.syndication.identifier === syndication.identifier,
         );
         if (createdComic != null) {
-          // eslint-disable-next-line no-param-reassign
           syndication.lastSuccessfulComic = createdComic;
         }
       }

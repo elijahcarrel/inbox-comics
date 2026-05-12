@@ -69,7 +69,6 @@ const parseUsersInfoForEmail = (
       } else {
         const comic = lastEmailedComics.find(
           (lastEmailedComic) =>
-            // eslint-disable-next-line no-underscore-dangle
             String(lastEmailedComic.syndication) === String(syndication._id),
         );
         if (comic != null) {
@@ -156,18 +155,16 @@ const updateUserEntriesWithEmailedComics = async (
   }));
 
   const updatedUsers = augmentedEmailResults.map(({ user, savedEmail }) => {
-    // eslint-disable-next-line no-param-reassign
     user.lastEmailedComics = user.syndications
       .map((syndication) => syndication.lastSuccessfulComic)
       .filter((comic) => comic != null);
-    // eslint-disable-next-line no-param-reassign
+
     user.lastEmailCheck = dateAsDate;
     if (savedEmail) {
-      // eslint-disable-next-line no-param-reassign
       user.lastEmailSent = dateAsDate;
-      // eslint-disable-next-line no-param-reassign
+
       user.emails = [...(user.emails || []), savedEmail];
-      // eslint-disable-next-line no-param-reassign
+
       user.lastEmailedNewsItem = mostRecentNewsItem;
     }
     return user;
@@ -185,7 +182,6 @@ const markAllUsersAsChecked = async (users: IUser[], dateAsDate: Date) => {
     },
   };
   const filter: FilterQuery<IUser> = {
-    // eslint-disable-next-line no-underscore-dangle
     _id: users.map((user) => user._id),
   };
   await User.updateMany(filter, updateDoc);

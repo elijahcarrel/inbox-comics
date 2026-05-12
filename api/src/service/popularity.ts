@@ -14,7 +14,6 @@ export const computePopularity = async () => {
   const syndications = await Syndication.find({}).exec();
   const counts = syndications.reduce(
     (memo: { [syndicationIdentifier: string]: number }, syndication) => ({
-      // eslint-disable-next-line no-param-reassign
       ...memo,
       [syndication.identifier]: 0,
     }),
@@ -30,7 +29,6 @@ export const computePopularity = async () => {
   // TODO(ecarrel): batch this.
   await Promise.all(
     syndications.map((syndication) => {
-      // eslint-disable-next-line no-param-reassign
       syndication.numSubscribers = counts[syndication.identifier];
       return syndication.save();
     }),

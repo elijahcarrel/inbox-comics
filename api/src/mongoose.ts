@@ -9,6 +9,6 @@ export const initMongoose = () => {
   }
   mongoose.set("debug", true);
   mongoose.connect(url);
-  // eslint-disable-next-line  no-console
+
   mongoose.connection.once("open", () => console.log(`Connected to mongodb.`));
 };

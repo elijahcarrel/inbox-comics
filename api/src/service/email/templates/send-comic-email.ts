@@ -111,15 +111,13 @@ export const sendComicEmail = async (
   date: Moment = now(),
   googleAnalyticsHash: string = uuidv4(),
 ) => {
-  // eslint-disable-next-line  max-len
   const updateSubscriptionsUrl = `${getUpdateSubscriptionsUrl(email)}&utm_source=dailycomics&utm_medium=email&utm_term=$dateanalytics&utm_campaign=dailycomics`;
 
-  // eslint-disable-next-line  max-len
   const unsubscribeUrl = `${getUnsubscribeUrl(email)}&utm_source=dailycomics&utm_medium=email&utm_term=$dateanalytics&utm_campaign=dailycomics`;
 
   const formattedDate = date.format("MMMM Do, YYYY");
   const subject = `Inbox Comics for ${formattedDate}`;
-  // eslint-disable-next-line  max-len
+
   const googleAnalyticsUrl = `https://www.google-analytics.com/collect?v=1&tid=UA-75894353-1&cid=${googleAnalyticsHash}&t=event&ec=email&ea=open&dp=/email/dailycomics&dt=${subject}&cn=dailycomics&cm=email`;
   let message = `
   <p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;">
@@ -190,7 +188,6 @@ export const sendComicEmail = async (
   try {
     return await sendElasticEmail(email, subject, body);
   } catch (e) {
-    // eslint-disable-next-line no-console
     console.error(e);
     return null;
   }

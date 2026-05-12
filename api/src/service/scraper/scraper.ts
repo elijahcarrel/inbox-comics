@@ -11,7 +11,6 @@ export class Scraper {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async scrape(
     _date: Moment,
     _syndication: ISyndication,

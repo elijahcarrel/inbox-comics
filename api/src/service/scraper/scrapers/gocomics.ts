@@ -48,14 +48,11 @@ export class GoComicsScraper extends Scraper {
       })
       .toArray()
       .flat();
-    const entry = allScriptObjects.find(
-      (entry: Record<string, any>) => {
-        return (
-          entry.representativeOfPage === true &&
-          entry["@type"] === "ImageObject"
-        );
-      },
-    );
+    const entry = allScriptObjects.find((entry: Record<string, any>) => {
+      return (
+        entry.representativeOfPage === true && entry["@type"] === "ImageObject"
+      );
+    });
     if (!entry) {
       return scrapeFailure(failureModes.GOCOMICS_MISSING_IMAGE_ON_PAGE);
     }

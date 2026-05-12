@@ -24,7 +24,7 @@ export const sendElasticEmail = async (
   const params: Record<string, string> = {
     subject,
     to,
-    // eslint-disable-next-line  quote-props
+
     from: "comics@inboxcomics.com",
     replyTo: fromEmail,
     bodyHtml: $.html(),
