@@ -24,7 +24,7 @@ provider "registry.terraform.io/checkly/checkly" {
 
 provider "registry.terraform.io/hashicorp/aws" {
   version     = "6.44.0"
-  constraints = "6.44.0"
+  constraints = "~> 6.0"
   hashes = [
     "h1:NYUMqeKfML2PtEyC5Ob/g44PkxIzoKBsNSftrZvRY24=",
     "zh:0462747d28f6dcd7b1b723bea9da1600526b7cdcf929ed4be54352d74b0746e6",
@@ -47,7 +47,7 @@ provider "registry.terraform.io/hashicorp/aws" {
 
 provider "registry.terraform.io/mongodb/mongodbatlas" {
   version     = "2.12.0"
-  constraints = ">= 1.12.1"
+  constraints = "~> 2.0"
   hashes = [
     "h1:Pfbzo8if9IzShxSr2bblU+gOhsd2GII8QA1IKFg9jXc=",
     "zh:085949d1ce2a46dfba3db77c7f928090a8dd4028737589dfff1186f9821f6fd6",
