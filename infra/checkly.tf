@@ -14,7 +14,7 @@ resource "checkly_check" "new-user-page-loads" {
   muted                     = false
   should_fail               = false
   run_parallel              = true
-  locations                 = ["ca-central-1", "us-east-1"]
+  locations                 = ["us-east-1", "us-west-1"]
   script                    = file("${path.module}/../checkly/new-user-page-loads.spec.ts")
   degraded_response_time    = 15000
   max_response_time         = 30000
