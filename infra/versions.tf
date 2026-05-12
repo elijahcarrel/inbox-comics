@@ -2,12 +2,12 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 5.16"
+      version = "~> 6.0"
     }
 
     mongodbatlas = {
       source = "mongodb/mongodbatlas"
-      version = ">= 1.12.1"
+      version = "~> 2.0"
     }
 
     checkly = {
