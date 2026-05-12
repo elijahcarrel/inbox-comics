@@ -12,7 +12,6 @@ import {
 import { Scraper } from "../scraper";
 
 export class ComicsKingdomScraper extends Scraper {
-  // eslint-disable-next-line class-methods-use-this
   async scrape(date: Moment, syndication: ISyndication): Promise<ScrapeResult> {
     const { theiridentifier: theirIdentifier } = syndication;
     const url = `https://www.comicskingdom.com/${theirIdentifier}/${date.format(

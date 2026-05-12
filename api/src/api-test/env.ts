@@ -1,4 +1,3 @@
-/* eslint-disable import/no-import-module-exports */
 import mongoose from "mongoose";
 import NodeEnvironment from "jest-environment-node";
 import { MongoMemoryServer } from "mongodb-memory-server";
@@ -61,7 +60,7 @@ export default class ApiTestEnvironment extends NodeEnvironment {
   }
 
   // TODO(ecarrel): explore whether we can make this method static?
-  // eslint-disable-next-line class-methods-use-this
+
   private get runInBand(): boolean {
     // '-i' is an alias for '--runInBand'
     // https://jestjs.io/docs/en/cli#runinband

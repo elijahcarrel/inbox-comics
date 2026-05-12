@@ -84,7 +84,7 @@ export const cheerioRequest = async (url: string) => {
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-// eslint-disable-next-line no-underscore-dangle,@typescript-eslint/no-unused-vars
+
 export const _producesNonEmptyResponse = async (url: string) => {
   const response = await axios({
     method: "GET",

@@ -34,7 +34,6 @@ type CancelInProgressResult = {
 export const cancelThrottledEmailsAndSendThemWithAwsWithOptions = async (
   options?: CancelThrottledEmailsOptions,
 ): Promise<boolean> => {
-  // eslint-disable-next-line  no-console
   console.log("cancelThrottledEmailsAndSendThemWithAws called");
   const { limit = 3 } = options || {};
   const actualEvents = await makeElasticEmailApiRequest<LoadLogResult>(
@@ -44,7 +43,7 @@ export const cancelThrottledEmailsAndSendThemWithAwsWithOptions = async (
       limit: String(limit),
     },
   );
-  // eslint-disable-next-line  no-console
+
   console.log(
     "got the following potential events to cancel: ",
     JSON.stringify(actualEvents?.result?.data?.recipients || []),
@@ -78,7 +77,7 @@ export const cancelThrottledEmailsAndSendThemWithAwsWithOptions = async (
       };
     }),
   );
-  // eslint-disable-next-line  no-console
+
   console.log(
     "cancelling the following messages: ",
     JSON.stringify(messagesToCancel),

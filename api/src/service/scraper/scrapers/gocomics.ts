@@ -1,5 +1,4 @@
 import { Moment } from "moment";
-import moment from "moment-timezone";
 import {
   ISyndication,
   failureModes,
@@ -11,7 +10,6 @@ import {
   scrapeSuccess,
 } from "../common";
 import { Scraper } from "../scraper";
-import sortBy from "lodash/sortBy";
 
 export class GoComicsScraper extends Scraper {
   async scrape(
@@ -19,7 +17,7 @@ export class GoComicsScraper extends Scraper {
     syndication: ISyndication,
   ): Promise<ScrapeResult> {
     const { theiridentifier: theirIdentifier } = syndication;
-    const url = `https://www.gocomics.com/${theirIdentifier}`;
+    const url = `https://www.gocomics.com/${theirIdentifier}/${_date.format("YYYY/MM/DD")}`;
     const $ = await cheerioRequestWithOptions(url, {
       useChromeFingerprint: true,
     });
@@ -50,22 +48,11 @@ export class GoComicsScraper extends Scraper {
       })
       .toArray()
       .flat();
-    const representativeEntries = allScriptObjects.filter(
-      (entry: Record<string, any>) => {
-        return (
-          entry.representativeOfPage === true &&
-          entry["@type"] === "ImageObject"
-        );
-      },
-    );
-    const sortedRepresentativeEntries = sortBy(
-      representativeEntries,
-      (entry: Record<string, any>) => {
-        return moment(entry.datePublished, "MMMM D, YYYY").unix();
-      },
-    );
-    const entry =
-      sortedRepresentativeEntries?.[sortedRepresentativeEntries.length - 1];
+    const entry = allScriptObjects.find((entry: Record<string, any>) => {
+      return (
+        entry.representativeOfPage === true && entry["@type"] === "ImageObject"
+      );
+    });
     if (!entry) {
       return scrapeFailure(failureModes.GOCOMICS_MISSING_IMAGE_ON_PAGE);
     }

@@ -12,7 +12,6 @@ import {
 } from "../common";
 
 export class TundraScraper extends Scraper {
-  // eslint-disable-next-line class-methods-use-this
   async scrape(
     date: Moment,
     _syndication: ISyndication,

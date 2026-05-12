@@ -8,7 +8,6 @@ export const initApollo = (): ((_req: any, _res: any) => Promise<unknown>) => {
     typeDefs,
     resolvers,
     formatError: (error: any) => {
-      // eslint-disable-next-line  no-console
       console.error(error);
       return error;
     },
@@ -18,7 +17,7 @@ export const initApollo = (): ((_req: any, _res: any) => Promise<unknown>) => {
           return {
             async willSendResponse(requestContext) {
               const { response } = requestContext;
-              // eslint-disable-next-line  no-console
+
               console.log(response);
             },
           };
