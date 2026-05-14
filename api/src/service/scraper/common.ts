@@ -18,47 +18,22 @@ export const cheerioRequestWithOptions = async (
     let html = "";
 
     if (options.useChromeFingerprint) {
-      // Use native HTTP/2 to bypass Bunny CDN
-      const http2 = await import("http2");
-      const parsedUrl = new URL(url);
+      const puppeteer = require("puppeteer-core");
+      const chromium = require("@sparticuz/chromium");
 
-      html = await new Promise((resolve, reject) => {
-        const client = http2.connect(parsedUrl.origin, {
-          rejectUnauthorized: false,
-        });
-
-        client.on("error", (err) => reject(err));
-
-        const req = client.request({
-          ":path": parsedUrl.pathname + parsedUrl.search,
-          ":method": "GET",
-          "user-agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-          accept:
-            "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
-          "accept-language": "en-US,en;q=0.9",
-          "sec-ch-ua":
-            '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
-          "sec-ch-ua-mobile": "?0",
-          "sec-ch-ua-platform": '"Windows"',
-          "sec-fetch-dest": "document",
-          "sec-fetch-mode": "navigate",
-          "sec-fetch-site": "none",
-          "sec-fetch-user": "?1",
-          "upgrade-insecure-requests": "1",
-        });
-
-        req.setEncoding("utf8");
-        let data = "";
-        req.on("data", (chunk) => {
-          data += chunk;
-        });
-        req.on("end", () => {
-          client.close();
-          resolve(data);
-        });
-        req.end();
+      const browser = await puppeteer.launch({
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath(),
+        headless: chromium.headless,
+        ignoreHTTPSErrors: true,
       });
+
+      const page = await browser.newPage();
+      await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+      html = await page.content();
+      
+      await browser.close();
     } else {
       // Existing simple configuration
       const axiosConfig: any = {
