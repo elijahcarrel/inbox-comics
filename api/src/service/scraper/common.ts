@@ -15,62 +15,63 @@ export const cheerioRequestWithOptions = async (
   options: CheerioRequestOptions = {},
 ) => {
   try {
-    const axiosConfig: any = {
-      method: "GET",
-      url,
-      responseType: "text",
-    };
+    let html = "";
 
     if (options.useChromeFingerprint) {
-      // Chrome 120 TLS configuration
-      const httpsAgent = new https.Agent({
-        // TLS 1.2 and 1.3 support (Chrome 120 uses both)
-        minVersion: "TLSv1.2",
-        maxVersion: "TLSv1.3",
+      // Use native HTTP/2 to bypass Bunny CDN
+      const http2 = await import("http2");
+      const parsedUrl = new URL(url);
 
-        // Chrome 120 cipher suites (prioritized order)
-        ciphers: [
-          "TLS_AES_128_GCM_SHA256",
-          "TLS_AES_256_GCM_SHA384",
-          "TLS_CHACHA20_POLY1305_SHA256",
-          "ECDHE-ECDSA-AES128-GCM-SHA256",
-          "ECDHE-RSA-AES128-GCM-SHA256",
-          "ECDHE-ECDSA-AES256-GCM-SHA384",
-          "ECDHE-RSA-AES256-GCM-SHA384",
-        ].join(":"),
+      html = await new Promise((resolve, reject) => {
+        const client = http2.connect(parsedUrl.origin, {
+          rejectUnauthorized: false,
+        });
 
-        honorCipherOrder: true,
-        rejectUnauthorized: false,
+        client.on("error", (err) => reject(err));
+
+        const req = client.request({
+          ":path": parsedUrl.pathname + parsedUrl.search,
+          ":method": "GET",
+          "user-agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+          accept:
+            "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+          "accept-language": "en-US,en;q=0.9",
+          "sec-ch-ua":
+            '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
+          "sec-ch-ua-mobile": "?0",
+          "sec-ch-ua-platform": '"Windows"',
+          "sec-fetch-dest": "document",
+          "sec-fetch-mode": "navigate",
+          "sec-fetch-site": "none",
+          "sec-fetch-user": "?1",
+          "upgrade-insecure-requests": "1",
+        });
+
+        req.setEncoding("utf8");
+        let data = "";
+        req.on("data", (chunk) => {
+          data += chunk;
+        });
+        req.on("end", () => {
+          client.close();
+          resolve(data);
+        });
+        req.end();
       });
-
-      axiosConfig.httpsAgent = httpsAgent;
-
-      // Chrome 120 headers
-      axiosConfig.headers = {
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        Accept:
-          "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Accept-Encoding": "gzip, deflate, br",
-        "sec-ch-ua":
-          '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
-        "sec-ch-ua-mobile": "?0",
-        "sec-ch-ua-platform": '"Windows"',
-        "Sec-Fetch-Dest": "document",
-        "Sec-Fetch-Mode": "navigate",
-        "Sec-Fetch-Site": "none",
-        "Sec-Fetch-User": "?1",
-        "Upgrade-Insecure-Requests": "1",
-      };
     } else {
       // Existing simple configuration
+      const axiosConfig: any = {
+        method: "GET",
+        url,
+        responseType: "text",
+      };
       axiosConfig.httpsAgent = new https.Agent({ rejectUnauthorized: false });
+      const response = await axios(axiosConfig);
+      html = response.data;
     }
 
-    const response = await axios(axiosConfig);
-    // TODO(ecarrel): check if response.request.res.responseUrl !== url to detect redirects.
-    return cheerio.load(response.data);
+    return cheerio.load(html);
   } catch (err) {
     console.error(`Error making cheerio request: ${String(err)}`);
     return null;
