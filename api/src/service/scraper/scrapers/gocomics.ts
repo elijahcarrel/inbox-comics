@@ -19,7 +19,7 @@ export class GoComicsScraper extends Scraper {
     const { theiridentifier: theirIdentifier } = syndication;
     const url = `https://www.gocomics.com/${theirIdentifier}/${_date.format("YYYY/MM/DD")}`;
     const $ = await cheerioRequestWithOptions(url, {
-      useChromeFingerprint: true,
+      useGooglebotUserAgent: true,
     });
     if ($ === null) {
       return scrapeFailure(failureModes.GOCOMICS_REJECTION);

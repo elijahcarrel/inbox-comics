@@ -42,7 +42,7 @@ const createComicDbObject = (
 export const scrapeAndSaveComicForSyndication = async (
   syndication: ISyndication,
   date: Moment,
-) => {
+): Promise<ScrapeResult> => {
   const scrapeResult = await scrapeComicForSyndication(syndication, date);
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore TS2615 see https://github.com/microsoft/TypeScript/issues/38279.
@@ -57,12 +57,13 @@ export const scrapeAndSaveComicForSyndication = async (
     syndication.lastSuccessfulComic = createdComic;
   }
   await syndication.save();
+  return scrapeResult;
 };
 
 export const scrapeAndSaveAllComicsWithOptions = async (
   date: Moment,
   options: ScrapeAndSaveAllComicsOptions = {},
-) => {
+): Promise<ScrapeResult[]> => {
   const {
     siteId,
     limit = 20,
@@ -143,4 +144,5 @@ export const scrapeAndSaveAllComicsWithOptions = async (
       ),
     );
   }
+  return scrapeResults;
 };
