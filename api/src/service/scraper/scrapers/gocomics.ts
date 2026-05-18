@@ -25,7 +25,7 @@ export class GoComicsScraper extends Scraper {
       date: _date.format("YYYY-MM-DD"),
     });
     const $ = await cheerioRequestWithOptions(url, {
-      useChromeFingerprint: true,
+      useGooglebotUserAgent: true,
     });
     if ($ === null) {
       console.error("[gocomics] cheerio request failed", { url });

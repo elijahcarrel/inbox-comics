@@ -7,8 +7,12 @@ import {
 } from "../../db-models/comic-syndication";
 
 export interface CheerioRequestOptions {
-  useChromeFingerprint?: boolean;
+  /** HTTP/2 fetch with Googlebot UA; bypasses GoComics Bunny Shield. */
+  useGooglebotUserAgent?: boolean;
 }
+
+const GOOGLEBOT_USER_AGENT =
+  "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)";
 
 const HTML_DIAGNOSTIC_SNIPPET_LENGTH = 1000;
 
@@ -45,8 +49,7 @@ export const cheerioRequestWithOptions = async (
   try {
     let html = "";
 
-    if (options.useChromeFingerprint) {
-      // Use native HTTP/2 to bypass Bunny CDN
+    if (options.useGooglebotUserAgent) {
       const http2 = await import("http2");
       const parsedUrl = new URL(url);
 
@@ -60,20 +63,8 @@ export const cheerioRequestWithOptions = async (
         const req = client.request({
           ":path": parsedUrl.pathname + parsedUrl.search,
           ":method": "GET",
-          "user-agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-          accept:
-            "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
-          "accept-language": "en-US,en;q=0.9",
-          "sec-ch-ua":
-            '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
-          "sec-ch-ua-mobile": "?0",
-          "sec-ch-ua-platform": '"Windows"',
-          "sec-fetch-dest": "document",
-          "sec-fetch-mode": "navigate",
-          "sec-fetch-site": "none",
-          "sec-fetch-user": "?1",
-          "upgrade-insecure-requests": "1",
+          "user-agent": GOOGLEBOT_USER_AGENT,
+          accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         });
 
         req.setEncoding("utf8");
