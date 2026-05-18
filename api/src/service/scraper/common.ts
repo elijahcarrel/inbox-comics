@@ -10,6 +10,34 @@ export interface CheerioRequestOptions {
   useChromeFingerprint?: boolean;
 }
 
+const HTML_DIAGNOSTIC_SNIPPET_LENGTH = 1000;
+
+const CDN_BLOCK_SIGNATURES = [
+  "bunny",
+  "cloudflare",
+  "cf-browser-verification",
+  "challenge-platform",
+  "just a moment",
+  "access denied",
+  "403 forbidden",
+];
+
+export const logHtmlFetchDiagnostics = (url: string, html: string) => {
+  const normalizedHtml = html.toLowerCase();
+  const matchedSignatures = CDN_BLOCK_SIGNATURES.filter((signature) =>
+    normalizedHtml.includes(signature),
+  );
+  const titleMatch = html.match(/<title[^>]*>([^<]*)<\/title>/i);
+  const title = titleMatch?.[1]?.trim() ?? "(no title tag)";
+  console.log("[scraper] fetch diagnostics", {
+    url,
+    htmlLength: html.length,
+    title,
+    matchedBlockSignatures: matchedSignatures,
+    htmlSnippet: html.slice(0, HTML_DIAGNOSTIC_SNIPPET_LENGTH),
+  });
+};
+
 export const cheerioRequestWithOptions = async (
   url: string,
   options: CheerioRequestOptions = {},
@@ -69,6 +97,15 @@ export const cheerioRequestWithOptions = async (
       axiosConfig.httpsAgent = new https.Agent({ rejectUnauthorized: false });
       const response = await axios(axiosConfig);
       html = response.data;
+    }
+
+    if (html.length === 0) {
+      console.error(`[scraper] empty HTML response for ${url}`);
+      return null;
+    }
+
+    if (url.includes("gocomics.com")) {
+      logHtmlFetchDiagnostics(url, html);
     }
 
     return cheerio.load(html);

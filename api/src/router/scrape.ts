@@ -12,10 +12,20 @@ export const typeDefs = gql`
     dontRescrapeSyndicationThatSucceededEarlierToday: Boolean
     dontRetryInLessThanAnHour: Boolean
   }
+
+  type ScrapeResult {
+    success: Boolean!
+    imageUrl: String
+    failureMode: String
+    imageCaption: String
+  }
+
   extend type Mutation {
-    scrapeComic(identifier: String!): Boolean
-    scrapeAndSaveComic(identifier: String!): Boolean
-    scrapeAndSaveAllComics(options: ScrapeAndSaveAllComicsOptions): Boolean
+    scrapeComic(identifier: String!): ScrapeResult!
+    scrapeAndSaveComic(identifier: String!): ScrapeResult!
+    scrapeAndSaveAllComics(
+      options: ScrapeAndSaveAllComicsOptions
+    ): [ScrapeResult!]!
   }
 `;
 

@@ -15,8 +15,7 @@ export const scrapeComic = async (_: any, args: { identifier: string }) => {
     throw invalidSyndicationError(identifier);
   }
   const date = now();
-  await scrapeComicForSyndication(syndication, date);
-  return true;
+  return scrapeComicForSyndication(syndication, date);
 };
 
 export const scrapeAndSaveComic = async (
@@ -29,8 +28,7 @@ export const scrapeAndSaveComic = async (
     throw invalidSyndicationError(identifier);
   }
   const date = now();
-  await scrapeAndSaveComicForSyndication(syndication, date);
-  return true;
+  return scrapeAndSaveComicForSyndication(syndication, date);
 };
 
 export const scrapeAndSaveAllComics = async (
@@ -39,6 +37,5 @@ export const scrapeAndSaveAllComics = async (
 ) => {
   const date = now();
   const { options = {} } = args;
-  await scrapeAndSaveAllComicsWithOptions(date, options);
-  return true;
+  return scrapeAndSaveAllComicsWithOptions(date, options);
 };
