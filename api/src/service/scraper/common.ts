@@ -104,7 +104,11 @@ export const cheerioRequestWithOptions = async (
       return null;
     }
 
-    if (url.includes("gocomics.com")) {
+    const diagnosticsHostname = new URL(url).hostname.toLowerCase();
+    if (
+      diagnosticsHostname === "gocomics.com" ||
+      diagnosticsHostname.endsWith(".gocomics.com")
+    ) {
       logHtmlFetchDiagnostics(url, html);
     }
 
