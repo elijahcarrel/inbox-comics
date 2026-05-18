@@ -45,6 +45,7 @@ resource "checkly_check" "new-user-page-loads" {
 
 resource "checkly_check" "gocomics-scrape" {
   name                      = "gocomics-scrape"
+  # TODO: switch to "API" instead of "BROWSER;" BROWSER is overkill here since all it does is an API call.
   type                      = "BROWSER"
   frequency                 = 1440
   activated                 = true
