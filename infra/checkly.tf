@@ -53,8 +53,8 @@ resource "checkly_check" "gocomics-scrape" {
   run_parallel              = true
   locations                 = ["us-east-1", "us-west-1"]
   script                    = file("${path.module}/../checkly/gocomics-scrape.spec.ts")
-  degraded_response_time    = 30000
-  max_response_time         = 120000
+  degraded_response_time    = 15000
+  max_response_time         = 30000
   tags                      = []
   ssl_check_domain          = ""
   alert_settings {
