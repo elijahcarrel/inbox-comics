@@ -20,7 +20,7 @@
     "graphql-tag": "^2.12.6",
     "https": "^1.0.0",
     "isomorphic-unfetch": "^4.0.2",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "moment": "^2.30.1",
     "moment-timezone": "^0.5.47",
     "mongoose": "^8.12.2",
