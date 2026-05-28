@@ -18,6 +18,7 @@ import {
   sortableKeyboardCoordinates,
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
+import { get } from "lodash";
 import { CommonLink } from "../../common-components/CommonLink/CommonLink";
 import { Paginate } from "../../common-components/Paginate/Paginate";
 import { TextInput } from "../../common-components/TextInput/TextInput";
@@ -68,7 +69,7 @@ export const SyndicationGrid = (props: Props) => {
     numComicsPerPageParam > 100
       ? defaultNumComicsPerPage
       : numComicsPerPageParam;
-  const [sortFieldOrder, setSortFieldOrder] = useState<"asc" | "desc">("desc");
+  const [sortFieldOrder, setSortFieldOrder] = useState<"asc" | "desc">("asc");
   const [searchText, setSearchText] = useState("");
   // TODO(ecarrel): callers should do this, not me. (I think.)
   const augmentedSyndications = syndications.map((syndication) => {
@@ -116,7 +117,12 @@ export const SyndicationGrid = (props: Props) => {
     : numComicsOnFirstPage + (pageNumber - 1) * numComicsPerPage;
   let filteredSyndications = orderBy(
     augmentedSyndications,
-    ["isSelected", "selectedIndex", sortField, "title"],
+    (syndication) => [
+      syndication.isSelected,
+      syndication.selectedIndex,
+      get(syndication, sortField) || 0, // numSubscribers might be null instead of 0 if this the syndication was just added to the database.
+      syndication.title,
+    ],
     ["desc", "asc", sortFieldOrder, "asc"],
   );
   if (searchText !== "") {
@@ -149,7 +155,7 @@ export const SyndicationGrid = (props: Props) => {
           <CommonLink
             onClick={() => {
               setSortField("title");
-              setSortFieldOrder("asc");
+              setSortFieldOrder("desc");
             }}
             isLink={sortField !== "title"}
             className={styles.sortButton}
@@ -164,7 +170,7 @@ export const SyndicationGrid = (props: Props) => {
           <CommonLink
             onClick={() => {
               setSortField("numSubscribers");
-              setSortFieldOrder("desc");
+              setSortFieldOrder("asc");
             }}
             isLink={sortField !== "numSubscribers"}
             className={styles.sortButton}
