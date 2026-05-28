@@ -12,7 +12,7 @@
   "dependencies": {
     "@apollo/server": "^4.11.3",
     "@as-integrations/next": "^3.2.0",
-    "@aws-sdk/client-sesv2": "^3.772.0",
+    "@aws-sdk/client-sesv2": "^3.995.0",
     "@vercel/node": "^5.1.14",
     "axios": "^1.8.4",
     "cheerio": "^1.0.0",
