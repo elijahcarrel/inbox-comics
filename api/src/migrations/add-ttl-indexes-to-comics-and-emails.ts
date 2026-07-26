@@ -34,7 +34,6 @@ const run = async () => {
       { expireAfterSeconds: THIRTY_DAYS_IN_SECONDS },
     );
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error("Error adding TTL indexes:", err);
     process.exitCode = 1;
   } finally {
@@ -43,4 +42,3 @@ const run = async () => {
 };
 
 void run();
-

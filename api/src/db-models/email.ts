@@ -14,9 +14,6 @@ const emailSchema = new Schema(
 );
 
 // Automatically delete emails 30 days after creation.
-emailSchema.index(
-  { createdAt: 1 },
-  { expireAfterSeconds: 60 * 60 * 24 * 30 },
-);
+emailSchema.index({ createdAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 30 });
 
 export const Email = model<IEmail>("email", emailSchema);

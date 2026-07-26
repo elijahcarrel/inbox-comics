@@ -1,11 +1,5 @@
 import mongoose, { Document } from "mongoose";
-import {
-  afterAll,
-  beforeAll,
-  beforeEach,
-  expect,
-  it,
-} from "@jest/globals";
+import { afterAll, beforeAll, beforeEach, expect, it } from "@jest/globals";
 import { Comic } from "../db-models/comic-syndication";
 import { Email } from "../db-models/email";
 
@@ -34,7 +28,6 @@ const waitForDeletion = async (
 ) => {
   const start = Date.now();
 
-  // eslint-disable-next-line no-constant-condition
   while (true) {
     const doc = await findFn();
     if (doc == null) {
@@ -136,4 +129,3 @@ it("deletes expired emails based on TTL index", async () => {
   const found = await Email.findById(email._id);
   expect(found).toBeNull();
 });
-

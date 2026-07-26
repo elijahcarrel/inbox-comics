@@ -113,9 +113,6 @@ const comicSchema = new Schema(
 );
 
 // Automatically delete comics 30 days after creation.
-comicSchema.index(
-  { createdAt: 1 },
-  { expireAfterSeconds: 60 * 60 * 24 * 30 },
-);
+comicSchema.index({ createdAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 30 });
 
 export const Comic = model<IComic>("comic", comicSchema);
